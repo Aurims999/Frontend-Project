@@ -1,0 +1,124 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap");
+
+:root {
+  /*-- Main colors --------------*/
+  --headerColor: #7e93ff;
+  --backgroundColor: #f9f9fc;
+  /*-----------------------------*/
+  /*-- Text related variables ---*/
+  --mainFont: "Roboto", sans-serif;
+  /*-----------------------------*/
+}
+
+html {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: inherit;
+  padding: inherit;
+}
+
+body {
+  background: var(--backgroundColor);
+}
+
+/*#region Header styles*/
+header {
+  height: 10vh;
+  min-height: 80px;
+  width: 100vw;
+  padding-right: 25px;
+
+  display: flex;
+  justify-content: end;
+  align-items: center;
+
+  background: var(--headerColor);
+}
+
+.searchBar {
+  height: 60%;
+  width: clamp(200px, 25%, 400px);
+
+  background: var(--backgroundColor);
+  border-radius: 10px;
+}
+/*#endregion*/
+
+/*#region Main styles*/
+.contentBlock {
+  height: auto;
+  width: 100vw;
+  background: white;
+  margin: 25px;
+  margin-bottom: 5px;
+  padding: 15px;
+}
+
+.contentBlock > * {
+  margin: 0;
+}
+
+.contentBlock__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.contentBlock__listviewButtons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.contentBlock__listviewButtons button {
+  height: 100%;
+  background: var(--headerColor);
+  margin: 5px;
+}
+
+.contentBlock__dataGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.contentBlock__dataGrid ul {
+  height: auto;
+}
+
+.contentBlock__dataGrid ul .img {
+  background: #7e93ff;
+  width: 250px;
+  height: 250px;
+
+  border-radius: 10px;
+}
+/*#endregion*/
+
+/*#region Text styles*/
+.mainBoldedText {
+  font-weight: bold;
+  font-family: var(--mainFont);
+}
+
+.title {
+  font-weight: bold;
+  font-family: var(--mainFont);
+  font-size: 1rem;
+  padding: 0;
+  margin: 10px 0px;
+}
+
+.subText {
+  font-family: var(--mainFont);
+  font-size: 0.875rem;
+  padding: 0;
+}
+/*#endregion*/
