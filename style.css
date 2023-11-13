@@ -1,0 +1,165 @@
+/*#region General CSS rules*/
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap");
+
+:root {
+  /*-- Main colors --------------*/
+  --headerColor: #7e93ff;
+  --backgroundColor: #f9f9fc;
+  --headlineBlue: #394164;
+  /*-----------------------------*/
+  /*-- Text related variables ---*/
+  --mainFont: "Roboto", sans-serif;
+  /*-----------------------------*/
+}
+
+html {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--backgroundColor);
+  margin: 0;
+}
+/*#endregion*/
+
+/*#region Header styles*/
+header {
+  height: 10vh;
+  min-height: 80px;
+  padding-right: calc(40px + 2.5%);
+
+  display: flex;
+  justify-content: end;
+  align-items: center;
+
+  background: var(--headerColor);
+}
+
+.searchBar {
+  height: 60%;
+  width: clamp(200px, 25%, 400px);
+
+  background: var(--backgroundColor);
+  border-radius: 10px;
+}
+/*#endregion*/
+
+/*#region Main styles*/
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contentBlock {
+  height: auto;
+  width: 90%;
+  background: white;
+  margin: 40px 0px 5px 0px;
+  padding: 10px 20px;
+}
+
+.contentBlock__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+
+.contentBlock__listviewButtons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.contentBlock__listviewButtons button {
+  width: auto;
+  height: auto;
+  min-height: 1.5rem;
+  aspect-ratio: 1/1;
+
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  margin: 0 0 0 0.5rem;
+}
+
+.contentBlock__listviewButtons img {
+  width: 100%;
+}
+
+.contentBlock__dataGrid {
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  align-content: space-between;
+  gap: 40px 20px;
+}
+
+.card {
+  height: auto;
+  width: calc(20% - (20px * 4) - 40px);
+  width: 20%;
+  width: calc(20% - 20px);
+  width: calc(20% - (20px * 4) / 5);
+}
+
+.card__image {
+  width: auto;
+
+  border-radius: 20px;
+  aspect-ratio: 1/1;
+}
+
+.card__image img {
+  width: 100%;
+  height: auto;
+  background-repeat: no-repeat;
+  border-radius: inherit;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+/*#endregion*/
+
+/*#region Text styles*/
+.headline {
+  font-size: 1.75rem;
+  color: var(--headlineBlue);
+}
+
+.mainBoldedText {
+  font-weight: bold;
+  font-family: var(--mainFont);
+}
+
+.card__mainText {
+  font-weight: bold;
+  font-family: var(--mainFont);
+  font-size: 1.125rem;
+  padding: 0;
+  margin: 10px 0px;
+}
+
+.card__subText {
+  font-family: var(--mainFont);
+  font-size: 0.9375rem;
+  padding: 0;
+}
+
+.contentBlock a {
+  color: var(--headerColor);
+  filter: opacity(0.7);
+  text-decoration: none;
+
+  display: inline-block;
+  margin: 15px 0px;
+}
+
+.contentBlock a:hover {
+  text-decoration: underline;
+  color: rebeccapurple;
+}
+/*#endregion*/
