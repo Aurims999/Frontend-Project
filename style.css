@@ -5,11 +5,11 @@
   /*-- Main colors --------------*/
   --headerColor: #7e93ff;
   --backgroundColor: #f9f9fc;
-  --headlineBlue: #394164;
-  --white: #FBFAF5;
+  --white: #fbfaf5;
   /*-----------------------------*/
   /*-- Secondary colors ---------*/
   --darkerPurple: #485598;
+  --headlineBlue: #394164;
   /*-----------------------------*/
   /*-- Text related variables ---*/
   --mainFont: "Roboto", sans-serif;
@@ -41,33 +41,38 @@ header {
   background: var(--headerColor);
 }
 
-.searchBar{
+.searchBar {
   height: 60%;
   width: clamp(200px, 25%, 400px);
 
   background: var(--backgroundColor);
   border-radius: 10px;
   border: none;
+
+  & input {
+    width: 100%;
+    height: 100%;
+    padding: 0 1.25rem;
+
+    position: relative;
+    z-index: 1;
+  }
+
+  & img {
+    position: absolute;
+    width: auto;
+    height: auto;
+
+    z-index: 2;
+  }
 }
 
-.searchBar input{
-  width: 100%;
-  height: 100%;
-  padding: 0 1.25rem;
-  
+.profileIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
-  z-index: 1;
-}
 
-.searchBar img{
-  position: absolute;
-  width: auto;
-  height: auto;
-
-  z-index: 2;
-}
-
-header button{
   height: 50%;
   aspect-ratio: 1/1;
   cursor: pointer;
@@ -76,9 +81,15 @@ header button{
   border: none;
 
   margin: 0px 1rem;
-
-  /*background: var(--darkerPurple);*/
   background: var(--backgroundColor);
+
+  & img {
+    position: absolute;
+    bottom: 0;
+
+    height: 65%;
+    aspect-ratio: 1/1;
+  }
 }
 /*#endregion*/
 
@@ -108,23 +119,23 @@ main {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-}
 
-.contentBlock__listviewButtons button {
-  width: auto;
-  height: auto;
-  min-height: 1.5rem;
-  aspect-ratio: 1/1;
+  & button {
+    width: auto;
+    height: auto;
+    min-height: 1.5rem;
+    aspect-ratio: 1/1;
 
-  background: none;
-  border: none;
-  cursor: pointer;
+    background: none;
+    border: none;
+    cursor: pointer;
 
-  margin: 0 0 0 0.5rem;
-}
+    margin: 0 0 0 0.5rem;
+  }
 
-.contentBlock__listviewButtons img {
-  width: 100%;
+  & img {
+    width: 100%;
+  }
 }
 
 .contentBlock__dataGrid {
@@ -137,10 +148,7 @@ main {
 
 .card {
   height: auto;
-  width: calc(20% - (20px * 4) - 40px);
-  width: 20%;
-  width: calc(20% - 20px);
-  width: calc(20% - (20px * 4) / 5);
+  width: clamp(200px, calc(20% - (20px * 4) / 5), 400px);
 }
 
 .card__image {
