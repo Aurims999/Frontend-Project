@@ -37,7 +37,7 @@ header {
   background: var(--headerColor);
 }
 
-@media (min-width: 475px) {
+@media (min-width: 476px) {
   header {
     justify-content: end;
     align-items: center;
@@ -149,6 +149,7 @@ main {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-left: 15px;
 
   & button {
     width: auto;
@@ -170,7 +171,7 @@ main {
 
 .contentBlock__dataGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
   gap: 40px 20px;
 }
 
@@ -184,6 +185,18 @@ main {
 @media (max-width: 355px) {
   .contentBlock__dataGrid {
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .contentBlock__dataGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .contentBlock__dataGrid {
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
@@ -201,22 +214,6 @@ main {
     object-fit: cover;
   }
 }
-
-/* .card {
-  height: auto;
-  flex: 1 200px;
-  width: clamp(200px, calc(20% - (20px * 4) / 5), 400px);
-
-  & img {
-    width: 100%;
-    height: auto;
-    background-repeat: no-repeat;
-
-    border-radius: 20px;
-    aspect-ratio: 1/1;
-    object-fit: cover;
-  }
-} */
 /*#endregion*/
 
 /*#region Text styles*/
