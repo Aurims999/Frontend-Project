@@ -41,6 +41,20 @@ header {
   background: var(--headerColor);
 }
 
+@media (max-width: 475px) {
+  header {
+    height: 10vh;
+    min-height: 80px;
+    padding-right: calc(40px + 2.5%);
+
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+    background: var(--headerColor);
+  }
+}
+
 .searchBar {
   height: 60%;
   width: clamp(200px, 25%, 400px);
@@ -138,45 +152,72 @@ main {
   }
 }
 
-.contentBlock__dataGrid {
+/* .contentBlock__dataGrid {
   display: flex;
   justify-content: left;
   flex-wrap: wrap;
   align-content: space-between;
   gap: 40px 20px;
+} */
+
+.contentBlock__dataGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px 20px;
+}
+
+@media (max-width: 475px) {
+  .contentBlock__dataGrid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px 20px;
+  }
 }
 
 .card {
   height: auto;
-  width: clamp(200px, calc(20% - (20px * 4) / 5), 400px);
-}
-
-.card__image {
   width: auto;
 
-  border-radius: 20px;
-  aspect-ratio: 1/1;
+  & img {
+    width: 100%;
+    height: auto;
+    background-repeat: no-repeat;
+
+    border-radius: 20px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+  }
 }
 
-.card__image img {
-  width: 100%;
+/* .card {
   height: auto;
-  background-repeat: no-repeat;
-  border-radius: inherit;
-  aspect-ratio: 1/1;
-  object-fit: cover;
-}
+  flex: 1 200px;
+  width: clamp(200px, calc(20% - (20px * 4) / 5), 400px);
+
+  & img {
+    width: 100%;
+    height: auto;
+    background-repeat: no-repeat;
+
+    border-radius: 20px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+  }
+} */
 /*#endregion*/
 
 /*#region Text styles*/
 .headline {
   font-size: 1.75rem;
+  font-weight: bold;
+  font-family: var(--mainFont);
+
   color: var(--headlineBlue);
 }
 
 .mainBoldedText {
   font-weight: bold;
   font-family: var(--mainFont);
+  font-size: 1rem;
 }
 
 .whiteText {
@@ -209,5 +250,24 @@ main {
 .contentBlock a:hover {
   text-decoration: underline;
   color: rebeccapurple;
+}
+
+@media (max-width: 475px) {
+  .headline {
+    font-size: 1.125rem;
+    color: var(--headlineBlue);
+  }
+
+  .mainBoldedText {
+    font-size: 0.875rem;
+  }
+
+  .card__mainText {
+    font-size: 0.875rem;
+  }
+
+  .card__subText {
+    font-size: 0.75rem;
+  }
 }
 /*#endregion*/
