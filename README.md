@@ -3,7 +3,7 @@
 
 Favourite songs playlist app should have the capability to build personal playlists from popular songs/artists on Spotify.
 
-
+<a href="https://aurims999.github.io/Frontend-Project/" target="_blank"> Current State of the Project </a>
 
 
 ## Home Page
