@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Artist Data Mockup page</title>
-    <link rel="stylesheet" href="./artistPage.css" />
     <link rel="stylesheet" href="./generalStyles.css" />
+    <link rel="stylesheet" href="./artistPage.css" />
   </head>
   <body>
     <header>
@@ -20,6 +20,52 @@
       </a>
       <p class="mainBoldedText whiteText">My profile</p>
     </header>
-    <main></main>
+    <main>
+      <div class="contentBlock" id="artistInfo">
+        <div class="card">
+          <img
+            src="./assets/images/artists/adele.jpg"
+            alt="An image of Adele"
+          />
+        </div>
+        <div class="description">
+          <div class="description__header">
+            <div class="mainInfo">
+              <h1 class="hugeText">Adele</h1>
+              <div class="blobElement">
+                <img
+                  src="./assets/icons/heart.png"
+                  alt="Heart icon to add artist to liked artists list"
+                  class="icon"
+                />
+                <p>3205215</p>
+              </div>
+            </div>
+            <p class="plainText">Liked since: 2023/06/25</p>
+          </div>
+          <div class="description__genres">
+            <h2 class="headline">Genres:</h2>
+            <div class="listOfBlobs">
+              <div class="blobElement">
+                <img
+                  src="./assets/icons/heart.png"
+                  alt="Heart icon to add artist to liked artists list"
+                  class="icon"
+                />
+                <p>Pop</p>
+              </div>
+              <div class="blobElement">
+                <img
+                  src="./assets/icons/heart.png"
+                  alt="Heart icon to add artist to liked artists list"
+                  class="icon"
+                />
+                <p>Rock</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
   </body>
 </html>

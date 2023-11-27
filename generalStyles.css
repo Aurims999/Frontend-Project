@@ -16,7 +16,7 @@
   /*-----------------------------*/
 }
 
-html {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -25,6 +25,14 @@ html {
 body {
   background: var(--backgroundColor);
   margin: 0;
+}
+
+.card img {
+  background-repeat: no-repeat;
+
+  border-radius: 20px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
 }
 /*#endregion*/
 
@@ -140,9 +148,47 @@ main {
     }
   }
 }
+
+.blobElement {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  width: auto;
+  padding: 10px;
+  border-radius: 15px;
+
+  font-family: var(--mainFont);
+  font-weight: bold;
+
+  & img {
+    width: 30px;
+    aspect-ratio: 1/1;
+  }
+}
+
+.listOfBlobs {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  width: 100%;
+  margin: 10px 0px;
+}
 /*#endregion*/
 
 /*#region Text styles*/
+.hugeText {
+  font-size: 4rem;
+  font-weight: bold;
+  font-family: var(--mainFont);
+
+  color: var(--headlineBlue);
+}
+
 .headline {
   font-size: 1.75rem;
   font-weight: bold;
@@ -169,7 +215,8 @@ main {
   margin: 10px 0px;
 }
 
-.card__subText {
+.card__subText,
+.plainText {
   font-family: var(--mainFont);
   font-size: 0.9375rem;
   padding: 0;
@@ -202,7 +249,8 @@ main {
     font-size: 0.875rem;
   }
 
-  .card__subText {
+  .card__subText,
+  .plainText {
     font-size: 0.75rem;
   }
 }
@@ -220,7 +268,8 @@ main {
     font-size: 1.5rem;
   }
 
-  .card__subText {
+  .card__subText,
+  .plainText {
     font-size: 1.125rem;
   }
 }
