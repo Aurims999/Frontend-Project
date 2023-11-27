@@ -97,6 +97,16 @@
     width: 100%;
   }
 }
+
+.contentBlock__dataGrid .card {
+  height: auto;
+  width: auto;
+
+  & img {
+    width: 100%;
+    height: auto;
+  }
+}
 /*#endregion*/
 
 /*#endregion*/

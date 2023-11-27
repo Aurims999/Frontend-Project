@@ -156,11 +156,13 @@ main {
   gap: 10px;
 
   width: auto;
-  padding: 10px;
+  padding: 10px 20px;
   border-radius: 15px;
 
   font-family: var(--mainFont);
   font-weight: bold;
+
+  box-shadow: 4px 3px 12px 0px rgba(55, 55, 55, 0.42);
 
   & img {
     width: 30px;
@@ -274,3 +276,8 @@ main {
   }
 }
 /*#endregion*/
+
+a:has(.card) {
+  all: unset;
+  cursor: pointer;
+}
