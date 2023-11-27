@@ -1,0 +1,65 @@
+/*#region Main styles*/
+.contentBlock__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+
+.contentBlock__listviewButtons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-left: 15px;
+
+  & button {
+    width: auto;
+    height: auto;
+    min-height: 1.5rem;
+    aspect-ratio: 1/1;
+
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    margin: 0 0 0 0.5rem;
+  }
+
+  & img {
+    width: 100%;
+  }
+}
+
+.contentBlock__dataGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 40px 20px;
+
+  @media (max-width: 475px) {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px 20px;
+  }
+
+  @media (max-width: 355px) {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  @media (min-width: 1000px) {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  @media (min-width: 1440px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.card {
+  height: auto;
+  width: auto;
+
+  & img {
+    width: 100%;
+    height: auto;
+  }
+}
+/*#endregion*/

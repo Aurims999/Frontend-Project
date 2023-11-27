@@ -4,21 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zenitech Training</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./generalStyles.css" />
+    <link rel="stylesheet" href="./homePage.css" />
   </head>
   <body>
     <header>
       <div class="searchBar">
-        <!-- <img src="./assets/icons/search.png" alt="" /> -->
         <input type="search" class="searchBar" />
       </div>
-      <button class="profileIcon">
+      <a class="profileIcon" href=".">
         <img
           src="./assets/icons/user.png"
           alt="An icon of a person's profile view"
         />
-      </button>
-      <!-- <p class="mainBoldedText whiteText">My profile</p> -->
+      </a>
+      <p class="mainBoldedText whiteText">My profile</p>
     </header>
     <main>
       <section class="contentBlock">
@@ -35,14 +35,16 @@
           </div>
         </div>
         <div class="contentBlock__dataGrid">
-          <div class="card">
-            <img
-              src="./assets/images/artists/adele.jpg"
-              alt="Image of adele's album '30'"
-            />
-            <p class="card__mainText">Adele</p>
-            <p class="card__subText">Pop, Soul</p>
-          </div>
+          <a href="./artist.html">
+            <div class="card">
+              <img
+                src="./assets/images/artists/adele.jpg"
+                alt="Image of adele's album '30'"
+              />
+              <p class="card__mainText">Adele</p>
+              <p class="card__subText">Pop, Soul</p>
+            </div>
+          </a>
           <div class="card">
             <img
               src="./assets/images/artists/monika liu.jpg"

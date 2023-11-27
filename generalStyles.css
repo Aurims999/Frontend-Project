@@ -16,7 +16,7 @@
   /*-----------------------------*/
 }
 
-html {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -25,6 +25,14 @@ html {
 body {
   background: var(--backgroundColor);
   margin: 0;
+}
+
+.card img {
+  background-repeat: no-repeat;
+
+  border-radius: 20px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
 }
 /*#endregion*/
 
@@ -66,34 +74,25 @@ header {
   & input {
     width: 100%;
     height: 100%;
-    padding: 0 3rem;
+    padding-left: 3rem;
+    padding-right: 1rem;
 
     position: relative;
     z-index: 1;
   }
 
-  & img {
+  &::after {
+    content: url("./assets/icons/search.png");
     position: absolute;
-    width: auto;
-    height: auto;
-
-    bottom: 10px;
-
+    top: 13px;
+    left: 10px;
     z-index: 2;
   }
-}
 
-.searchBar::after{
-  content: url("./assets/icons/search.png");
-  position: absolute;
-  top: 13px;
-  left: 10px;
-  z-index: 2;
-}
-
-@media (max-width: 475px) {
-  .searchBar {
-    width: clamp(100px, 40%, 200px);
+  @media (max-width: 475px) {
+    .searchBar {
+      width: clamp(100px, 40%, 200px);
+    }
   }
 }
 
@@ -136,99 +135,62 @@ main {
   background: white;
   margin: 40px 0px 5px 0px;
   padding: 10px 20px;
-}
 
-@media (max-width: 700px) {
-  .contentBlock {
-    margin-top: 10px;
+  @media (max-width: 700px) {
+    .contentBlock {
+      margin-top: 10px;
+    }
+  }
+
+  @media (max-width: 375px) {
+    .contentBlock {
+      padding: 10px 0px;
+    }
   }
 }
 
-@media (max-width: 375px) {
-  .contentBlock {
-    padding: 10px 0px;
-  }
-}
-
-.contentBlock__header {
+.blobElement {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 1rem;
-}
-
-.contentBlock__listviewButtons {
-  display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  margin-left: 15px;
+  gap: 10px;
 
-  & button {
-    width: auto;
-    height: auto;
-    min-height: 1.5rem;
-    aspect-ratio: 1/1;
-
-    background: none;
-    border: none;
-    cursor: pointer;
-
-    margin: 0 0 0 0.5rem;
-  }
-
-  & img {
-    width: 100%;
-  }
-}
-
-.contentBlock__dataGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
-  gap: 40px 20px;
-}
-
-@media (max-width: 475px) {
-  .contentBlock__dataGrid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px 20px;
-  }
-}
-
-@media (max-width: 355px) {
-  .contentBlock__dataGrid {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  }
-}
-
-@media (min-width: 1000px) {
-  .contentBlock__dataGrid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-}
-
-@media (min-width: 1440px) {
-  .contentBlock__dataGrid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-.card {
-  height: auto;
   width: auto;
+  padding: 10px 20px;
+  border-radius: 15px;
+
+  font-family: var(--mainFont);
+  font-weight: bold;
+
+  box-shadow: 4px 3px 12px 0px rgba(55, 55, 55, 0.42);
 
   & img {
-    width: 100%;
-    height: auto;
-    background-repeat: no-repeat;
-
-    border-radius: 20px;
+    width: 30px;
     aspect-ratio: 1/1;
-    object-fit: cover;
   }
+}
+
+.listOfBlobs {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  width: 100%;
+  margin: 10px 0px;
 }
 /*#endregion*/
 
 /*#region Text styles*/
+.hugeText {
+  font-size: 4rem;
+  font-weight: bold;
+  font-family: var(--mainFont);
+
+  color: var(--headlineBlue);
+}
+
 .headline {
   font-size: 1.75rem;
   font-weight: bold;
@@ -255,7 +217,8 @@ main {
   margin: 10px 0px;
 }
 
-.card__subText {
+.card__subText,
+.plainText {
   font-family: var(--mainFont);
   font-size: 0.9375rem;
   padding: 0;
@@ -288,7 +251,8 @@ main {
     font-size: 0.875rem;
   }
 
-  .card__subText {
+  .card__subText,
+  .plainText {
     font-size: 0.75rem;
   }
 }
@@ -306,8 +270,14 @@ main {
     font-size: 1.5rem;
   }
 
-  .card__subText {
+  .card__subText,
+  .plainText {
     font-size: 1.125rem;
   }
 }
 /*#endregion*/
+
+a:has(.card) {
+  all: unset;
+  cursor: pointer;
+}
