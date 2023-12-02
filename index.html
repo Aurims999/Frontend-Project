@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Zenitech Training</title>
     <link rel="stylesheet" href="./generalStyles.css" />
-    <link rel="stylesheet" href="./homePage.css" />
+    <link rel="stylesheet" href="./components/header/header.css" />
+    <link rel="stylesheet" href="./components/contentBlock/contentBlock.css" />
+    <link rel="stylesheet" href="./components/contentBlock/card.css" />
   </head>
   <body>
     <header>
@@ -22,9 +24,9 @@
     </header>
     <main>
       <section class="contentBlock">
-        <div class="contentBlock__header">
+        <div class="header">
           <h1 class="headline">My favourite artists</h1>
-          <div class="contentBlock__listviewButtons">
+          <div class="buttons">
             <p class="mainBoldedText">View by:</p>
             <button>
               <img src="./assets/icons/menu-burger.png" alt="List layout" />
@@ -34,8 +36,8 @@
             </button>
           </div>
         </div>
-        <div class="contentBlock__dataGrid">
-          <a href="./artist.html">
+        <div class="grid">
+          <a href="./pages/artist/artist.html">
             <div class="card">
               <img
                 src="./assets/images/artists/adele.jpg"
@@ -89,10 +91,10 @@
       </section>
 
       <section class="contentBlock">
-        <div class="contentBlock__header">
+        <div class="header">
           <h1 class="headline">Recommended to you</h1>
         </div>
-        <div class="contentBlock__dataGrid">
+        <div class="grid">
           <div class="card">
             <div class="card__image">
               <img
