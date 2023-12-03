@@ -11,4 +11,9 @@
     aspect-ratio: 1/1;
     object-fit: cover;
   }
+
+  & a {
+    all: unset;
+    cursor: pointer;
+  }
 }
