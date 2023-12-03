@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Artist Data Mockup page</title>
     <link rel="stylesheet" href="../../generalStyles.css" />
-    <link rel="stylesheet" href="./artistPage.css" />
     <link rel="stylesheet" href="../../components/header/header.css" />
     <link rel="stylesheet" href="../../components/blob/blob.css" />
     <link
@@ -19,16 +18,18 @@
       <div class="searchBar">
         <input type="search" class="searchBar" />
       </div>
-      <a class="profileIcon" href="../../index.html">
+      <a class="profileIcon" href="../../pages/profile/profilePage.html">
         <img
           src="../../assets/icons/user.png"
           alt="An icon of a person's profile view"
         />
       </a>
-      <p class="userProfile">My profile</p>
+      <a href="../../index.html" style="all: unset; cursor: pointer"
+        ><p class="userProfile">Home page</p></a
+      >
     </header>
     <main>
-      <div class="contentBlock">
+      <section class="contentBlock">
         <div class="sideLayout">
           <img
             src="../../assets/images/artists/adele.jpg"
@@ -72,7 +73,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </section>
       <section class="contentBlock">
         <div class="header">
           <h1>Albums</h1>
