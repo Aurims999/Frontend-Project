@@ -81,6 +81,11 @@ header {
   }
 
   & p.userProfile {
+    font-weight: bold;
+    font-family: var(--mainFont);
+    font-size: 1rem;
+    color: var(--white);
+
     @media (max-width: 475px) {
       display: none;
     }
