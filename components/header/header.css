@@ -13,7 +13,7 @@ header {
   }
 
   @media (max-width: 475px) {
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
   }
 
@@ -48,9 +48,7 @@ header {
     }
 
     @media (max-width: 475px) {
-      .searchBar {
-        width: clamp(100px, 40%, 200px);
-      }
+      width: clamp(100px, 40%, 200px);
     }
   }
 
@@ -62,7 +60,7 @@ header {
     align-items: center;
     position: relative;
 
-    height: 50%;
+    height: 50px;
     aspect-ratio: 1/1;
     cursor: pointer;
 
@@ -70,7 +68,8 @@ header {
     border: none;
 
     margin: 0px 1rem;
-    background: var(--backgroundColor);
+    background: var(--darkerPurple);
+    box-shadow: 4px 3px 8px 0px rgba(55, 55, 55, 0.42);
 
     & img {
       position: absolute;
@@ -78,6 +77,12 @@ header {
 
       height: 65%;
       aspect-ratio: 1/1;
+    }
+  }
+
+  & p.userProfile {
+    @media (max-width: 475px) {
+      display: none;
     }
   }
 }
