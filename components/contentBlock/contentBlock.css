@@ -2,7 +2,7 @@
   height: auto;
   width: 90%;
   margin: 40px 0px 5px 0px;
-  padding: 10px 20px;
+  padding: 25px 35px;
   box-sizing: border-box;
   gap: 25px;
 
@@ -58,13 +58,17 @@
     grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
     gap: 40px 20px;
 
-    @media (max-width: 475px) {
+    @media (max-width: 500px) {
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 20px 20px;
     }
 
-    @media (max-width: 355px) {
+    @media (max-width: 450px) {
       grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+
+    @media (max-width: 325px) {
+      grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
     }
 
     @media (min-width: 1000px) {
