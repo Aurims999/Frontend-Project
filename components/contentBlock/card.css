@@ -2,7 +2,8 @@
   height: auto;
   width: auto;
 
-  & p.number {
+  & p.number,
+  p.date {
     display: none;
   }
 
@@ -96,6 +97,10 @@
 
   &:not(.listHeader):hover {
     background-color: var(--highlightPurple);
+  }
+
+  &:not(.listHeader):focus {
+    background-color: var(--focusPurple);
   }
 }
 
