@@ -2,6 +2,10 @@
   height: auto;
   width: auto;
 
+  & p.number {
+    display: none;
+  }
+
   & img {
     width: 100%;
     height: auto;
@@ -46,23 +50,56 @@
   }
 }
 
-.list .card a {
+.listHeader {
+  display: none;
+}
+
+.list .card a,
+.list .listHeader {
   display: grid;
-  grid-template-areas: "Image Artist Genres Date";
-  grid-template-columns: 1fr 2fr 2fr 1fr;
-  gap: 20px;
+  grid-template-areas: "Number Image Artist Genres Date";
+  grid-template-columns: 0.2fr 1fr 2fr 2fr 1fr;
+  margin-bottom: 10px;
+
+  & img,
+  h2,
+  p {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+
+  & .columnTitle {
+    font-family: var(--mainFont);
+    font-weight: bold;
+  }
+
+  & p.number {
+    grid-area: Number;
+    font-weight: bold;
+    font-size: 1.25rem;
+    text-align: center;
+  }
 
   & img {
-    width: 50%;
-    height: auto;
+    width: 35%;
+    grid-area: Image;
+  }
 
-    background-repeat: no-repeat;
-    border-radius: 20px;
-    aspect-ratio: 1/1;
-    object-fit: cover;
+  & h2 {
+    grid-area: Artist;
+  }
+
+  & .genres {
+    grid-area: Genres;
+  }
+
+  &:not(.listHeader):hover {
+    background-color: var(--highlightPurple);
   }
 }
 
-a:hover {
-  background-color: var(--highlightPurple);
+.listHeader {
+  padding-bottom: 5px;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.236);
 }
