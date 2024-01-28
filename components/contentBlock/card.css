@@ -45,3 +45,24 @@
     cursor: pointer;
   }
 }
+
+.list .card a {
+  display: grid;
+  grid-template-areas: "Image Artist Genres Date";
+  grid-template-columns: 1fr 2fr 2fr 1fr;
+  gap: 20px;
+
+  & img {
+    width: 50%;
+    height: auto;
+
+    background-repeat: no-repeat;
+    border-radius: 20px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+  }
+}
+
+a:hover {
+  background-color: var(--highlightPurple);
+}

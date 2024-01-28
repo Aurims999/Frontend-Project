@@ -112,6 +112,9 @@
     }
   }
 
+  & .list {
+  }
+
   & .sideLayout {
     display: flex;
     justify-content: left;
