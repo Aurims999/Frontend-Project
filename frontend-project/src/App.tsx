@@ -90,7 +90,18 @@ function Card({image, link, name, genres}){
   );
 }
 
-class App extends Component {
+function App(){
+  return (
+    <>
+      <Header/>
+    <main>
+      <ContentBlock content = {cards} contentTitle={"My favourite artist"}/>
+    </main>
+    </>
+  )
+}
+
+{/* class App extends Component {
   constructor(){
     super();
   }
@@ -105,6 +116,6 @@ class App extends Component {
       </>
     )
   }
-}
+} */}
 
 export default App
