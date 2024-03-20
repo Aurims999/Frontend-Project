@@ -1,10 +1,9 @@
-import React from "react";
-
 import Card from "../Card/Card";
+import { TCard } from "../../App";
 
 import "./contentBlock.css"
 
-function BlockHeader({ title, editable }) {
+function BlockHeader({title, editable}) {
   return (
     <div className="header">
       <h1 className="headline">{title}</h1>
@@ -23,20 +22,26 @@ function BlockHeader({ title, editable }) {
   );
 }
 
-export default function ContentBlock({ content, contentTitle, layout }) {
+type ContentBlockProps = {
+  content: TCard[],
+  contentTitle: string,
+  layout: boolean,
+}
+
+export default function ContentBlock({ content, contentTitle, layout }:ContentBlockProps) {
   return (
     <section className="contentBlock">
       <BlockHeader title={contentTitle} editable={layout} />
       <div className="grid">
-        {content.map((card) => {
+        {content.map((entry) => {
           return (
             <Card
-              key={card.id}
-              image={card.image}
-              link={card.link}
-              mainText={card.name}
-              subText={card.genres}
-              altText={`Image of ${card.name}`}
+              key={entry.id}
+              image={entry.image}
+              link={entry.link}
+              mainText={entry.name}
+              subText={entry.genres}
+              altText={`Image of ${entry.name}`}
             />
           );
         })}

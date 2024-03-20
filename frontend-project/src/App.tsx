@@ -1,24 +1,14 @@
-import { Component } from "react";
-
 import Header from "./components/header/Header.tsx";
 import ContentBlock from "./components/ContentBlock/ContentBlock.tsx";
+import artists from "./data/artists.json"
 
-const cards = [
-  {
-    id: 1,
-    image: "./assets/images/artists/adele.jpg",
-    link: "",
-    name: "Adele",
-    genres: ["Pop", "Soul"],
-  },
-  {
-    id: 2,
-    image: "./assets/images/artists/monika liu.jpg",
-    link: "",
-    name: "Monika Liu",
-    genres: ["Pop"],
-  },
-];
+export type TCard = {
+  id: number,
+  image: string,
+  link?: string,
+  name: string,
+  genres: string[],
+}
 
 function App() {
   return (
@@ -26,10 +16,9 @@ function App() {
       <header>
         <Header />
       </header>
-
       <main>
         <ContentBlock
-          content={cards}
+          content={artists.slice(0, 15)}
           contentTitle={"My favourite artist"}
           layout={true}
         />
