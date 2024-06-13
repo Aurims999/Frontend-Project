@@ -2,14 +2,15 @@ header {
   height: 10vh;
   min-height: 80px;
 
+  padding: 0px 100px;
+  margin-bottom: 2rem;
+
   display: flex;
   background: var(--headerColor);
 
   @media (min-width: 476px) {
     justify-content: end;
     align-items: center;
-
-    padding-right: calc(40px + 2.5%);
   }
 
   @media (max-width: 475px) {

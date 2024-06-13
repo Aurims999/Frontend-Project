@@ -1,15 +1,15 @@
 import Header from "./components/header/Header.tsx";
 import ContentBlock from "./components/ContentBlock/ContentBlock.tsx";
-import artistsData from "./data/artists.json"
+import artistsData from "./data/artists.json";
 import { useState } from "react";
 
 export type TCard = {
-  id: number,
-  image: string,
-  link?: string,
-  name: string,
-  genres: string[],
-}
+  id: number;
+  image: string;
+  link?: string;
+  name: string;
+  genres: string[];
+};
 
 function App() {
   const [artists, setArtists] = useState(artistsData);
@@ -18,10 +18,7 @@ function App() {
   return (
     <>
       <header>
-        <Header 
-          data={artists}
-          setSearchResult={setFilteredData}
-        />
+        <Header data={artists} setSearchResult={setFilteredData} />
       </header>
       <main>
         <ContentBlock
