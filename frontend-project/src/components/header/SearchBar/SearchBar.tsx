@@ -1,9 +1,8 @@
 import "./SearchBar.css"
 import { useState, useEffect } from "react";
-import artists from "./../../../data/artists.json"
 
-function ResultRow({content}){
-    return <li> {content} </li>;
+function ResultRow({content, setSelection}){
+    return <li onClick={(event) => {console.log(event.target.innerText)}}> {content} </li>;
 }
 
 function filterContent(data, filter){
@@ -16,14 +15,19 @@ function filterContent(data, filter){
     }
 }
 
-export default function Header() {
-    const [data, setData] = useState(artists);
-    const [filteredData, setFilteredData] = useState([]);
+
+export default function SearchBar({searchData, setResult}) {
+    const [filteredData, setFilteredData] = useState(searchData);
     const [searchValue, setSearchValue] = useState("");
+    const [userSelection, setUserSelection] = useState(null);
+
     useEffect(() => {
-        setFilteredData(filterContent(data, searchValue));
-        
-    },[searchValue]);
+        setFilteredData(filterContent(searchData, searchValue));
+    },[searchValue, searchData]);
+
+    useEffect(() => {
+        console.log(userSelection);
+    }, [userSelection])
 
     return(
         <div className={`searchBar ${filteredData.length > 0 ? 'activeSearch' : ''}`}>
@@ -33,7 +37,7 @@ export default function Header() {
         onChange={(event) => {setSearchValue(event.target.value)}} />
         <ul>
             {filteredData.slice(0,5).map(entity => {
-                return <ResultRow content = {entity.name}/>
+                return <ResultRow key={entity.id} content = {entity.name} setSelection={setUserSelection}/>
             })}
         </ul>
     </div>
