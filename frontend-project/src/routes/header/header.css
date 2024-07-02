@@ -1,0 +1,31 @@
+header {
+  height: 10vh;
+  min-height: 80px;
+
+  padding: 0px 100px;
+  margin-bottom: 2rem;
+
+  display: flex;
+  background: var(--headerColor);
+
+  @media (min-width: 476px) {
+    justify-content: end;
+    align-items: center;
+  }
+
+  @media (max-width: 475px) {
+    justify-content: center;
+    align-items: center;
+  }
+
+  & p.userProfile {
+    font-weight: bold;
+    font-family: var(--mainFont);
+    font-size: 1rem;
+    color: var(--white);
+
+    @media (max-width: 475px) {
+      display: none;
+    }
+  }
+}
