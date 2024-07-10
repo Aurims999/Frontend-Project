@@ -1,12 +1,11 @@
-import "./ProfileIcon.css"
+import { Link } from "react-router-dom";
 
-export default function ProfileIcon({userImage}){
-    return(
-        <a className="profileIcon" href="./pages/profile/profilePage.html">
-            <img
-                src= {userImage}
-                alt="An icon of a person's profile view"
-            />
-        </a>
-    );
+import "./ProfileIcon.css";
+
+export default function ProfileIcon({ userImage }) {
+  return (
+    <Link to={"myProfile"} className="profileIcon">
+      <img src={userImage} alt="An icon of a person's profile view" />
+    </Link>
+  );
 }

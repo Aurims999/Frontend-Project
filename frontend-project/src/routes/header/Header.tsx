@@ -11,9 +11,9 @@ export default function Header({ data, setResults }) {
       <header>
         <SearchBar searchData={data} setResult={setResults} />
         <ProfileIcon userImage="./assets/icons/user.png" />
-        <a href="./index.html" style={{ all: "unset", cursor: "pointer" }}>
+        <Link to={"/"} style={{ all: "unset", cursor: "pointer" }}>
           <p className="userProfile">Home page</p>
-        </a>
+        </Link>
       </header>
       <Outlet />
     </>

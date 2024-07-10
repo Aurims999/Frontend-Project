@@ -6,6 +6,7 @@ import artistsData from "./data/artists.json";
 
 import Header from "./routes/header/Header.tsx";
 import HomePage from "./routes/homePage/HomePage.tsx";
+import ProfilePage from "./routes/profilePage/ProfilePage.tsx";
 
 export type TCard = {
   id: number;
@@ -47,6 +48,7 @@ function App() {
           element={<Header data={artists} setResults={setFilteredData} />}
         >
           <Route index element={<HomePage artists={filteredArtists} />} />
+          <Route path="myProfile" element={<ProfilePage />} />
         </Route>
       </Routes>
     </div>

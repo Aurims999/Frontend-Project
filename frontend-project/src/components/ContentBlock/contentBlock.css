@@ -5,7 +5,7 @@
   box-sizing: border-box;
   gap: 25px;
 
-  background: white;
+  background: transparent;
 
   @media (max-width: 700px) {
     .contentBlock {
