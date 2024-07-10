@@ -42,6 +42,7 @@ h2,
 h3 {
   font-family: var(--mainFont);
   text-transform: capitalize;
+  color: var(--headlineBlue);
 }
 
 h1 {

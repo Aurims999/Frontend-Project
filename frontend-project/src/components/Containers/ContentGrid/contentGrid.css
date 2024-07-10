@@ -15,6 +15,6 @@
     grid-template-columns: repeat(5, 1fr);
     justify-items: center;
     align-items: center;
-    row-gap: 25px;
+    gap: 25px;
   }
 }

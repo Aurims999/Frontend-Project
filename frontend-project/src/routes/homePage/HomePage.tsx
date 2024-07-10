@@ -1,15 +1,24 @@
-import { useState } from "react";
-
 import ContentBlock from "../../components/ContentBlock/ContentBlock";
+import Card from "../../components/Card/Card";
+import { ContentGrid } from "../../components/Containers/ContentGrid/ContentGrid";
 
 const HomePage = ({ artists }) => {
   return (
     <main>
-      <ContentBlock
-        content={artists.slice(0, 15)}
-        contentTitle={"My favourite artist"}
-        layout={true}
-      />
+      <ContentGrid title="my favourite artists" amountOfColumns={5}>
+        {artists.slice(0, 15).map((entry) => {
+          return (
+            <Card
+              key={entry.id}
+              image={entry.image}
+              link={entry.link}
+              mainText={entry.name}
+              subText={entry.genres}
+              altText={`Image of ${entry.name}`}
+            />
+          );
+        })}
+      </ContentGrid>
     </main>
   );
 };
