@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import ContentBlock from "./components/ContentBlock/ContentBlock.tsx";
 import artistsData from "./data/artists.json";
 
 import Header from "./routes/header/Header.tsx";
 import HomePage from "./routes/homePage/HomePage.tsx";
 import ProfilePage from "./routes/profilePage/ProfilePage.tsx";
+import { ArtistPage } from "./routes/artistsPage/ArtistPage.tsx";
 
 export type TCard = {
   id: number;
@@ -15,26 +15,6 @@ export type TCard = {
   name: string;
   genres: string[];
 };
-
-/* function App() {
-  const [artists, setArtists] = useState(artistsData);
-  const [filteredArtists, setFilteredData] = useState(artists);
-
-  return (
-    <>
-      <header>
-        <Header data={artists} setSearchResult={setFilteredData} />
-      </header>
-      <main>
-        <ContentBlock
-          content={filteredArtists.slice(0, 15)}
-          contentTitle={"My favourite artist"}
-          layout={true}
-        />
-      </main>
-    </>
-  );
-} */
 
 function App() {
   const [artists, setArtists] = useState(artistsData);
@@ -49,6 +29,7 @@ function App() {
         >
           <Route index element={<HomePage artists={filteredArtists} />} />
           <Route path="myProfile" element={<ProfilePage />} />
+          <Route path="artist/:artistID" element={<ArtistPage />} />
         </Route>
       </Routes>
     </div>

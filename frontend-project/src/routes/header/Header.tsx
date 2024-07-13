@@ -10,7 +10,7 @@ export default function Header({ data, setResults }) {
     <>
       <header>
         <SearchBar searchData={data} setResult={setResults} />
-        <ProfileIcon userImage="./assets/icons/user.png" />
+        <ProfileIcon userImage="/assets/icons/user.png" />
         <Link to={"/"} style={{ all: "unset", cursor: "pointer" }}>
           <p className="userProfile">Home page</p>
         </Link>

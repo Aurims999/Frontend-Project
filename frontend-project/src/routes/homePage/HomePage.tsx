@@ -10,6 +10,7 @@ const HomePage = ({ artists }) => {
           return (
             <Card
               key={entry.id}
+              id={entry.id}
               image={entry.image}
               link={entry.link}
               mainText={entry.name}

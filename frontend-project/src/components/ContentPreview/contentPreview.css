@@ -1,0 +1,44 @@
+section.contentPreview {
+  width: 100%;
+  height: 50vh;
+  padding: 2rem 3rem;
+
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 25px;
+
+  background-color: lavender;
+
+  & img {
+    height: 100%;
+    aspect-ratio: 1/1;
+
+    border-radius: 1rem;
+
+    object-position: center;
+    object-fit: cover;
+  }
+
+  & .description {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+
+    & .description__TopRow {
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: start;
+      gap: 20px;
+
+      & .mainInfo {
+        display: flex;
+      }
+    }
+
+    & .description__BottomRow {
+    }
+  }
+}
