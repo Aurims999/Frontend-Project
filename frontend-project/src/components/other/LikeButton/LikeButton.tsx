@@ -8,7 +8,7 @@ export const LikeButton = ({}) => {
         alt="Heart icon to add artist to liked artists list"
         className="icon"
       />
-      <p>3205215</p>
+      <p>0</p>
     </div>
   );
 };

@@ -9,7 +9,7 @@ section.profileHeader {
   justify-content: space-around;
   align-items: center;
 
-  background-image: url("./assets/images/defaultImages/background__default.jpg");
+  background-image: url("/assets/images/defaultImages/background__default.jpg");
   background-position: center;
   background-size: cover;
   border-radius: 25px;

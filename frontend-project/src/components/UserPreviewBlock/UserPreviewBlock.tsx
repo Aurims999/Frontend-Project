@@ -10,7 +10,7 @@ const UserPreviewBlock = ({}) => {
   return (
     <section className="profileHeader">
       <img
-        src="../../assets/images/userData/person-playing-classical-guitar-at-home@1400x1050.jpg"
+        src="/assets/images/userData/person-playing-classical-guitar-at-home@1400x1050.jpg"
         alt="User's profile image"
       />
       <h1>{username}</h1>
