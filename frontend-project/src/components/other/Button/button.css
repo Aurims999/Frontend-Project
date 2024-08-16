@@ -1,0 +1,13 @@
+button.defaultButton {
+  width: fit-content;
+  padding: 1rem 3rem;
+
+  background-color: var(--headerColor);
+  border: none;
+  border-radius: 1.5rem;
+
+  color: var(--white);
+  font-family: (--mainFont);
+  font-weight: bold;
+  font-size: 18px;
+}

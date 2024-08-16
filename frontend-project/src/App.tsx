@@ -8,6 +8,11 @@ import HomePage from "./routes/homePage/HomePage.tsx";
 import ProfilePage from "./routes/profilePage/ProfilePage.tsx";
 import { ArtistPage } from "./routes/artistsPage/ArtistPage.tsx";
 
+import { GuestPage_Header } from "./routes/guestPage/header/GuestPage_Header.tsx";
+import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
+
+import "./index.css";
+
 export type TCard = {
   id: number;
   image: string;
@@ -30,6 +35,9 @@ function App() {
           <Route index element={<HomePage artists={filteredArtists} />} />
           <Route path="myProfile" element={<ProfilePage />} />
           <Route path="artist/:artistID" element={<ArtistPage />} />
+        </Route>
+        <Route path="guest" element={<GuestPage_Header />}>
+          <Route index element={<GuestPage />} />
         </Route>
       </Routes>
     </div>

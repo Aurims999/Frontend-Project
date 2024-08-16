@@ -29,6 +29,14 @@ body {
   margin: 0;
 }
 
+header {
+  height: 10vh;
+  min-height: 80px;
+
+  padding: 0px 100px;
+  margin-bottom: 2rem;
+}
+
 main {
   display: flex;
   flex-direction: column;

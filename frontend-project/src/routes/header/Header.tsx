@@ -8,7 +8,7 @@ import "./header.css";
 export default function Header({ data, setResults }) {
   return (
     <>
-      <header>
+      <header className="mainHeader">
         <SearchBar searchData={data} setResult={setResults} />
         <ProfileIcon userImage="/assets/icons/user.png" />
         <Link to={"/"} style={{ all: "unset", cursor: "pointer" }}>
