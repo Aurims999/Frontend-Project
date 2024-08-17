@@ -36,9 +36,7 @@ function App() {
           <Route path="myProfile" element={<ProfilePage />} />
           <Route path="artist/:artistID" element={<ArtistPage />} />
         </Route>
-        <Route path="guest" element={<GuestPage_Header />}>
-          <Route index element={<GuestPage />} />
-        </Route>
+        <Route path="guest" element={<GuestPage />} />
       </Routes>
     </div>
   );
