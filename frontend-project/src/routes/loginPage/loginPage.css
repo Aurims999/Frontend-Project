@@ -1,0 +1,36 @@
+.loginPage {
+  height: 100vh;
+  /* overflow-y: hidden; */
+  padding: 3rem 0;
+
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  background-image: url("/assets/images/backgrounds/LoginPage.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  & .formsContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -999;
+
+    background-color: var(--headlineBlue);
+    opacity: 0.75;
+  }
+}

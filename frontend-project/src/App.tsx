@@ -8,8 +8,8 @@ import HomePage from "./routes/homePage/HomePage.tsx";
 import ProfilePage from "./routes/profilePage/ProfilePage.tsx";
 import { ArtistPage } from "./routes/artistsPage/ArtistPage.tsx";
 
-import { GuestPage_Header } from "./routes/guestPage/header/GuestPage_Header.tsx";
 import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
+import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
 
 import "./index.css";
 
@@ -28,6 +28,8 @@ function App() {
   return (
     <div className="appContainer">
       <Routes>
+        <Route path="guest" element={<GuestPage />} />
+        <Route path="login" element={<LoginPage />} />
         <Route
           path="/"
           element={<Header data={artists} setResults={setFilteredData} />}
@@ -36,7 +38,6 @@ function App() {
           <Route path="myProfile" element={<ProfilePage />} />
           <Route path="artist/:artistID" element={<ArtistPage />} />
         </Route>
-        <Route path="guest" element={<GuestPage />} />
       </Routes>
     </div>
   );
