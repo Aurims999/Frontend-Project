@@ -20,6 +20,9 @@
       align-items: start;
 
       row-gap: 2rem;
+      animation-name: slideFromRight;
+      animation-duration: 1.5s;
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 
       & h1 {
         width: 70%;
@@ -38,6 +41,19 @@
           font-size: 1.75rem;
         }
       }
+    }
+
+    & .guestPageIllustration {
+      height: 100vh;
+      position: absolute;
+      bottom: -20vh;
+      right: -100px;
+
+      transform: scaleX(-1);
+
+      animation-name: fadeIn;
+      animation-duration: 1.5s;
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     }
   }
 }

@@ -9,9 +9,7 @@ export const LoginPage = ({}) => {
       <h1 style={{ color: "white", fontSize: "3rem" }}>Sign In</h1>
       <div className="formsContainer">
         <LoginForm />
-        <h2 style={{ color: "white" }}>
-          ---------------- Separator line -----------------------------
-        </h2>
+        <div className="divider">Or</div>
         <Button>Google Login</Button>
       </div>
     </div>

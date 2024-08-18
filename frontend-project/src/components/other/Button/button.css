@@ -1,4 +1,4 @@
-button.defaultButton {
+.defaultButton {
   width: fit-content;
   padding: 1rem 3rem;
 
@@ -10,6 +10,7 @@ button.defaultButton {
   font-family: (--mainFont);
   font-weight: bold;
   font-size: 18px;
+  text-decoration: none;
 
   @media (min-width: 2200px) {
     padding: 1rem 3.5rem;

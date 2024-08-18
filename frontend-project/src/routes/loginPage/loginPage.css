@@ -17,8 +17,14 @@
   background-repeat: no-repeat;
 
   & .formsContainer {
+    width: 50%;
+
     display: flex;
     flex-direction: column;
+
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 
   &::after {
@@ -33,4 +39,14 @@
     background-color: var(--headlineBlue);
     opacity: 0.75;
   }
+}
+
+.divider {
+  width: 100%;
+  margin: 1.5rem 0;
+
+  text-align: center;
+  color: var(--white);
+
+  position: relative;
 }
