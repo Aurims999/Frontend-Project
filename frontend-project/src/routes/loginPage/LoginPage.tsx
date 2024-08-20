@@ -1,3 +1,8 @@
+import {
+  signInWithGooglePopup,
+  createUserDocument,
+} from "../../utils/firebase/firebase.utils";
+
 import "./loginPage.css";
 
 import { LoginForm } from "../../components/Forms/LoginForm/LoginForm";
@@ -5,6 +10,11 @@ import Button from "../../components/other/Button/Button";
 import { ExitButton } from "../../components/other/ExitButton/ExitButton";
 
 export const LoginPage = ({}) => {
+  const logGoogleUser = async () => {
+    const { user } = await signInWithGooglePopup();
+    createUserDocument(user);
+  };
+
   return (
     <div className="loginPage">
       <ExitButton />
@@ -13,6 +23,7 @@ export const LoginPage = ({}) => {
         <LoginForm />
         <div className="divider">Or</div>
         <Button>Google Login</Button>
+        <button onClick={logGoogleUser}>GOOGLE</button>
       </div>
     </div>
   );
