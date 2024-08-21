@@ -1,0 +1,19 @@
+button.googleAuthentificationButton {
+  height: 70px;
+  aspect-ratio: 4/1;
+
+  padding: 1rem 2rem;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+
+  font-size: 0.95rem;
+  border-radius: 16px;
+
+  & img {
+    height: 100%;
+    aspect-ratio: 1/1;
+  }
+}
