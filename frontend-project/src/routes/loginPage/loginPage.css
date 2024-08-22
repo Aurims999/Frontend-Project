@@ -11,7 +11,23 @@
   justify-content: space-between;
   align-items: center;
 
-  background-image: url("/assets/images/backgrounds/LoginPage.jpg");
+  &.centeredContent {
+    justify-content: space-around;
+  }
+
+  @media only screen and (min-width: 2560px) {
+    background-image: url("/assets/images/backgrounds/loginPage_largerSize.webp");
+  }
+  @media only screen and (max-width: 2560px) and (min-width: 1280px) {
+    background-image: url("/assets/images/backgrounds/loginPage_defaultSize.webp");
+  }
+  @media only screen and (max-width: 1280px) and (min-width: 750px) {
+    background-image: url("/assets/images/backgrounds/loginPage_tabletSize.webp");
+  }
+  @media only screen and (max-width: 750px) {
+    background-image: url("/assets/images/backgrounds/loginPage_mobile.webp");
+  }
+
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;

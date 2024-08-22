@@ -2,13 +2,18 @@ import { Link } from "react-router-dom";
 
 import "./button.css";
 
-const Button = ({ children, nextPage }) => {
+const Button = ({ children, nextPage, isSubmitButton = false }) => {
   return nextPage ? (
     <Link to={nextPage} className="defaultButton">
       {children}
     </Link>
   ) : (
-    <button className="defaultButton">{children}</button>
+    <button
+      type={isSubmitButton ? "submit" : undefined}
+      className="defaultButton"
+    >
+      {children}
+    </button>
   );
 };
 
