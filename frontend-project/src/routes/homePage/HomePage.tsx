@@ -1,15 +1,7 @@
-import { useContext, useEffect } from "react";
-import { UserContext } from "../../context/UserContext";
-
 import Card from "../../components/Card/Card";
 import { ContentGrid } from "../../components/Containers/ContentGrid/ContentGrid";
 
 const HomePage = ({ artists }) => {
-  const { currentUser } = useContext(UserContext);
-  useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]);
-
   return (
     <main>
       <ContentGrid title="my favourite artists" amountOfColumns={5}>

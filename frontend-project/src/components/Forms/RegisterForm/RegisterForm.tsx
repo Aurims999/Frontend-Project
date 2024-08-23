@@ -1,6 +1,4 @@
-import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../../context/UserContext";
+import { useState } from "react";
 
 import { InputField } from "../InputField/InputField";
 import Button from "../../other/Button/Button";
@@ -23,9 +21,6 @@ export const RegisterForm = ({}) => {
   const [formFields, setFormFields] = useState(defaultFields);
   const { Username, Email, Password, PasswordConfirm } = formFields;
 
-  const { setCurrentUser } = useContext(UserContext);
-  const navigate = useNavigate();
-
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
@@ -45,10 +40,8 @@ export const RegisterForm = ({}) => {
 
     try {
       const { user } = await createNewUserWithEmailAndPassword(Email, Password);
-      setCurrentUser(user);
       await createUserDocument(user, { displayName: Username });
       resetFields();
-      navigate("/");
     } catch (error) {
       switch (error.code) {
         case "auth/email-already-in-use":

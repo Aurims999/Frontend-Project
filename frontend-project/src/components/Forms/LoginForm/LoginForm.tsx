@@ -1,8 +1,6 @@
-import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import { signInAuthUserWithEmailAndPassword } from "../../../utils/firebase/firebase.utils";
-import { UserContext } from "../../../context/UserContext";
 
 import { InputField } from "../InputField/InputField";
 import Button from "../../other/Button/Button";
@@ -18,9 +16,6 @@ export const LoginForm = ({ setPageType }) => {
   const [formFields, setFormFields] = useState(defaultFields);
   const { Email, Password } = formFields;
 
-  const { setCurrentUser } = useContext(UserContext);
-  const navigate = useNavigate();
-
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
@@ -34,9 +29,6 @@ export const LoginForm = ({ setPageType }) => {
         Email,
         Password
       );
-
-      setCurrentUser(user);
-      navigate("/");
     } catch (error) {
       switch (error.code) {
         case "auth/invalid-credential":

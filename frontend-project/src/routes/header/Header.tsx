@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 
 import { UserContext } from "../../context/UserContext";
 import { signOutUser } from "../../utils/firebase/firebase.utils.js";
@@ -10,7 +10,7 @@ import ProfileIcon from "./../../components/header/ProfileIcon/ProfileIcon";
 import "./header.css";
 
 export default function Header({ data, setResults }) {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const [username, setUsername] = useState("DEFAULT USERNAME");
 
   useEffect(() => {
@@ -18,14 +18,6 @@ export default function Header({ data, setResults }) {
       setUsername(currentUser.email);
     }
   }, [currentUser]);
-
-  const navigate = useNavigate();
-
-  const handleSignOut = () => {
-    signOutUser();
-    setCurrentUser(null);
-    navigate("/guest");
-  };
 
   return (
     <>
@@ -36,7 +28,7 @@ export default function Header({ data, setResults }) {
           <p className="userProfile">Home page</p>
         </Link>
         <h3 style={{ color: "white", margin: "0px 20px" }}>{username}</h3>
-        <button onClick={handleSignOut}>Sign Out</button>
+        <button onClick={signOutUser}>Sign Out</button>
       </header>
       <Outlet />
     </>

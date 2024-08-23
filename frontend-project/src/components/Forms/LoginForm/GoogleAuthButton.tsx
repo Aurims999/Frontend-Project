@@ -2,24 +2,12 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../context/UserContext";
 
-import {
-  auth,
-  signInWithGooglePopup,
-  createUserDocument,
-} from "../../../utils/firebase/firebase.utils";
+import { signInWithGooglePopup } from "../../../utils/firebase/firebase.utils";
 
 import "./googleAuthButton.css";
 
 export const GoogleAuthButton = () => {
-  const { setCurrentUser } = useContext(UserContext);
-  const navigate = useNavigate();
-
-  const logGoogleUser = async () => {
-    const { user } = await signInWithGooglePopup();
-    setCurrentUser(user);
-    const userDocRef = await createUserDocument(user);
-    navigate("/");
-  };
+  const logGoogleUser = async () => await signInWithGooglePopup();
 
   return (
     <button
