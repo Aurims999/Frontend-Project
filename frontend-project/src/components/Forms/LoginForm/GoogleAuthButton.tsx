@@ -1,3 +1,7 @@
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../../context/UserContext";
+
 import {
   auth,
   signInWithGooglePopup,
@@ -7,9 +11,14 @@ import {
 import "./googleAuthButton.css";
 
 export const GoogleAuthButton = () => {
+  const { setCurrentUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
   const logGoogleUser = async () => {
     const { user } = await signInWithGooglePopup();
+    setCurrentUser(user);
     const userDocRef = await createUserDocument(user);
+    navigate("/");
   };
 
   return (

@@ -1,8 +1,11 @@
-import { useState } from "react";
-import { InputField } from "../InputField/InputField";
-import Button from "../../other/Button/Button";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { signInAuthUserWithEmailAndPassword } from "../../../utils/firebase/firebase.utils";
+import { UserContext } from "../../../context/UserContext";
+
+import { InputField } from "../InputField/InputField";
+import Button from "../../other/Button/Button";
 
 import "./loginForm.css";
 
@@ -14,6 +17,9 @@ const defaultFields = {
 export const LoginForm = ({ setPageType }) => {
   const [formFields, setFormFields] = useState(defaultFields);
   const { Email, Password } = formFields;
+
+  const { setCurrentUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -28,7 +34,9 @@ export const LoginForm = ({ setPageType }) => {
         Email,
         Password
       );
-      user ? alert("Logged In :)") : "FAILED TO LOGIN";
+
+      setCurrentUser(user);
+      navigate("/");
     } catch (error) {
       switch (error.code) {
         case "auth/invalid-credential":
