@@ -3,10 +3,14 @@ import { useState, useEffect } from "react";
 import "./likeButton.css";
 
 export const LikeButton = ({amountOfLikes = 0}) => {
-  const [likes, setLikes] = useState(0);
+  const [likes, setLikes] = useState("0");
 
   useEffect(() => {
-    setLikes(amountOfLikes);
+    if(amountOfLikes >= 1000){
+      setLikes(amountOfLikes >= 1000000 ? (Math.round(amountOfLikes / 1000000) + " M") : (Math.round(amountOfLikes / 1000) + " K"));
+    } else {
+      setLikes(amountOfLikes.toString());
+    }
   }, [amountOfLikes]);
 
   return (

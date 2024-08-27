@@ -1,8 +1,8 @@
 [
     {"id": 0, "name": "Adele", "image": "/assets/images/artists/adele.jpg", "link": "", "genres": ["Pop", "Soul"], "amountOfLikes": 31523421},
-    {"id": 1, "name": "Monika Liu", "image": "/assets/images/artists/monika liu.jpg", "link": "", "genres": ["Pop"]},
-    {"id": 2, "name": "Ed Sheeran", "image": "/assets/images/artists/noImage.jpeg", "link": "", "genres": ["Pop", "Folk"]},
-    {"id": 3, "name": "Beyoncé", "image": "/assets/images/artists/noImage.jpeg", "link": "", "genres": ["R&B", "Pop"]},
+    {"id": 1, "name": "Monika Liu", "image": "/assets/images/artists/monika liu.jpg", "link": "", "genres": ["Pop"], "amountOfLikes": 13245},
+    {"id": 2, "name": "Ed Sheeran", "image": "/assets/images/artists/noImage.jpeg", "link": "", "genres": ["Pop", "Folk"], "amountOfLikes": 134652},
+    {"id": 3, "name": "Beyoncé", "image": "/assets/images/artists/noImage.jpeg", "link": "", "genres": ["R&B", "Pop"], "amountOfLikes": 213},
     {"id": 4, "name": "Taylor Swift", "image": "/assets/images/artists/noImage.jpeg", "link": "", "genres": ["Pop", "Country"]},
     {"id": 5, "name": "Kanye West", "image": "/assets/images/artists/noImage.jpeg", "link": "", "genres": ["Hip Hop", "Rap"]},
     {"id": 6, "name": "Rihanna", "image": "/assets/images/artists/noImage.jpeg", "link": "", "genres": ["R&B", "Pop"]},
