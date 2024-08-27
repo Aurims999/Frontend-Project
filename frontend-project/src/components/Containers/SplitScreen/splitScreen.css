@@ -7,4 +7,9 @@
   grid-template-columns: 1fr 1fr;
 
   position: relative;
+
+  & section {
+    background-color: transparent;
+    padding: 0;
+  }
 }
