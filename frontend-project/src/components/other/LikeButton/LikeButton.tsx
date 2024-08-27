@@ -1,6 +1,14 @@
+import { useState, useEffect } from "react";
+
 import "./likeButton.css";
 
-export const LikeButton = ({}) => {
+export const LikeButton = ({amountOfLikes = 0}) => {
+  const [likes, setLikes] = useState(0);
+
+  useEffect(() => {
+    setLikes(amountOfLikes);
+  }, [amountOfLikes]);
+
   return (
     <div className="likeButton">
       <img
@@ -8,7 +16,7 @@ export const LikeButton = ({}) => {
         alt="Heart icon to add artist to liked artists list"
         className="icon"
       />
-      <p>0</p>
+      <p>{likes}</p>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import artistsData from "./data/artists.json";
 import Header from "./routes/header/Header.tsx";
 import HomePage from "./routes/homePage/HomePage.tsx";
 import ProfilePage from "./routes/profilePage/ProfilePage.tsx";
-import { ArtistPage } from "./routes/artistsPage/ArtistPage.tsx";
+import { ContentPreviewPage } from "./routes/ContentPreviewPage/ContentPreviewPage.tsx";
 
 import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
 import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
@@ -36,7 +36,7 @@ function App() {
         >
           <Route index element={<HomePage artists={filteredArtists} />} />
           <Route path="myProfile" element={<ProfilePage />} />
-          <Route path="artist/:artistID" element={<ArtistPage />} />
+          <Route path="artist/:artistID" element={<ContentPreviewPage />} />
         </Route>
       </Routes>
     </div>

@@ -2,7 +2,7 @@ import "./contentGrid.css";
 
 export const ContentGrid = ({ title = "", children, amountOfColumns = 5 }) => {
   return (
-    <div className="containers-grid">
+    <section className="containers-grid">
       <h2 className="gridTitle">{title}</h2>
       <div
         className="contentGrid"
@@ -10,6 +10,6 @@ export const ContentGrid = ({ title = "", children, amountOfColumns = 5 }) => {
       >
         {children}
       </div>
-    </div>
+    </section>
   );
 };
