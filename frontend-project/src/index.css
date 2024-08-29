@@ -66,6 +66,13 @@ button {
   }
 }
 
+li{
+  &:hover{
+    background-color: var(--focusPurple);
+    cursor: pointer;
+  }
+}
+
 * {
   font-family: var(--mainFont);
 }

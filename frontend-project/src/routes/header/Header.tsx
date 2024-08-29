@@ -27,11 +27,11 @@ export default function Header({ data, setResults }) {
         <header className="mainHeader">
           <SearchBar searchData={data} setResult={setResults} />
           <ProfileIcon userImage="/assets/icons/user.png" />
-          <Link to={"/"} style={{ all: "unset", cursor: "pointer" }}>
+          {/* <Link to={"/"} style={{ all: "unset", cursor: "pointer" }}>
             <p className="userProfile">Home page</p>
-          </Link>
-          <h3 style={{ color: "white", margin: "0px 20px" }}>{username}</h3>
-          <button onClick={signOutUser}>Sign Out</button>
+          </Link> */}
+          {/* <h3 style={{ color: "white", margin: "0px 20px" }}>{username}</h3>
+          <button onClick={signOutUser}>Sign Out</button> */}
         </header>
         <Outlet />
       </>

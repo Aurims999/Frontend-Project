@@ -20,6 +20,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
       setCurrentUser(user);
+      console.log(user);
       user ? (navigate("/"), createUserDocument(user)) : navigate("/guest");
     });
 
