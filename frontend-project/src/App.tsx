@@ -35,7 +35,7 @@ function App() {
           element={<Header data={artists} setResults={setFilteredData} />}
         >
           <Route index element={<HomePage artists={filteredArtists} />} />
-          <Route path="myProfile" element={<ProfilePage />} />
+          <Route path="profile" element={<ProfilePage />} />
           <Route path="artist/:artistID" element={<ContentPreviewPage />} />
         </Route>
       </Routes>

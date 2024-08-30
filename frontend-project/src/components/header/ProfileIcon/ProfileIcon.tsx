@@ -12,9 +12,9 @@ export default function ProfileIcon({ userImage }) {
         <div className="userDescription">
           <p>aurimas.buta@zenitech.co.uk</p>
         </div>
-        <li>User Profile</li>
-        <li>Settings</li>
-        <li>Logout</li>
+       <Link to={"/profile"} className="dropdownItem"><li>User Profile</li></Link>
+       <Link to={"/profile"} className="dropdownItem"><li>Settings</li></Link>
+       <Link to={"/profile"} className="dropdownItem"><li>Logout</li></Link>
       </ul>
     </div>
   );

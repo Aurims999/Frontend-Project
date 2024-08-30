@@ -53,16 +53,25 @@
         text-align: end;
       }
 
-      & li{
-        padding: 1rem 2rem;
-
-        list-style: none;
-        text-align: end;
+      & .dropdownItem{
 
         &:last-child{
           padding-bottom: 1.35rem;
           border-bottom-left-radius: .85rem;
           border-bottom-right-radius: .85rem;
+
+          & :hover{
+            border-bottom-left-radius: inherit;
+            border-bottom-right-radius: inherit;
+          }
+        }
+
+        & li{
+          width: 100%;
+          padding: 1rem 2rem;
+  
+          list-style: none;
+          text-align: end;
         }
       }
     }
