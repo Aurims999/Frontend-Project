@@ -52,6 +52,10 @@ section {
   background-color: white;
 }
 
+a {
+  all: unset;
+}
+
 button {
   transition: transform 0.15s ease-in;
 

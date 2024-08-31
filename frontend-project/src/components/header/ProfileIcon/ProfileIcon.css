@@ -54,7 +54,7 @@
       }
 
       & .dropdownItem{
-
+        
         &:last-child{
           padding-bottom: 1.35rem;
           border-bottom-left-radius: .85rem;
@@ -66,13 +66,21 @@
           }
         }
 
-        & li{
+        &:hover{
+          cursor: pointer;
+          color: var(--darkerPurple);
+          font-weight: bold;
+        }
+
+        & p{
           width: 100%;
           padding: 1rem 2rem;
   
           list-style: none;
           text-align: end;
+
         }
       }
     }
 }
+
