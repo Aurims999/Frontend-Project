@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  updateProfile,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -74,3 +75,16 @@ export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+export const changeUsername = async (username) => {
+  console.log("New username: " + username)
+  updateProfile(auth.currentUser, {
+    displayName: username
+  }).then(() => {
+    alert("Username edited successfully");
+    return true;
+  }).catch((error) => {
+    alert("500 While editing username");
+    return false;
+  });
+}
