@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
+import { signOutUser } from "../../../utils/firebase/firebase.utils.js";
+
 import "./ProfileIcon.css";
 
 export default function ProfileIcon({ userImage }) {
@@ -36,9 +38,9 @@ export default function ProfileIcon({ userImage }) {
         <div className="userDescription">
           <p>aurimas.buta@zenitech.co.uk</p>
         </div>
-       <Link to={"/profile"} className="dropdownItem"><p>User Profile</p></Link>
-       <Link to={"/profile"} className="dropdownItem"><p>Settings</p></Link>
-       <Link to={"/profile"} className="dropdownItem"><p>Logout</p></Link>
+       <Link to={"/profile"} className="dropdownItem" onClick={toggleMenu}><p>User Profile</p></Link>
+       <Link to={"/settings"} className="dropdownItem" onClick={toggleMenu}><p>Settings</p></Link>
+       <Link to={"/profile"} className="dropdownItem" onClick={signOutUser}><p>Logout</p></Link>
       </div>
     </div>
   );
