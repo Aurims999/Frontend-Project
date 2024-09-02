@@ -6,7 +6,8 @@ import artistsData from "./data/artists.json";
 import Header from "./routes/header/Header.tsx";
 import HomePage from "./routes/homePage/HomePage.tsx";
 import ProfilePage from "./routes/profilePage/ProfilePage.tsx";
-import { ArtistPage } from "./routes/artistsPage/ArtistPage.tsx";
+import { SettingsPage } from "./routes/settingsPage/SettingsPage.tsx";
+import { ContentPreviewPage } from "./routes/ContentPreviewPage/ContentPreviewPage.tsx";
 
 import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
 import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
@@ -35,8 +36,9 @@ function App() {
           element={<Header data={artists} setResults={setFilteredData} />}
         >
           <Route index element={<HomePage artists={filteredArtists} />} />
-          <Route path="myProfile" element={<ProfilePage />} />
-          <Route path="artist/:artistID" element={<ArtistPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="artist/:artistID" element={<ContentPreviewPage />} />
+          <Route path="settings" element={<SettingsPage/>}/>
         </Route>
       </Routes>
     </div>

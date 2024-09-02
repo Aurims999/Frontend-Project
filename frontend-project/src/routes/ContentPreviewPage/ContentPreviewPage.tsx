@@ -1,17 +1,19 @@
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { ContentPreview } from "../../components/ContentPreview/ContentPreview";
 import { ContentGrid } from "../../components/Containers/ContentGrid/ContentGrid";
 import Card from "../../components/Card/Card";
 
-export const ArtistPage = ({}) => {
+import ARTISTS from "../../data/artists.json";
+
+export const ContentPreviewPage = ({entry}) => {
   const { artistID } = useParams();
+  const requestedArtist = ARTISTS.find(artist => artist.id.toString() === artistID);
 
   return (
     <main>
-      <ContentPreview />
-      <ContentGrid title="Albums:">
+      <ContentPreview data = {requestedArtist}/>
+      {/* <ContentGrid title="Albums:">
         <Card
           key={1}
           id={1}
@@ -44,7 +46,7 @@ export const ArtistPage = ({}) => {
           subText={"Release date: 2008"}
           altText={`Image of album 30`}
         />
-      </ContentGrid>
+      </ContentGrid> */}
     </main>
   );
 };
