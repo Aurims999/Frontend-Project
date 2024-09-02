@@ -1,14 +1,17 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { signOutUser } from "../../../utils/firebase/firebase.utils.js";
 
+import { UserContext } from "../../../context/UserContext.js";
+
 import "./ProfileIcon.css";
 
-export default function ProfileIcon({ userImage }) {
+export default function ProfileIcon() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownMenu = useRef(null);
   const imageIcon = useRef(null);
+  const {currentUser} = useContext(UserContext);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -30,13 +33,13 @@ export default function ProfileIcon({ userImage }) {
 
   return (
     <div className="userManagementButton" ref={imageIcon}>
-      <img src={userImage} 
+      <img src={currentUser.photoURL ? currentUser.photoURL : "/assets/images/defaultImages/artist__default.png"} 
            alt="An icon of a person's profile view" 
            className="profileIcon"
            onClick={toggleMenu} />
       <div className="dropdownMenu" style={{ display: isOpen ? "block" : "none" }} ref={dropdownMenu}>
         <div className="userDescription">
-          <p>aurimas.buta@zenitech.co.uk</p>
+          <p>{currentUser.email}</p>
         </div>
        <Link to={"/profile"} className="dropdownItem" onClick={toggleMenu}><p>User Profile</p></Link>
        <Link to={"/settings"} className="dropdownItem" onClick={toggleMenu}><p>Settings</p></Link>
