@@ -1,16 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./userPreviewBlock.css";
 
-const UserPreviewBlock = ({}) => {
-  const [profileImage, setProfileImage] = useState("");
+const UserPreviewBlock = ({userImage, userNickname}) => {
+  const [profileImage, setProfileImage] = useState(userImage);
   const [profileBackground, setBackground] = useState("");
-  const [username, setUsername] = useState("User123");
+  const [username, setUsername] = useState(userNickname);
+
+  useEffect(() => {
+    setProfileImage(userImage);
+  }, [userImage]);
+
+  useEffect(() => {
+    setUsername(userNickname);
+  }, [userNickname])
 
   return (
     <section className="profileHeader">
       <img
-        src="/assets/images/userData/person-playing-classical-guitar-at-home@1400x1050.jpg"
+        src={profileImage}
         alt="User's profile image"
       />
       <h1>{username}</h1>
