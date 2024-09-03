@@ -1,5 +1,8 @@
 import { useState, useEffect, useContext } from "react";
+import { Outlet, Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext.js";
+
+import { SplitScreen } from "../../components/Containers/SplitScreen/SplitScreen.js";
 
 import {
     changeUsername
@@ -28,11 +31,37 @@ export const SettingsPage = () => {
     
 
     return(
-        <main>
-            <h1>SETTINGS PAGE</h1>
-            <h2>Current user: {username}</h2> 
-            <input type="text" value={newUsername} onChange={handleChange}/>
-            <button onClick={() => updateUsername(newUsername)}>SUBMIT</button>
+        <main className="settingsPage">
+            <SplitScreen title="Profile Settings" rightSide="3.5fr">
+                <ul className="sideMenu">
+                    <li>
+                        <Link to={"./profileInfo"}>
+                            <img src="/assets/icons/search.png" alt="" />
+                            <h3>Personal Information</h3>
+                        </Link>        
+                    </li>
+                    <li>
+                        <Link to={"./profileInfo"}>
+                            <img src="/assets/icons/search.png" alt="" />
+                            <h3>Profile Personalization</h3>
+                        </Link>        
+                    </li>
+                    <li>
+                        <Link to={"./profileInfo"}>
+                            <img src="/assets/icons/search.png" alt="" />
+                            <h3>Privacy and Security</h3>
+                        </Link>        
+                    </li>
+                    <li>
+                        <Link to={"./profileInfo"}>
+                            <img src="/assets/icons/search.png" alt="" />
+                            <h3>Reporting</h3>
+                        </Link>        
+                    </li>
+
+                </ul>
+                <Outlet />
+            </SplitScreen>
         </main>
     );
 }

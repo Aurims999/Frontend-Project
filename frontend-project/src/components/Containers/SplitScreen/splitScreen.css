@@ -5,6 +5,7 @@
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: 1fr 1fr;
+  gap: 10px;
 
   position: relative;
 
@@ -12,4 +13,13 @@
     background-color: transparent;
     padding: 0;
   }
+}
+
+.splitScreen__title{
+  width: 100%;
+  padding-left: 2rem;
+  margin-bottom: 2rem;
+
+  font-size: 2.75rem;
+  text-transform: uppercase;
 }

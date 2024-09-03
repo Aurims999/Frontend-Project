@@ -1,0 +1,23 @@
+.sideMenu{
+    width: 100%;
+    height: fit-content;
+
+    border-right: 1px solid var(--headlineBlue);
+    list-style: none;
+
+    & li{
+        aspect-ratio: 5/1;
+        padding: 1rem 2rem;
+
+        & a {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 15px;
+        }
+
+        & img {
+            height: 70%;
+        }
+    }
+}
