@@ -3,6 +3,7 @@ import { Outlet, Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext.js";
 
 import { SplitScreen } from "../../components/Containers/SplitScreen/SplitScreen.js";
+import { NavigationButton } from "../../components/other/NavigationButton/NavigationButton.js";
 
 import {
     changeUsername
@@ -35,30 +36,20 @@ export const SettingsPage = () => {
             <SplitScreen title="Profile Settings" rightSide="3.5fr">
                 <ul className="sideMenu">
                     <li>
-                        <Link to={"./profileInfo"}>
-                            <img src="/assets/icons/search.png" alt="" />
-                            <h3>Personal Information</h3>
-                        </Link>        
+                        <NavigationButton to="./profileInfo">Personal Information</NavigationButton>
                     </li>
                     <li>
-                        <Link to={"./profileInfo"}>
-                            <img src="/assets/icons/search.png" alt="" />
-                            <h3>Profile Personalization</h3>
-                        </Link>        
+                        <NavigationButton to="./profileInfo">Profile Personalization</NavigationButton>    
                     </li>
                     <li>
-                        <Link to={"./profileInfo"}>
-                            <img src="/assets/icons/search.png" alt="" />
-                            <h3>Privacy and Security</h3>
-                        </Link>        
+                        <NavigationButton to="./profileInfo">Privacy and Security</NavigationButton>      
                     </li>
                     <li>
-                        <Link to={"./profileInfo"}>
-                            <img src="/assets/icons/search.png" alt="" />
-                            <h3>Reporting</h3>
-                        </Link>        
+                        <NavigationButton to="./profileInfo">Accessibility</NavigationButton>     
                     </li>
-
+                    <li>
+                        <NavigationButton to="./profileInfo">Reporting</NavigationButton>     
+                    </li>
                 </ul>
                 <Outlet />
             </SplitScreen>
