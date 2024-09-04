@@ -9,7 +9,7 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, Firestore, } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBeoY2lyUEs6HFMUnjjDhmclJec6NqLJAY",
@@ -91,6 +91,18 @@ export const changeUsername = async (username) => {
     return true;
   }).catch((error) => {
     alert("500 While editing username");
+    return false;
+  });
+}
+
+export const updateColorTheme = async (selectedTheme) => {
+  const userDocRef = doc(db, "users", auth.currentUser.uid);
+
+  await updateDoc(userDocRef, {
+    "userSettings.colorMode": selectedTheme,
+  }).then(() => {
+    return true;
+  }).catch(() => {
     return false;
   });
 }
