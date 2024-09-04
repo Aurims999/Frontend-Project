@@ -43,12 +43,18 @@ export const createUserDocument = async (userAuth, additionalInfo = {}) => {
   if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
+    const userSettings = {
+      colorMode: "LIGHT",
+      fontSize: "REGULAR",
+    };
 
     try {
       await setDoc(userDocRef, {
         displayName,
         email,
         createdAt,
+        favouriteSongs: [],
+        userSettings,
         ...additionalInfo,
       });
     } catch (error) {

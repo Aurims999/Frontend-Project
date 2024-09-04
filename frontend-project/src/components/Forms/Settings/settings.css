@@ -22,4 +22,13 @@
             }
         }
     }
+
+    & select {
+        width: 50%;
+        justify-self: end;
+
+        border: none;
+        border-bottom: 0.5px solid rgba(74,74,74,0.8);
+        background-color: transparent;
+    }    
 }

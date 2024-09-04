@@ -39,7 +39,7 @@ export const SettingsPage = () => {
                         <NavigationButton to="./profileInfo">Personal Information</NavigationButton>
                     </li>
                     <li>
-                        <NavigationButton to="./profileInfo">Profile Personalization</NavigationButton>    
+                        <NavigationButton to="./personalization">Profile Personalization</NavigationButton>    
                     </li>
                     <li>
                         <NavigationButton to="./profileInfo">Privacy and Security</NavigationButton>      

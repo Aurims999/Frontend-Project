@@ -8,6 +8,7 @@ import HomePage from "./routes/homePage/HomePage.tsx";
 import ProfilePage from "./routes/profilePage/ProfilePage.tsx";
 import { SettingsPage } from "./routes/settingsPage/SettingsPage.tsx";
 import { ProfileInfo } from "./routes/settingsPage/ProfileInfo.tsx";
+import { PersonalizationPage } from "./routes/settingsPage/PersonalizationPage.tsx";
 
 import { ContentPreviewPage } from "./routes/ContentPreviewPage/ContentPreviewPage.tsx";
 
@@ -42,6 +43,7 @@ function App() {
           <Route path="artist/:artistID" element={<ContentPreviewPage />} />
           <Route path="settings" element={<SettingsPage/>}>
             <Route path="profileInfo" element={<ProfileInfo/>}/>
+            <Route path="personalization" element={<PersonalizationPage/>}/>
           </Route>
         </Route>
       </Routes>
