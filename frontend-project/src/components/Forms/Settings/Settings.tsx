@@ -2,7 +2,7 @@ import { updateColorTheme } from "../../../utils/firebase/firebase.utils.js"
 
 import "./settings.css"
 
-export const Settings = ({title, type = "text", options = []}) => {
+export const Settings = ({title, type = "text", options = [], defaultValue}) => {
     const handleSelection = async (event) => {
         await updateColorTheme(event.target.value);
     }
@@ -11,7 +11,7 @@ export const Settings = ({title, type = "text", options = []}) => {
         <div className="personalInfo__usernameField settingsField">
             <h3>{title}</h3>
             {options.length > 0 ? (
-                <select name={title} onChange={handleSelection}>
+                <select name={title} onChange={handleSelection} value={defaultValue || ""}>
                     {options.map(value => {
                         return <option className="settingsOption" value={value}>{value}</option>;
                     })}

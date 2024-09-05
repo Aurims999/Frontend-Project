@@ -1,3 +1,4 @@
+//#region Configs
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -9,7 +10,7 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, Firestore, } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBeoY2lyUEs6HFMUnjjDhmclJec6NqLJAY",
@@ -30,9 +31,13 @@ provider.setCustomParameters({
 
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
-
 export const db = getFirestore();
+//#endregion
 
+
+/*
+    TABLE - USERS
+*/
 export const createUserDocument = async (userAuth, additionalInfo = {}) => {
   if (!userAuth) return;
 
@@ -65,6 +70,40 @@ export const createUserDocument = async (userAuth, additionalInfo = {}) => {
   return userDocRef;
 };
 
+export const getOwnData = async () => {
+  const userRef = doc(db, "users", auth.currentUser.uid);
+  const userSnap = await getDoc(userRef);
+
+  return userSnap.data();
+}
+
+export const changeUsername = async (username) => {
+  console.log("New username: " + username)
+  updateProfile(auth.currentUser, {
+    displayName: username
+  }).then(() => {
+    alert("Username edited successfully");
+    return true;
+  }).catch((error) => {
+    alert("500 While editing username");
+    return false;
+  });
+};
+
+export const updateColorTheme = async (selectedTheme) => {
+  const userDocRef = doc(db, "users", auth.currentUser.uid);
+
+  await updateDoc(userDocRef, {
+    "userSettings.colorMode": selectedTheme,
+  }).then(() => {
+    return true;
+  }).catch(() => {
+    return false;
+  });
+}
+
+//========================//
+
 export const createNewUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
@@ -81,28 +120,3 @@ export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
-
-export const changeUsername = async (username) => {
-  console.log("New username: " + username)
-  updateProfile(auth.currentUser, {
-    displayName: username
-  }).then(() => {
-    alert("Username edited successfully");
-    return true;
-  }).catch((error) => {
-    alert("500 While editing username");
-    return false;
-  });
-}
-
-export const updateColorTheme = async (selectedTheme) => {
-  const userDocRef = doc(db, "users", auth.currentUser.uid);
-
-  await updateDoc(userDocRef, {
-    "userSettings.colorMode": selectedTheme,
-  }).then(() => {
-    return true;
-  }).catch(() => {
-    return false;
-  });
-}
