@@ -6,7 +6,7 @@ import { ContentBlock } from "../other/ContentBlock/ContentBlock";
 import "./contentPreview.css";
 
 export const ContentPreview = ({data = {}}) => {
-  const { name, image, amountOfLikes, songArtist, genres } = data;
+  const { id, name, image, amountOfLikes, songArtist, genres } = data;
 
   return (
     <section className="contentPreview">
@@ -17,7 +17,7 @@ export const ContentPreview = ({data = {}}) => {
             <h1 style={{ fontSize: "5rem", marginRight: "2rem" }}>
               {name}
             </h1>
-            <LikeButton amountOfLikes={amountOfLikes}/>
+            <LikeButton songId = {id} amountOfLikes={amountOfLikes}/>
           </ContentList>
           <p style={{ fontSize: "1.25rem" }}>{songArtist ? songArtist : ""}</p>
         </div>

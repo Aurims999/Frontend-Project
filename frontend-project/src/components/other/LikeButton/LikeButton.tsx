@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { addArtistToFavourites } from "../../../utils/firebase/firebase.utils.js";
 
 import "./likeButton.css";
 
-export const LikeButton = ({amountOfLikes = 0}) => {
+export const LikeButton = ({songId, amountOfLikes = 0}) => {
   const [likes, setLikes] = useState("0");
+  const [isLiked, setLiked] = useState(false);
 
   useEffect(() => {
     if(amountOfLikes >= 1000){
@@ -13,12 +15,18 @@ export const LikeButton = ({amountOfLikes = 0}) => {
     }
   }, [amountOfLikes]);
 
+  const handlePress = async () => {
+    await addArtistToFavourites(songId);
+    setLiked(!isLiked);
+  } 
+
   return (
     <div className="likeButton">
       <img
-        src="/assets/icons/heart.png"
+        src={isLiked ? "/assets/icons/heart-full.png" : "/assets/icons/heart-empty.png"}
         alt="Heart icon to add artist to liked artists list"
         className="icon"
+        onClick={() => handlePress()}
       />
       <p>{likes}</p>
     </div>

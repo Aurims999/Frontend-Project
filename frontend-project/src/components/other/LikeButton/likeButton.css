@@ -14,9 +14,13 @@
   border-radius: 1rem;
 
   & img.icon {
-    height: 80%;
+    height: 100%;
     aspect-ratio: 1/1;
     border-radius: 0;
+
+    &:hover{
+      cursor: pointer;
+    }
   }
 
   & p {

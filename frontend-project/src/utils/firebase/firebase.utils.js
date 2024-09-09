@@ -123,9 +123,8 @@ export const onAuthStateChangedListener = (callback) =>
 //#region ARTISTS
 export const addArtistToFavourites = async (artistId) => {
   const userDocRef = doc(db, "users", auth.currentUser.uid);
-  console.log("Got a request to add new artist " + artistId);
   await updateDoc(userDocRef, {
-    "favouriteSongs": arrayUnion(artistId),
+    "favouriteArtists": arrayUnion(artistId),
   });
 }
 //#endregion
