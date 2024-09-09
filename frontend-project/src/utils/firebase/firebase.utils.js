@@ -10,7 +10,7 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, FieldPath, FieldValue } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBeoY2lyUEs6HFMUnjjDhmclJec6NqLJAY",
@@ -125,6 +125,13 @@ export const addArtistToFavourites = async (artistId) => {
   const userDocRef = doc(db, "users", auth.currentUser.uid);
   await updateDoc(userDocRef, {
     "favouriteArtists": arrayUnion(artistId),
+  });
+}
+
+export const removeArtistFromFavourites = async (artistId) => {
+  const userDocRef = doc(db, "users", auth.currentUser.uid);
+  await updateDoc(userDocRef, {
+    "favouriteArtists": arrayRemove(artistId),
   });
 }
 //#endregion

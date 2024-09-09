@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { addArtistToFavourites } from "../../../utils/firebase/firebase.utils.js";
+import { addArtistToFavourites, removeArtistFromFavourites } from "../../../utils/firebase/firebase.utils.js";
 import { UserContext } from "../../../context/UserContext.js";
 
 import "./likeButton.css";
@@ -22,7 +22,11 @@ export const LikeButton = ({songId, amountOfLikes = 0}) => {
   }, [amountOfLikes]);
 
   const handlePress = async () => {
-    await addArtistToFavourites(songId);
+    if (isLiked){
+      await removeArtistFromFavourites(songId);
+    } else{
+      await addArtistToFavourites(songId);
+    }
     setLiked(!isLiked);
   } 
 
