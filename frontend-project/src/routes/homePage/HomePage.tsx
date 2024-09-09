@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,16 @@ import { ContentGrid } from "../../components/Containers/ContentGrid/ContentGrid
 const HomePage = ({ artists }) => {
   const {currentUser, userData} = useContext(UserContext);
   const navigate = useNavigate();
+
+  const filterFavouriteArtists = () => {
+    const filteredArtists = artists.filter((artist) => {
+      return userData.favouriteArtists.includes(artist.id);
+    });
+
+    return filteredArtists;
+  }
+
+  const favouriteArtists = filterFavouriteArtists();
 
   if (currentUser){
     return (
@@ -29,7 +39,7 @@ const HomePage = ({ artists }) => {
           })}
         </ContentGrid>
         <ContentGrid title="My favourite artists" amountOfColumns={5}>
-          {userData.favouriteSongs.slice(0, 15).map((entry) => {
+          {favouriteArtists.slice(0, 15).map((entry) => {
             return (
               <Card
                 key={entry.id}

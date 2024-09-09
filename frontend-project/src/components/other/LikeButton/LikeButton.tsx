@@ -1,11 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { addArtistToFavourites } from "../../../utils/firebase/firebase.utils.js";
+import { UserContext } from "../../../context/UserContext.js";
 
 import "./likeButton.css";
 
 export const LikeButton = ({songId, amountOfLikes = 0}) => {
   const [likes, setLikes] = useState("0");
   const [isLiked, setLiked] = useState(false);
+  const {userData} = useContext(UserContext);
+
+  useEffect(() => {
+    setLiked(userData.favouriteArtists.includes(songId));
+  })
 
   useEffect(() => {
     if(amountOfLikes >= 1000){
