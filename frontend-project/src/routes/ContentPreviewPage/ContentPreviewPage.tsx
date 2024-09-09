@@ -4,6 +4,8 @@ import { ContentPreview } from "../../components/ContentPreview/ContentPreview";
 import { ContentGrid } from "../../components/Containers/ContentGrid/ContentGrid";
 import Card from "../../components/Card/Card";
 
+import {addArtistToFavourites} from "../../utils/firebase/firebase.utils.js";
+
 import ARTISTS from "../../data/artists.json";
 
 export const ContentPreviewPage = ({entry}) => {

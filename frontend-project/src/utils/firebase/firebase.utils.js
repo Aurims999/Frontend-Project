@@ -10,7 +10,7 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBeoY2lyUEs6HFMUnjjDhmclJec6NqLJAY",
@@ -34,10 +34,7 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const db = getFirestore();
 //#endregion
 
-
-/*
-    TABLE - USERS
-*/
+//#region TABLE - USERS
 export const createUserDocument = async (userAuth, additionalInfo = {}) => {
   if (!userAuth) return;
 
@@ -59,6 +56,7 @@ export const createUserDocument = async (userAuth, additionalInfo = {}) => {
         email,
         createdAt,
         favouriteSongs: [],
+        favouriteArtists: [],
         userSettings,
         ...additionalInfo,
       });
@@ -101,9 +99,9 @@ export const updateColorTheme = async (selectedTheme) => {
     return false;
   });
 }
+//#endregion
 
-//========================//
-
+//#region USERS AUTHENTIFICATION
 export const createNewUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
@@ -120,3 +118,14 @@ export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+//#endregion
+
+//#region ARTISTS
+export const addArtistToFavourites = async (artistId) => {
+  const userDocRef = doc(db, "users", auth.currentUser.uid);
+  console.log("Got a request to add new artist " + artistId);
+  await updateDoc(userDocRef, {
+    "favouriteSongs": arrayUnion(artistId),
+  });
+}
+//#endregion
