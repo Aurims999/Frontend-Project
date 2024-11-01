@@ -5,6 +5,8 @@
     "prettier": "^3.2.5"
   },
   "dependencies": {
-    "firebase": "^10.13.0"
+    "dotenv": "^16.4.5",
+    "firebase": "^10.13.0",
+    "node-fetch": "^3.3.2"
   }
 }
