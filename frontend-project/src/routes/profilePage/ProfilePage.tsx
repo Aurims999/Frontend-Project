@@ -10,12 +10,11 @@ import Card from "../../components/Card/Card";
 import { ContentGrid } from "../../components/Containers/ContentGrid/ContentGrid";
 
 const ProfilePage = () => {
-  const [username, setUsername] = useState("");
   const [profileImage, setImage] = useState("/assets/images/defaultImages/artist__default.png");
-  const {currentUser} = useContext(UserContext);
+  const {currentUser, userData} = useContext(UserContext);
+  const username = userData.displayName;
 
   useEffect(() => {
-    setUsername(currentUser.displayName);
     if (currentUser.photoURL){
       setImage(currentUser.photoURL);
     } 
@@ -26,13 +25,13 @@ const ProfilePage = () => {
       <UserPreviewBlock userImage={profileImage} userNickname={username}/>
       <ContentGrid amountOfColumns={3}>
         <IconBlock>
-          <StatItem statNumber={100} statTitle={"Subscribers"} />
+          <StatItem statNumber={userData.userStats.amountOfSubscribers} statTitle={"Subscribers"} />
         </IconBlock>
         <IconBlock>
-          <StatItem statNumber={16} statTitle={"Playlists"} />
+          <StatItem statNumber={userData.favouriteArtists.length} statTitle={"Favourite Artists"} />
         </IconBlock>
         <IconBlock>
-          <StatItem statNumber={"356h"} statTitle={"Listened"} />
+          <StatItem statNumber={userData.userStats.hoursListened.toString() + "h"} statTitle={"Listened"} />
         </IconBlock>
       </ContentGrid>
 

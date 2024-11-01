@@ -37,6 +37,7 @@ export const db = getFirestore();
 //#region TABLE - USERS
 export const createUserDocument = async (userAuth, additionalInfo = {}) => {
   if (!userAuth) return;
+  console.log(userAuth);
 
   const userDocRef = doc(db, "users", userAuth.uid);
   const userSnapshot = await getDoc(userDocRef);
@@ -49,6 +50,10 @@ export const createUserDocument = async (userAuth, additionalInfo = {}) => {
       colorMode: "LIGHT",
       fontSize: "REGULAR",
     };
+    const userStats = {
+      amountOfSubscribers: 0,
+      hoursListened: 0,
+    }
 
     try {
       await setDoc(userDocRef, {
@@ -58,6 +63,7 @@ export const createUserDocument = async (userAuth, additionalInfo = {}) => {
         favouriteSongs: [],
         favouriteArtists: [],
         userSettings,
+        userStats,
         ...additionalInfo,
       });
     } catch (error) {
