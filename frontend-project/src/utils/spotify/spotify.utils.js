@@ -1,9 +1,11 @@
 import express from 'express';
+import cors from 'cors';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
+app.use(cors());
 const PORT = process.env.PORT || 5000;
 
 const client_id = process.env.CLIENT_ID;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import artistsData from "./data/artists.json";
@@ -28,6 +28,25 @@ export type TCard = {
 function App() {
   const [artists, setArtists] = useState(artistsData);
   const [filteredArtists, setFilteredData] = useState(artists);
+  const [spotifyTracks, setTracks] = useState([]);
+
+  useEffect(() => {
+    const fetchTopTracks = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/tracks/topTracks");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const topTracks = await response.json();
+        const songs = topTracks.tracks.items;
+        setTracks(songs);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchTopTracks();
+  }, []);
 
   return (
     <div className="appContainer">
