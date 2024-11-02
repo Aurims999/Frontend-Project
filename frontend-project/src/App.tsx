@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import artistsData from "./data/artists.json";
+import { UserContext } from "./context/UserContext.tsx";
 
 import Header from "./routes/header/Header.tsx";
 import HomePage from "./routes/homePage/HomePage.tsx";
@@ -29,6 +30,29 @@ function App() {
   const [artists, setArtists] = useState(artistsData);
   const [filteredArtists, setFilteredData] = useState(artists);
   const [spotifyTracks, setTracks] = useState([]);
+  const [favouriteSongs, setFavouriteSongs] = useState([]);
+
+  const {userData} = useContext(UserContext);
+
+  const fetchFavouriteSongs = async () => {
+    console.log("TRIGGERED");
+    if (!userData.favouriteArtists){
+      return;
+    } 
+
+    try {
+      const artistsIds = userData.favouriteArtists.join(",");
+      console.log(artistsIds);
+      const response = await fetch(`http://localhost:5000/api/tracks?ids=${artistsIds}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setFavouriteSongs(data.tracks);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     const fetchTopTracks = async () => {
@@ -46,7 +70,12 @@ function App() {
     };
 
     fetchTopTracks();
+    fetchFavouriteSongs();
   }, []);
+
+  useEffect(() => {
+    fetchFavouriteSongs();
+  }, [userData]);
 
   return (
     <div className="appContainer">
@@ -57,7 +86,7 @@ function App() {
           path="/"
           element={<Header data={artists} setResults={setFilteredData} />}
         >
-          <Route index element={<HomePage songs={spotifyTracks} artists={filteredArtists} />} />
+          <Route index element={<HomePage songs={spotifyTracks} artists={filteredArtists} favouriteSongs={favouriteSongs}/>} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="artist/:artistID" element={<ContentPreviewPage />} />
           <Route path="settings" element={<SettingsPage/>}>

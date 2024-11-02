@@ -75,8 +75,25 @@ app.get('/api/tracks/TopTracks', async (req, res) => {
   }
 });
 
+app.get('/api/tracks', async (req, res) => {
+  const { ids } = req.query;
+
+  if(!ids) {
+    return res.status(400).json({ error: 'Missing track IDs' });
+  }
+
+  try {
+    const trackData = await fetchMultipleTracks(ids, token);
+    res.json(trackData);
+  } catch (error) {
+    console.error('Error fetching track data:', error);
+    res.status(500).json({ error: 'Failed to fetch track data' });
+  }
+});
+
 app.get('/api/tracks/:trackId', async (req, res) => {
   const { trackId } = req.params;
+
   try {
     const trackData = await fetchTrackData(trackId, token);
     res.json(trackData);
@@ -126,11 +143,27 @@ const fetchTrackData = async (trackId, token) => {
   const response = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
       headers: { 
         'Authorization': `Bearer ${token}`, 
+      },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(`Error fetching track data: ${errorData.error.message}`);
+  }
+
+  return await response.json();
+}
+
+const fetchMultipleTracks = async (trackId, token) => {
+  const response = await fetch(`https://api.spotify.com/v1/tracks?ids=${trackId}`, {
+      headers: { 
+        'Authorization': `Bearer ${token}`, 
       }, 
   });
 
   if (!response.ok) {
     const errorData = await response.json();
+    console.error('Error data from Spotify API:', errorData); // Log the error details
     throw new Error(`Error fetching track data: ${errorData.error.message}`);
   }
 

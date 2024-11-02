@@ -7,7 +7,6 @@ import { ContentPreview } from "../../components/ContentPreview/ContentPreview";
 export const ContentPreviewPage = () => {
   const { artistID } = useParams();
   const [data, setData] = useState(null);
-  // const requestedArtist = ARTISTS.find(artist => artist.id.toString() === artistID);
 
   useEffect(() => {
     const fetchTrack = async () => {

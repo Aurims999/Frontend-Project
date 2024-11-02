@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 
 import { useNavigate } from "react-router-dom";
@@ -6,19 +6,9 @@ import { useNavigate } from "react-router-dom";
 import Card from "../../components/Card/Card";
 import { ContentGrid } from "../../components/Containers/ContentGrid/ContentGrid";
 
-const HomePage = ({ songs, artists }) => {
+const HomePage = ({ songs, artists, favouriteSongs }) => {
   const {currentUser, userData} = useContext(UserContext);
   const navigate = useNavigate();
-
-  const filterFavouriteArtists = () => {
-    const filteredArtists = artists.filter((artist) => {
-      return userData.favouriteArtists.includes(artist.id);
-    });
-
-    return filteredArtists;
-  }
-
-  const favouriteArtists = filterFavouriteArtists();
 
   if (currentUser){
     return (
@@ -38,37 +28,21 @@ const HomePage = ({ songs, artists }) => {
             );
           })}
         </ContentGrid>
-        <ContentGrid title="Artists" amountOfColumns={5}>
-          {artists.slice(0, 15).map((entry) => {
+        <ContentGrid title="Favourite tracks" amountOfColumns={5}>
+        {favouriteSongs.slice(0,15).map((entry) => {
             return (
               <Card
                 key={entry.id}
                 id={entry.id}
-                image={entry.image}
-                link={entry.link}
+                image={entry.album.images[0].url}
+                link={entry.external_urls.spotify}
                 mainText={entry.name}
-                subText={entry.genres}
-                altText={`Image of ${entry.name}`}
+                subText={entry.artists[0].name}
+                altText={`Image of ${entry.artists[0].name}`}
               />
             );
           })}
         </ContentGrid>
-        <ContentGrid title="My favourite artists" amountOfColumns={5}>
-          {favouriteArtists.slice(0, 15).map((entry) => {
-            return (
-              <Card
-                key={entry.id}
-                id={entry.id}
-                image={entry.image}
-                link={entry.link}
-                mainText={entry.name}
-                subText={entry.genres}
-                altText={`Image of ${entry.name}`}
-              />
-            );
-          })}
-        </ContentGrid>
-        
       </main>
     );
   } else {
