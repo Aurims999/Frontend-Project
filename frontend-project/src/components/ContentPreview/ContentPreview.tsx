@@ -6,7 +6,11 @@ import { ContentBlock } from "../other/ContentBlock/ContentBlock";
 import "./contentPreview.css";
 
 export const ContentPreview = ({data = {}}) => {
-  const { id, name, image, amountOfLikes, songArtist, genres } = data;
+  const {id, name, album, popularity, artists, type} = data;
+  const image = album.images[0].url;
+  const amountOfLikes = popularity;
+  const songArtist = artists[0].name;
+  const genres = [type];
 
   return (
     <section className="contentPreview">

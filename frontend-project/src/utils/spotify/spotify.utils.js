@@ -75,6 +75,17 @@ app.get('/api/tracks/TopTracks', async (req, res) => {
   }
 });
 
+app.get('/api/tracks/:trackId', async (req, res) => {
+  const { trackId } = req.params;
+  try {
+    const trackData = await fetchTrackData(trackId, token);
+    res.json(trackData);
+  } catch (error) {
+    console.error('Error fetching track data:', error);
+    res.status(500).json({ error: 'Failed to fetch track data' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
@@ -110,4 +121,19 @@ const fetchArtistData = async (artistId, token) => {
 
     return await response.json();
 };
+
+const fetchTrackData = async (trackId, token) => {
+  const response = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
+      headers: { 
+        'Authorization': `Bearer ${token}`, 
+      }, 
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(`Error fetching track data: ${errorData.error.message}`);
+  }
+
+  return await response.json();
+}
 
