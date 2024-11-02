@@ -1,0 +1,31 @@
+.likeButton {
+  width: fit-content;
+  min-width: 200px;
+  height: 65px;
+
+  padding: 0.5rem 1rem;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+
+  background-color: var(--headerColor);
+  border-radius: 1rem;
+
+  & img.icon {
+    height: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 0;
+
+    &:hover{
+      cursor: pointer;
+    }
+  }
+
+  & p {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: white;
+  }
+}

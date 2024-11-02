@@ -1,0 +1,11 @@
+p[class^="statItem"] {
+  font-family: var(--mainFont);
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: white;
+  text-align: center;
+}
+
+p.statItem__number {
+  font-size: 3rem;
+}

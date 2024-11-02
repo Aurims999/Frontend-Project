@@ -1,0 +1,69 @@
+.loginPage {
+  height: 100vh;
+  /* overflow-y: hidden; */
+  padding: 3rem 0;
+
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  &.centeredContent {
+    justify-content: space-around;
+  }
+
+  @media only screen and (min-width: 2560px) {
+    background-image: url("/assets/images/backgrounds/loginPage_largerSize.webp");
+  }
+  @media only screen and (max-width: 2560px) and (min-width: 1280px) {
+    background-image: url("/assets/images/backgrounds/loginPage_defaultSize.webp");
+  }
+  @media only screen and (max-width: 1280px) and (min-width: 750px) {
+    background-image: url("/assets/images/backgrounds/loginPage_tabletSize.webp");
+  }
+  @media only screen and (max-width: 750px) {
+    background-image: url("/assets/images/backgrounds/loginPage_mobile.webp");
+  }
+
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  & .formsContainer {
+    width: 50%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -999;
+
+    background-color: var(--headlineBlue);
+    opacity: 0.75;
+  }
+}
+
+.divider {
+  width: 100%;
+  margin: 1.5rem 0;
+
+  text-align: center;
+  color: var(--white);
+
+  position: relative;
+}

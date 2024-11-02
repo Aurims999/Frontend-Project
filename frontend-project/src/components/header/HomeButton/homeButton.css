@@ -1,0 +1,13 @@
+.homeButton{
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+
+    & img {
+        height: 50%;
+        aspect-ratio: 1/1;
+
+        cursor: pointer;
+    }
+}

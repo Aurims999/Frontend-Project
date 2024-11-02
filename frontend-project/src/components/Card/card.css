@@ -1,0 +1,58 @@
+.card {
+  height: auto;
+  width: auto;
+
+  & img {
+    width: 100%;
+    height: auto;
+
+    background-repeat: no-repeat;
+    border-radius: 20px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+
+    box-shadow:
+      rgba(17, 17, 26, 0.1) 0px 1px 0px,
+      rgba(17, 17, 26, 0.1) 0px 8px 24px,
+      rgba(17, 17, 26, 0.1) 0px 16px 48px;
+  }
+
+  & h2 {
+    font-weight: bold;
+    font-family: var(--mainFont);
+    font-size: 1.125rem;
+    padding: 0;
+    margin: 10px 0px;
+
+    @media (max-width: 475px) {
+      font-size: 0.875rem;
+    }
+    @media (min-width: 2000px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  & p {
+    font-family: var(--mainFont);
+    font-size: 0.9375rem;
+    padding: 0;
+
+    @media (max-width: 475px) {
+      font-size: 0.75rem;
+    }
+    @media (min-width: 2000px) {
+      font-size: 1.125rem;
+    }
+  }
+
+  & a {
+    all: unset;
+    cursor: pointer;
+  }
+
+  transition: transform 0.2s ease-out;
+
+  &:hover {
+    transform: translateY(-5px) scale(1.03);
+  }
+}

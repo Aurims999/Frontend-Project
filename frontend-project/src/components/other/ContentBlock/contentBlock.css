@@ -1,0 +1,25 @@
+.textBlock {
+  width: fit-content;
+  height: fit-content;
+  padding: 1rem 2rem;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+
+  border-radius: 1rem;
+  background-color: var(--headerColor);
+
+  & img.icon {
+    height: 50px;
+  }
+
+  & p {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--white);
+
+    text-transform: capitalize;
+  }
+}

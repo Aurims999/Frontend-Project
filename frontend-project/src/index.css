@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap");
+
+:root {
+  /*-- Main colors --------------*/
+  --headerColor: #7e93ff;
+  --backgroundColor: #f9f9fc;
+  --white: #ffffff;
+  /*-----------------------------*/
+  /*-- Secondary colors ---------*/
+  --darkerPurple: #485598;
+  --headlineBlue: #394164;
+  --focusPurple: #cfd5f3;
+  /*-----------------------------*/
+  /*-- Text related variables ---*/
+  --mainFont: "Roboto", sans-serif;
+  /*-----------------------------*/
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--backgroundColor);
+  margin: 0;
+}
+
+header {
+  height: 10vh;
+  min-height: 80px;
+
+  padding: 0px calc(100px + 2rem);
+  margin-bottom: 2rem;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 0px 100px;
+}
+
+section {
+  padding: 2rem 2rem;
+
+  border-radius: 1rem;
+  background-color: white;
+}
+
+a {
+  all: unset;
+}
+
+button {
+  transition: transform 0.15s ease-in;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+
+  &:active {
+    filter: brightness(0.9);
+  }
+}
+
+li{
+  &:hover{
+    background-color: var(--focusPurple);
+    cursor: pointer;
+  }
+}
+
+* {
+  font-family: var(--mainFont);
+}
+
+h1,
+h2,
+h3 {
+  text-transform: capitalize;
+  color: var(--headlineBlue);
+}
+
+h1 {
+  font-size: 2.25rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+.highlightedText {
+  color: var(--headerColor);
+  font-weight: bold;
+  text-decoration: none;
+}

@@ -1,0 +1,31 @@
+.defaultButton {
+  width: fit-content;
+  padding: 1rem 3rem;
+
+  background-color: var(--headerColor);
+  border: none;
+  border-radius: 1.5rem;
+
+  color: var(--white);
+  font-family: (--mainFont);
+  font-weight: bold;
+  font-size: 18px;
+  text-decoration: none;
+
+  @media (min-width: 2200px) {
+    padding: 1rem 3.5rem;
+    font-size: 1.3rem;
+  }
+
+  transition: transform 0.15s ease-in;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+
+  &:active {
+    filter: brightness(0.9);
+  }
+}

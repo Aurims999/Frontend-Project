@@ -1,0 +1,28 @@
+.sideMenu{
+    width: 100%;
+    height: fit-content;
+
+    border-right: 1px solid var(--headlineBlue);
+    list-style: none;
+
+    & li{
+        aspect-ratio: 5/1;
+
+        display: flex;
+        justify-content: start;
+        align-items: center;
+    }
+}
+
+.settings__personalInfo{
+    height: fit-content;
+
+    & .personalInfo__image{
+        & img{
+            width: 150px;
+            aspect-ratio: 1/1;
+
+            border-radius: 50%;
+        }
+    }
+}

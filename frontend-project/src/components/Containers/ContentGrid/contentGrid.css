@@ -1,0 +1,20 @@
+.containers-grid {
+  width: 100%;
+  margin-bottom: 2rem;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  .contentGrid {
+    width: 100%;
+    height: fit-content;
+
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(5, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 25px;
+  }
+}
