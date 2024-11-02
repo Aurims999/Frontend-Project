@@ -57,7 +57,7 @@ function App() {
           path="/"
           element={<Header data={artists} setResults={setFilteredData} />}
         >
-          <Route index element={<HomePage artists={filteredArtists} />} />
+          <Route index element={<HomePage songs={spotifyTracks} artists={filteredArtists} />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="artist/:artistID" element={<ContentPreviewPage />} />
           <Route path="settings" element={<SettingsPage/>}>
