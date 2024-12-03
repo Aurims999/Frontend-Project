@@ -16,6 +16,8 @@ import { ContentPreviewPage } from "./routes/ContentPreviewPage/ContentPreviewPa
 import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
 import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
 
+import ProtectedRoutes from "./utils/ProtectedRoutes.tsx";
+
 import "./index.css";
 
 export type TCard = {
@@ -35,14 +37,12 @@ function App() {
   const {userData} = useContext(UserContext);
 
   const fetchFavouriteSongs = async () => {
-    console.log("TRIGGERED");
     if (!userData.favouriteArtists){
       return;
     } 
 
     try {
       const artistsIds = userData.favouriteArtists.join(",");
-      console.log(artistsIds);
       const response = await fetch(`http://localhost:5000/api/tracks?ids=${artistsIds}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -82,16 +82,18 @@ function App() {
       <Routes>
         <Route path="guest" element={<GuestPage />} />
         <Route path="login" element={<LoginPage />} />
-        <Route
-          path="/"
-          element={<Header data={artists} setResults={setFilteredData} />}
-        >
-          <Route index element={<HomePage songs={spotifyTracks} artists={filteredArtists} favouriteSongs={favouriteSongs}/>} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="artist/:artistID" element={<ContentPreviewPage />} />
-          <Route path="settings" element={<SettingsPage/>}>
-            <Route path="profileInfo" element={<ProfileInfo/>}/>
-            <Route path="personalization" element={<PersonalizationPage/>}/>
+        <Route element={<ProtectedRoutes/>}>
+          <Route
+            path="/"
+            element={<Header data={artists} setResults={setFilteredData} />}
+          >
+            <Route index element={<HomePage songs={spotifyTracks} artists={filteredArtists} favouriteSongs={favouriteSongs}/>} />
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="artist/:artistID" element={<ContentPreviewPage />} />
+            <Route path="settings" element={<SettingsPage/>}>
+              <Route path="profileInfo" element={<ProfileInfo/>}/>
+              <Route path="personalization" element={<PersonalizationPage/>}/>
+            </Route>
           </Route>
         </Route>
       </Routes>

@@ -1,7 +1,5 @@
-import { useState, useEffect, useContext } from "react";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
-
-import { UserContext } from "../../context/UserContext";
+import { useState, useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
 
 import { HomeButton } from "../../components/header/HomeButton/HomeButton";
 import SearchBar from "./../../components/header/SearchBar/SearchBar";
@@ -10,8 +8,6 @@ import ProfileIcon from "./../../components/header/ProfileIcon/ProfileIcon";
 import "./header.css";
 
 export default function Header({ data, setResults }) {
-  const { currentUser } = useContext(UserContext);
-  const navigate = useNavigate();
   const [isHomePage, setHomePage] = useState(false);
 
   let location = useLocation();
@@ -19,21 +15,17 @@ export default function Header({ data, setResults }) {
     setHomePage(location.pathname === "/" ? true : false);
   }, [location])
 
-  if(currentUser){
-    return (
-      <>
-        <header className="mainHeader">
-          {isHomePage ? (<div className="placeholder"></div>) : (<HomeButton/>)}
-       
-          <div className="headerComponents">
-            <SearchBar searchData={data} setResult={setResults} />
-            <ProfileIcon />
-          </div>
-        </header>
-        <Outlet />
-      </>
-    );
-  } else {
-    navigate("/guest");
-  }
+  return (
+    <>
+      <header className="mainHeader">
+        {isHomePage ? (<div className="placeholder"></div>) : (<HomeButton/>)}
+     
+        <div className="headerComponents">
+          <SearchBar searchData={data} setResult={setResults} />
+          <ProfileIcon />
+        </div>
+      </header>
+      <Outlet />
+    </>
+  );
 }
