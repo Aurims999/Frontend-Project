@@ -27,21 +27,43 @@ export const ContentPreviewPage = () => {
     fetchTrack();
   }, [artistID]);
 
+  useEffect(() => {
+    if (data == null) {
+      return;
+    }
+
+    const fetchOtherSongs = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/artists/topTracks/${data.artists[0].id}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const otherSongs = await response.json();
+        setOtherSongs(otherSongs.tracks);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchOtherSongs();
+  },
+  [data]);
+
   return (
     <main>
       {data && <ContentPreview data={data} />}
-      {data && 
+      {otherSongs && 
       <ContentGrid title="Other songs by the artist">
           {otherSongs.slice(0,5).map((entry) => {
           return (
             <Card
-              key={entry.track.id}
-              id={entry.track.id}
-              image={entry.track.album.images[0].url}
-              link={entry.track.external_urls.spotify}
-              mainText={entry.track.name}
-              subText={entry.track.artists[0].name}
-              altText={`Image of ${entry.track.artists[0].name}`}
+              key={entry.id}
+              id={entry.id}
+              image={entry.album.images[0].url}
+              link={entry.external_urls.spotify}
+              mainText={entry.name}
+              subText={entry.artists[0].name}
+              altText={`Image of ${entry.artists[0].name}`}
             />
           );
         })}
