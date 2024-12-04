@@ -9,7 +9,7 @@ export const ContentPreview = ({data = {}}) => {
   const {id, name, album, popularity, artists, type} = data;
   const image = album.images[0].url;
   const amountOfLikes = popularity;
-  const songArtist = artists[0].name;
+  const songArtist = artists.length > 1 ? artists.reduce((artistsList, artist) => artistsList + artist.name + ", ", "").slice(0, -2) : artists[0].name;
   const genres = [type];
 
   return (
