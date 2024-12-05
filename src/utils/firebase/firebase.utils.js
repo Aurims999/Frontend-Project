@@ -37,14 +37,13 @@ export const db = getFirestore();
 //#region TABLE - USERS
 export const createUserDocument = async (userAuth, additionalInfo = {}) => {
   if (!userAuth) return;
-  console.log(userAuth);
 
   const userDocRef = doc(db, "users", userAuth.uid);
   const userSnapshot = await getDoc(userDocRef);
-  console.log(userSnapshot.exists());
 
   if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
+    const userRole = "USER";
     const createdAt = new Date();
     const userSettings = {
       colorMode: "LIGHT",
@@ -59,6 +58,7 @@ export const createUserDocument = async (userAuth, additionalInfo = {}) => {
       await setDoc(userDocRef, {
         displayName,
         email,
+        userRole,
         createdAt,
         favouriteSongs: [],
         favouriteArtists: [],

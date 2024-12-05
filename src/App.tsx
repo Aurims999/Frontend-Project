@@ -10,6 +10,7 @@ import ProfilePage from "./routes/profilePage/ProfilePage.tsx";
 import { SettingsPage } from "./routes/settingsPage/SettingsPage.tsx";
 import { ProfileInfo } from "./routes/settingsPage/ProfileInfo.tsx";
 import { PersonalizationPage } from "./routes/settingsPage/PersonalizationPage.tsx";
+import { ReportingPage } from "./routes/settingsPage/ReportingPage.tsx";
 
 import { ContentPreviewPage } from "./routes/ContentPreviewPage/ContentPreviewPage.tsx";
 
@@ -93,6 +94,9 @@ function App() {
             <Route path="settings" element={<SettingsPage/>}>
               <Route path="profileInfo" element={<ProfileInfo/>}/>
               <Route path="personalization" element={<PersonalizationPage/>}/>
+              <Route element={<ProtectedRoutes requiredRole="ADMIN" navigateTo="/"/>}>
+                <Route path="reporting" element={<ReportingPage/>}/>
+              </Route>
             </Route>
           </Route>
         </Route>
