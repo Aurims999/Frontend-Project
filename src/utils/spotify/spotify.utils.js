@@ -120,7 +120,7 @@ app.listen(PORT, () => {
 });
 
 const fetchTopSongs = async () => {
-  const response = await fetch('https://api.spotify.com/v1/playlists/7FeLoDfSUnNywf5pTb3Dwz', {
+  const response = await fetch('https://api.spotify.com/v1/playlists/774kUuKDzLa8ieaSmi8IfS', {
     headers: {
       'Authorization': `Bearer ${token}`,
     },

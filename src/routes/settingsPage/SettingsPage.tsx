@@ -14,7 +14,7 @@ import "./settingsPage.css";
 export const SettingsPage = () => {
     const [username, setUsername] = useState("DEFAULT");
     const [newUsername, setNewUsername] = useState("");
-    const {currentUser} = useContext(UserContext);
+    const {currentUser, userData} = useContext(UserContext);
 
     const updateUsername = async (newUsername) => {
         if (await changeUsername(newUsername)){
@@ -47,9 +47,11 @@ export const SettingsPage = () => {
                     <li>
                         <NavigationButton to="./profileInfo">Accessibility</NavigationButton>     
                     </li>
-                    <li>
-                        <NavigationButton to="./profileInfo">Reporting</NavigationButton>     
-                    </li>
+                    {userData.userRole === "ADMIN" && 
+                        <li>
+                            <NavigationButton to="./reporting">Reporting</NavigationButton>     
+                        </li>
+                    }
                 </ul>
                 <Outlet />
             </SplitScreen>
