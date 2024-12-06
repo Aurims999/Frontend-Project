@@ -20,6 +20,7 @@ import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
 import ProtectedRoutes from "./utils/ProtectedRoutes.tsx";
 
 import "./index.css";
+import "./animations/animations.css"
 
 export type TCard = {
   id: number;

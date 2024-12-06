@@ -17,9 +17,9 @@ export const InputField = ({
         name={name}
         type={type}
         placeholder={placeHolder}
-        required={required}
         value={value}
         onChange={onChange}
+        
       />
     </div>
   );
