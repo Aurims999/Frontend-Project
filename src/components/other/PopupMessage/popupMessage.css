@@ -1,0 +1,29 @@
+.popupMessage{
+    padding: 2rem 5rem;
+    height: clamp(100px, fit-content, 250px);
+
+    position: absolute;
+    bottom: 5%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2.5rem;
+
+    border-radius: 1rem;
+
+    background-color: var(--focusPurple);
+    color: var(--darkerPurple);
+
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+
+    & img {
+        height: 100px;
+        aspect-ratio: 1/1;
+    }
+
+    .popup-fadeOut {
+        opacity: 0;
+    }
+}

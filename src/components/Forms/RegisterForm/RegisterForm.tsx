@@ -3,6 +3,8 @@ import { useState } from "react";
 import { InputField } from "../InputField/InputField";
 import Button from "../../other/Button/Button";
 
+import { validationMessages } from "./../../../utils/messages/popupMessages.js"
+
 import {
   createNewUserWithEmailAndPassword,
   createUserDocument,
@@ -17,7 +19,7 @@ const defaultFields = {
   PasswordConfirm: "",
 };
 
-export const RegisterForm = ({}) => {
+export const RegisterForm = ({displayValidationPopup}) => {
   const [formFields, setFormFields] = useState(defaultFields);
   const { Username, Email, Password, PasswordConfirm } = formFields;
 
@@ -33,8 +35,28 @@ export const RegisterForm = ({}) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (!Username){
+      displayValidationPopup(validationMessages.USERNAME_MISSING);
+      return;
+    }
+
+    if (!Email) {
+      displayValidationPopup(validationMessages.EMAIL_MISSING);
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRegex.test(Email)){
+      displayValidationPopup(validationMessages.EMAIL_INVALID);
+      return;
+    }
+    if(!Password || !PasswordConfirm){
+      displayValidationPopup(validationMessages.PASSWORD_MISSING);
+      return;
+    }
+
     if (Password != PasswordConfirm) {
-      alert("PASSWORD DO NOT MATCH");
+      displayValidationPopup(validationMessages.PASSWORD_MISMATCH);
       return;
     }
 
@@ -45,13 +67,13 @@ export const RegisterForm = ({}) => {
     } catch (error) {
       switch (error.code) {
         case "auth/email-already-in-use":
-          alert("ALREADY USED EMAIL");
+          displayValidationPopup(validationMessages.EMAIL_TAKEN);
           break;
         case "auth/invalid-email":
-          alert("INVALID EMAIL");
+          displayValidationPopup(validationMessages.EMAIL_INVALID);
           break;
         case "auth/weak-password":
-          alert("PASSWORD TOO SHORT");
+          displayValidationPopup(validationMessages.PASSWORD_SHORT);
           break;
         default:
           console.log(error);
@@ -69,7 +91,6 @@ export const RegisterForm = ({}) => {
         onChange={handleChange}
       />
       <InputField
-        type="email"
         title="Email"
         placeHolder="Enter your email"
         value={Email}

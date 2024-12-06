@@ -1,9 +1,10 @@
 import { useState } from "react";
-
 import { signInAuthUserWithEmailAndPassword } from "../../../utils/firebase/firebase.utils";
 
 import { InputField } from "../InputField/InputField";
 import Button from "../../other/Button/Button";
+
+import { validationMessages } from "./../../../utils/messages/popupMessages.js"
 
 import "./loginForm.css";
 
@@ -12,7 +13,7 @@ const defaultFields = {
   Password: "",
 };
 
-export const LoginForm = ({ setPageType }) => {
+export const LoginForm = ({ setPageType, displayValidationPopup }) => {
   const [formFields, setFormFields] = useState(defaultFields);
   const { Email, Password } = formFields;
 
@@ -24,6 +25,20 @@ export const LoginForm = ({ setPageType }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!Email) {
+      displayValidationPopup(validationMessages.EMAIL_MISSING);
+      return;
+    }
+    if(!emailRegex.test(Email)){
+      displayValidationPopup(validationMessages.EMAIL_INVALID);
+      return;
+    }
+    if(!Password){
+      displayValidationPopup(validationMessages.PASSWORD_MISSING);
+      return;
+    }
+
     try {
       const { user } = await signInAuthUserWithEmailAndPassword(
         Email,
@@ -32,7 +47,7 @@ export const LoginForm = ({ setPageType }) => {
     } catch (error) {
       switch (error.code) {
         case "auth/invalid-credential":
-          alert("WRONG LOGIN DATA");
+          displayValidationPopup(validationMessages.LOGIN_INVALID);
           break;
         default:
           console.log(error);
@@ -43,9 +58,8 @@ export const LoginForm = ({ setPageType }) => {
 
   return (
     <>
-      <form className="defaultForm" onSubmit={handleSubmit}>
+      <form className="defaultForm" onSubmit={handleSubmit} noValidate>
         <InputField
-          type="email"
           title="Email"
           placeHolder="Enter your email"
           value={Email}
