@@ -3,25 +3,21 @@ import { useState } from "react";
 import { InputField } from "../InputField/InputField";
 import Button from "../../other/Button/Button";
 
-import { validationMessages } from "./../../../utils/messages/popupMessages.js"
-
-import {
-  createNewUserWithEmailAndPassword,
-  createUserDocument,
-} from "../../../utils/firebase/firebase.utils";
+import { validateUsername, validateEmail, validatePassword } from "../../../utils/methods/validateUserInput.js";
+import { registerNewAccount } from "../../../utils/methods/firebaseMethods.js";
 
 import "./registerForm.css";
 
 const defaultFields = {
-  Username: "",
-  Email: "",
-  Password: "",
-  PasswordConfirm: "",
+  username: "",
+  email: "",
+  password: "",
+  passwordConfirm: "",
 };
 
 export const RegisterForm = ({displayValidationPopup}) => {
   const [formFields, setFormFields] = useState(defaultFields);
-  const { Username, Email, Password, PasswordConfirm } = formFields;
+  const { username, email, password, passwordConfirm } = formFields;
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -35,80 +31,64 @@ export const RegisterForm = ({displayValidationPopup}) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!Username){
-      displayValidationPopup(validationMessages.USERNAME_MISSING);
-      return;
-    }
+    const validations = [
+      {validate : () => validateUsername(username)},
+      {validate : () => validateEmail(email)},
+      {validate : () => validatePassword(password, passwordConfirm)},
+    ]
 
-    if (!Email) {
-      displayValidationPopup(validationMessages.EMAIL_MISSING);
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(!emailRegex.test(Email)){
-      displayValidationPopup(validationMessages.EMAIL_INVALID);
-      return;
-    }
-    if(!Password || !PasswordConfirm){
-      displayValidationPopup(validationMessages.PASSWORD_MISSING);
-      return;
-    }
-
-    if (Password != PasswordConfirm) {
-      displayValidationPopup(validationMessages.PASSWORD_MISMATCH);
-      return;
-    }
-
-    try {
-      const { user } = await createNewUserWithEmailAndPassword(Email, Password);
-      await createUserDocument(user, { displayName: Username });
-      resetFields();
-    } catch (error) {
-      switch (error.code) {
-        case "auth/email-already-in-use":
-          displayValidationPopup(validationMessages.EMAIL_TAKEN);
-          break;
-        case "auth/invalid-email":
-          displayValidationPopup(validationMessages.EMAIL_INVALID);
-          break;
-        case "auth/weak-password":
-          displayValidationPopup(validationMessages.PASSWORD_SHORT);
-          break;
-        default:
-          console.log(error);
+    for (const {validate} of validations){
+      const validationError = validate();
+      if(validationError){
+        displayValidationPopup(validationError);
+        return;
       }
-      console.error("User creation error: ", error);
     }
+
+    const registrationError = await registerNewAccount({
+      email,
+      password,
+      username,
+    });
+
+    if(registrationError){
+      displayValidationPopup(registrationError);
+      return;
+    };
+
+    resetFields();
   };
 
   return (
     <form className="defaultForm" onSubmit={handleSubmit}>
       <InputField
         title="Username"
+        name = "username"
         placeHolder="Enter your username"
-        value={Username}
+        value={username}
         onChange={handleChange}
       />
       <InputField
         title="Email"
+        name = "email"
         placeHolder="Enter your email"
-        value={Email}
+        value={email}
         onChange={handleChange}
       />
       <InputField
         type="password"
         title="Password"
+        name = "password"
         placeHolder="Create a strong password"
-        value={Password}
+        value={password}
         onChange={handleChange}
       />
       <InputField
         type="password"
         title="Confirm Your Password"
-        name="PasswordConfirm"
+        name="passwordConfirm"
         placeHolder="Repeat your password"
-        value={PasswordConfirm}
+        value={passwordConfirm}
         onChange={handleChange}
       />
       <Button isSubmitButton={true}>Create New Account</Button>

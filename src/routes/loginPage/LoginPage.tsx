@@ -19,7 +19,6 @@ export const LoginPage = ({}) => {
       setPopupMessage(message);
       setPopupVisibility(true);
       setTimeout(() => {
-
         setPopupVisibility(false);
       }, duration);
     }
