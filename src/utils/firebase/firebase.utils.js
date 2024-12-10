@@ -130,7 +130,18 @@ export const createNewUser = async (userInfo) => {
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
-  return await signInWithEmailAndPassword(auth, email, password);
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    return "";
+  } catch (error){
+    switch (error.code) {
+      case "auth/invalid-credential":
+          return validationMessages.LOGIN_INVALID;
+      default:
+          console.error("User creation error: ", error);
+          return "Unknown error occured!. Please contact service support!";
+    }
+  }
 };
 
 export const signOutUser = async () => await signOut(auth);
