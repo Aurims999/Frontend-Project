@@ -12,6 +12,8 @@ import {
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, FieldPath, FieldValue } from "firebase/firestore";
 
+import { validationMessages } from "../messages/popupMessages.js"
+
 const firebaseConfig = {
   apiKey: "AIzaSyBeoY2lyUEs6HFMUnjjDhmclJec6NqLJAY",
   authDomain: "vibelift-db.firebaseapp.com",
@@ -110,7 +112,7 @@ export const updateColorTheme = async (selectedTheme) => {
 //#region USERS AUTHENTIFICATION
 export const createNewUser = async (userInfo) => {
   const { email, password, username } = userInfo;
-  if (!email || !password || !username) return;
+  if (!email || !password || !username) return "Server Error Occurred. Please Contact Our Customer Support!";
 
   try {
     const { user } = await createUserWithEmailAndPassword(auth, email, password);

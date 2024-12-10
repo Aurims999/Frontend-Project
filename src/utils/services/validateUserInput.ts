@@ -1,4 +1,4 @@
-import { validationMessages} from "../messages/popupMessages.js"
+import { validationMessages} from "./../messages/popupMessages.js"
 
 export const validateEmail = (email : string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -36,4 +36,20 @@ export const validateUsername = (username : string) => {
     }
 
     return null;
+}
+
+export const validateData = (email : string, password : string, 
+                             passwordConfirm : string | null = null, username : string | null = null) => {
+    const validations = [
+        {validate : () => username ? validateUsername(username) : ""},
+        {validate : () => validateEmail(email)},
+        {validate : () => validatePassword(password, passwordConfirm)},
+      ]
+  
+      for (const {validate} of validations){
+        const validationError = validate();
+        if(validationError) return validationError;
+      }
+
+    return "";
 }

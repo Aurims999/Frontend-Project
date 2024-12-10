@@ -39,7 +39,7 @@ function App() {
   const {userData} = useContext(UserContext);
 
   const fetchFavouriteSongs = async () => {
-    if (userData.favouriteSongs.length === 0) return;
+    if (userData.favouriteArtists.length === 0) return;
 
     try {
       const artistsIds = userData.favouriteArtists.join(",");

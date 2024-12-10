@@ -3,8 +3,8 @@ import { useState } from "react";
 import { InputField } from "../InputField/InputField";
 import Button from "../../other/Button/Button";
 
-import { validateUsername, validateEmail, validatePassword } from "../../../utils/methods/validateUserInput.js";
-import { createNewUser } from "../../../utils/firebase/firebase.utils.js";
+import { validateData } from "../../../utils/services/validateUserInput.js";
+import { registerNewUser } from "../../../utils/services/databaseInteractions.js";
 
 import "./registerForm.css";
 
@@ -27,30 +27,14 @@ export const RegisterForm = ({displayValidationPopup}) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const validations = [
-      {validate : () => validateUsername(username)},
-      {validate : () => validateEmail(email)},
-      {validate : () => validatePassword(password, passwordConfirm)},
-    ]
-
-    for (const {validate} of validations){
-      const validationError = validate();
-      if(validationError){
-        displayValidationPopup(validationError);
-        return;
-      }
-    }
-
-    const registrationResults = await createNewUser({
-      email,
-      password,
-      username,
-    });
-
-    if (typeof registrationResults === "string") {
-      displayValidationPopup(registrationResults);
+    let registrationErrorMessage = validateData(email, password);
+    if(registrationErrorMessage){
+      displayValidationPopup(registrationErrorMessage)
       return;
     }
+
+    const registrationResults = await registerNewUser(email, password, username);
+    if(typeof(registrationResults) === "string") displayValidationPopup(registrationResults);
   };
 
   return (

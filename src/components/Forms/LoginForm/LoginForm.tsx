@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { signInAuthUserWithEmailAndPassword } from "../../../utils/firebase/firebase.utils";
 
 import { InputField } from "../InputField/InputField";
 import Button from "../../other/Button/Button";
 
-import { validateEmail, validatePassword } from "./../../../utils/methods/validateUserInput"
-import { validationMessages } from "./../../../utils/messages/popupMessages.js"
+import { loginUser } from "../../../utils/services/databaseInteractions";
+import { validateData } from "../../../utils/services/validateUserInput";
 
 import "./loginForm.css";
 
@@ -26,31 +25,14 @@ export const LoginForm = ({ setPageType, displayValidationPopup }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const validations = [
-      {validate : () => validateEmail(email)},
-      {validate : () => validatePassword(password)},
-    ]
-
-    for (const {validate} of validations){
-      const validationError = validate();
-      if(validationError){
-        displayValidationPopup(validationError);
-        return;
-      }
+    let loginErrorMessage = validateData(email, password);
+    if(loginErrorMessage){
+      displayValidationPopup(loginErrorMessage)
+      return;
     }
-
-    try {
-      await signInAuthUserWithEmailAndPassword(email, password);
-    } catch (error) {
-      switch (error.code) {
-        case "auth/invalid-credential":
-          displayValidationPopup(validationMessages.LOGIN_INVALID);
-          break;
-        default:
-          displayValidationPopup(error);
-      }
-      console.error("User creation error: ", error);
-    }
+    
+    loginErrorMessage = await loginUser(email, password);
+    if(loginErrorMessage) displayValidationPopup(loginErrorMessage);
   };
 
   return (
