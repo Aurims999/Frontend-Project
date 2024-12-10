@@ -1,20 +1,21 @@
 import { useState } from "react";
 
-import { signInAuthUserWithEmailAndPassword } from "../../../utils/firebase/firebase.utils";
-
 import { InputField } from "../InputField/InputField";
 import Button from "../../other/Button/Button";
+
+import { loginUser } from "../../../utils/services/databaseInteractions";
+import { validateData } from "../../../utils/services/validateUserInput";
 
 import "./loginForm.css";
 
 const defaultFields = {
-  Username: "",
-  Password: "",
+  username: "",
+  password: "",
 };
 
-export const LoginForm = ({ setPageType }) => {
+export const LoginForm = ({ setPageType, displayValidationPopup }) => {
   const [formFields, setFormFields] = useState(defaultFields);
-  const { Email, Password } = formFields;
+  const { email, password } = formFields;
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -24,38 +25,32 @@ export const LoginForm = ({ setPageType }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      const { user } = await signInAuthUserWithEmailAndPassword(
-        Email,
-        Password
-      );
-    } catch (error) {
-      switch (error.code) {
-        case "auth/invalid-credential":
-          alert("WRONG LOGIN DATA");
-          break;
-        default:
-          console.log(error);
-      }
-      console.error("User creation error: ", error);
+    let loginErrorMessage = validateData(email, password);
+    if(loginErrorMessage){
+      displayValidationPopup(loginErrorMessage)
+      return;
     }
+    
+    loginErrorMessage = await loginUser(email, password);
+    if(loginErrorMessage) displayValidationPopup(loginErrorMessage);
   };
 
   return (
     <>
-      <form className="defaultForm" onSubmit={handleSubmit}>
+      <form className="defaultForm" onSubmit={handleSubmit} noValidate>
         <InputField
-          type="email"
           title="Email"
+          name = "email"
           placeHolder="Enter your email"
-          value={Email}
+          value={email}
           onChange={handleChange}
         />
         <InputField
           type="password"
           title="Password"
+          name = "password"
           placeHolder="Enter your password"
-          value={Password}
+          value={password}
           onChange={handleChange}
         />
         <Button isSubmitButton={true}>Login</Button>

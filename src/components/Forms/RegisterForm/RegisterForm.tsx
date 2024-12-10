@@ -3,91 +3,70 @@ import { useState } from "react";
 import { InputField } from "../InputField/InputField";
 import Button from "../../other/Button/Button";
 
-import {
-  createNewUserWithEmailAndPassword,
-  createUserDocument,
-} from "../../../utils/firebase/firebase.utils";
+import { validateData } from "../../../utils/services/validateUserInput.js";
+import { registerNewUser } from "../../../utils/services/databaseInteractions.js";
 
 import "./registerForm.css";
 
 const defaultFields = {
-  Username: "",
-  Email: "",
-  Password: "",
-  PasswordConfirm: "",
+  username: "",
+  email: "",
+  password: "",
+  passwordConfirm: "",
 };
 
-export const RegisterForm = ({}) => {
+export const RegisterForm = ({displayValidationPopup}) => {
   const [formFields, setFormFields] = useState(defaultFields);
-  const { Username, Email, Password, PasswordConfirm } = formFields;
+  const { username, email, password, passwordConfirm } = formFields;
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
   };
 
-  const resetFields = () => {
-    setFormFields(defaultFields);
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (Password != PasswordConfirm) {
-      alert("PASSWORD DO NOT MATCH");
+    let registrationErrorMessage = validateData(email, password);
+    if(registrationErrorMessage){
+      displayValidationPopup(registrationErrorMessage)
       return;
     }
 
-    try {
-      const { user } = await createNewUserWithEmailAndPassword(Email, Password);
-      await createUserDocument(user, { displayName: Username });
-      resetFields();
-    } catch (error) {
-      switch (error.code) {
-        case "auth/email-already-in-use":
-          alert("ALREADY USED EMAIL");
-          break;
-        case "auth/invalid-email":
-          alert("INVALID EMAIL");
-          break;
-        case "auth/weak-password":
-          alert("PASSWORD TOO SHORT");
-          break;
-        default:
-          console.log(error);
-      }
-      console.error("User creation error: ", error);
-    }
+    const registrationResults = await registerNewUser(email, password, username);
+    if(typeof(registrationResults) === "string") displayValidationPopup(registrationResults);
   };
 
   return (
     <form className="defaultForm" onSubmit={handleSubmit}>
       <InputField
         title="Username"
+        name = "username"
         placeHolder="Enter your username"
-        value={Username}
+        value={username}
         onChange={handleChange}
       />
       <InputField
-        type="email"
         title="Email"
+        name = "email"
         placeHolder="Enter your email"
-        value={Email}
+        value={email}
         onChange={handleChange}
       />
       <InputField
         type="password"
         title="Password"
+        name = "password"
         placeHolder="Create a strong password"
-        value={Password}
+        value={password}
         onChange={handleChange}
       />
       <InputField
         type="password"
         title="Confirm Your Password"
-        name="PasswordConfirm"
+        name="passwordConfirm"
         placeHolder="Repeat your password"
-        value={PasswordConfirm}
+        value={passwordConfirm}
         onChange={handleChange}
       />
       <Button isSubmitButton={true}>Create New Account</Button>
