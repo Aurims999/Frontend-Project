@@ -4,18 +4,19 @@ import { signInAuthUserWithEmailAndPassword } from "../../../utils/firebase/fire
 import { InputField } from "../InputField/InputField";
 import Button from "../../other/Button/Button";
 
+import { validateEmail, validatePassword } from "./../../../utils/methods/validateUserInput"
 import { validationMessages } from "./../../../utils/messages/popupMessages.js"
 
 import "./loginForm.css";
 
 const defaultFields = {
-  Username: "",
-  Password: "",
+  username: "",
+  password: "",
 };
 
 export const LoginForm = ({ setPageType, displayValidationPopup }) => {
   const [formFields, setFormFields] = useState(defaultFields);
-  const { Email, Password } = formFields;
+  const { email, password } = formFields;
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -25,32 +26,28 @@ export const LoginForm = ({ setPageType, displayValidationPopup }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!Email) {
-      displayValidationPopup(validationMessages.EMAIL_MISSING);
-      return;
-    }
-    if(!emailRegex.test(Email)){
-      displayValidationPopup(validationMessages.EMAIL_INVALID);
-      return;
-    }
-    if(!Password){
-      displayValidationPopup(validationMessages.PASSWORD_MISSING);
-      return;
+    const validations = [
+      {validate : () => validateEmail(email)},
+      {validate : () => validatePassword(password)},
+    ]
+
+    for (const {validate} of validations){
+      const validationError = validate();
+      if(validationError){
+        displayValidationPopup(validationError);
+        return;
+      }
     }
 
     try {
-      const { user } = await signInAuthUserWithEmailAndPassword(
-        Email,
-        Password
-      );
+      await signInAuthUserWithEmailAndPassword(email, password);
     } catch (error) {
       switch (error.code) {
         case "auth/invalid-credential":
           displayValidationPopup(validationMessages.LOGIN_INVALID);
           break;
         default:
-          console.log(error);
+          displayValidationPopup(error);
       }
       console.error("User creation error: ", error);
     }
@@ -61,15 +58,17 @@ export const LoginForm = ({ setPageType, displayValidationPopup }) => {
       <form className="defaultForm" onSubmit={handleSubmit} noValidate>
         <InputField
           title="Email"
+          name = "email"
           placeHolder="Enter your email"
-          value={Email}
+          value={email}
           onChange={handleChange}
         />
         <InputField
           type="password"
           title="Password"
+          name = "password"
           placeHolder="Enter your password"
-          value={Password}
+          value={password}
           onChange={handleChange}
         />
         <Button isSubmitButton={true}>Login</Button>

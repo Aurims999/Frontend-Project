@@ -39,9 +39,7 @@ function App() {
   const {userData} = useContext(UserContext);
 
   const fetchFavouriteSongs = async () => {
-    if (!userData.favouriteArtists){
-      return;
-    } 
+    if (userData.favouriteSongs.length === 0) return;
 
     try {
       const artistsIds = userData.favouriteArtists.join(",");
@@ -52,7 +50,7 @@ function App() {
       const data = await response.json();
       setFavouriteSongs(data.tracks);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -67,15 +65,16 @@ function App() {
         const songs = topTracks.tracks.items;
         setTracks(songs);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
     fetchTopTracks();
-    fetchFavouriteSongs();
   }, []);
 
   useEffect(() => {
+    if (userData === null) return;
+
     fetchFavouriteSongs();
   }, [userData]);
 

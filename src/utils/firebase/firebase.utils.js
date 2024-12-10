@@ -21,7 +21,6 @@ const firebaseConfig = {
   appId: "1:750153358659:web:5aba7c37bc9347c36a63f6",
 };
 
-// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
 const provider = new GoogleAuthProvider();
@@ -32,6 +31,8 @@ provider.setCustomParameters({
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const db = getFirestore();
+
+
 //#endregion
 
 //#region TABLE - USERS
@@ -82,7 +83,6 @@ export const getOwnData = async () => {
 }
 
 export const changeUsername = async (username) => {
-  console.log("New username: " + username)
   updateProfile(auth.currentUser, {
     displayName: username
   }).then(() => {
@@ -108,11 +108,22 @@ export const updateColorTheme = async (selectedTheme) => {
 //#endregion
 
 //#region USERS AUTHENTIFICATION
-export const createNewUserWithEmailAndPassword = async (email, password) => {
-  if (!email || !password) return;
+export const createNewUser = async (userInfo) => {
+  const { email, password, username } = userInfo;
+  if (!email || !password || !username) return;
 
-  return await createUserWithEmailAndPassword(auth, email, password);
+  try {
+    const { user } = await createUserWithEmailAndPassword(auth, email, password);
+    await createUserDocument(user, { displayName: username });
+    return user;
+  } catch (error) {
+    console.error("User creation error: ", error);
+    return error.code === "auth/email-already-in-use"
+      ? validationMessages.EMAIL_TAKEN
+      : "Unexpected Error Occurred. Please Contact Our Customer Support!";
+  }
 };
+
 
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;

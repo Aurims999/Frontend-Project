@@ -4,7 +4,7 @@ import { InputField } from "../InputField/InputField";
 import Button from "../../other/Button/Button";
 
 import { validateUsername, validateEmail, validatePassword } from "../../../utils/methods/validateUserInput.js";
-import { registerNewAccount } from "../../../utils/methods/firebaseMethods.js";
+import { createNewUser } from "../../../utils/firebase/firebase.utils.js";
 
 import "./registerForm.css";
 
@@ -24,10 +24,6 @@ export const RegisterForm = ({displayValidationPopup}) => {
     setFormFields({ ...formFields, [name]: value });
   };
 
-  const resetFields = () => {
-    setFormFields(defaultFields);
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -45,18 +41,16 @@ export const RegisterForm = ({displayValidationPopup}) => {
       }
     }
 
-    const registrationError = await registerNewAccount({
+    const registrationResults = await createNewUser({
       email,
       password,
       username,
     });
 
-    if(registrationError){
-      displayValidationPopup(registrationError);
+    if (typeof registrationResults === "string") {
+      displayValidationPopup(registrationResults);
       return;
-    };
-
-    resetFields();
+    }
   };
 
   return (
