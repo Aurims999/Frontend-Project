@@ -1,7 +1,3 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../../context/UserContext";
-
 import { signInWithGooglePopup } from "../../../utils/firebase/firebase.utils";
 
 import "./googleAuthButton.css";

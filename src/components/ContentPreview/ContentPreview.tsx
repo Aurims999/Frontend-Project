@@ -27,7 +27,7 @@ export const ContentPreview = ({data = {}}) => {
         </div>
         <ContentList title="Genres:">
           {genres.map(genre => {
-            return (<ContentBlock>
+            return (<ContentBlock key={genre}>
               <img
                 src="../../assets/icons/pop.png"
                 alt="Heart icon to add artist to liked artists list"

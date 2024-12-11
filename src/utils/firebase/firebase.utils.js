@@ -12,6 +12,8 @@ import {
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, FieldPath, FieldValue } from "firebase/firestore";
 
+import { validationMessages } from "../messages/popupMessages.js"
+
 const firebaseConfig = {
   apiKey: "AIzaSyBeoY2lyUEs6HFMUnjjDhmclJec6NqLJAY",
   authDomain: "vibelift-db.firebaseapp.com",
@@ -21,7 +23,6 @@ const firebaseConfig = {
   appId: "1:750153358659:web:5aba7c37bc9347c36a63f6",
 };
 
-// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
 const provider = new GoogleAuthProvider();
@@ -32,6 +33,8 @@ provider.setCustomParameters({
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const db = getFirestore();
+
+
 //#endregion
 
 //#region TABLE - USERS
@@ -82,7 +85,6 @@ export const getOwnData = async () => {
 }
 
 export const changeUsername = async (username) => {
-  console.log("New username: " + username)
   updateProfile(auth.currentUser, {
     displayName: username
   }).then(() => {
@@ -108,16 +110,38 @@ export const updateColorTheme = async (selectedTheme) => {
 //#endregion
 
 //#region USERS AUTHENTIFICATION
-export const createNewUserWithEmailAndPassword = async (email, password) => {
-  if (!email || !password) return;
+export const createNewUser = async (userInfo) => {
+  const { email, password, username } = userInfo;
+  if (!email || !password || !username) return "Server Error Occurred. Please Contact Our Customer Support!";
 
-  return await createUserWithEmailAndPassword(auth, email, password);
+  try {
+    const { user } = await createUserWithEmailAndPassword(auth, email, password);
+    await createUserDocument(user, { displayName: username });
+    return user;
+  } catch (error) {
+    console.error("User creation error: ", error);
+    return error.code === "auth/email-already-in-use"
+      ? validationMessages.EMAIL_TAKEN
+      : "Unexpected Error Occurred. Please Contact Our Customer Support!";
+  }
 };
+
 
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
-  return await signInWithEmailAndPassword(auth, email, password);
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    return "";
+  } catch (error){
+    switch (error.code) {
+      case "auth/invalid-credential":
+          return validationMessages.LOGIN_INVALID;
+      default:
+          console.error("User creation error: ", error);
+          return "Unknown error occured!. Please contact service support!";
+    }
+  }
 };
 
 export const signOutUser = async () => await signOut(auth);
