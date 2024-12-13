@@ -27,7 +27,14 @@ export const RegisterForm = ({displayValidationPopup}) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    let registrationErrorMessage = validateData(email, password);
+    let registrationErrorMessage = ""
+    if(username){
+       registrationErrorMessage = validateData(email, password, passwordConfirm, username);
+    } else {
+      displayValidationPopup("You forgot to provide your username");
+      return;
+    }
+
     if(registrationErrorMessage){
       displayValidationPopup(registrationErrorMessage)
       return;
