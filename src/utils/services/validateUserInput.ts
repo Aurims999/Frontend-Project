@@ -23,6 +23,10 @@ export const validatePassword = (password : string, confirmPassword : string | n
         return validationMessages.PASSWORD_MISMATCH;
     }
 
+    if (password.length < 6){
+        return validationMessages.PASSWORD_SHORT;
+    }
+
     return null;
 }
 
