@@ -18,6 +18,7 @@ import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
 import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
 
 import ProtectedRoutes from "./utils/ProtectedRoutes.tsx";
+import { spotifyPlaylists } from "./utils/spotify/playlists.js";
 
 import "./index.css";
 import "./animations/animations.css"
@@ -57,7 +58,7 @@ function App() {
   useEffect(() => {
     const fetchTopTracks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/tracks/topTracks");
+        const response = await fetch(`http://localhost:5000/api/tracks/playlist/${spotifyPlaylists.TOP_TRACKS}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

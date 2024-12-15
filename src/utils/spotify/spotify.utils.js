@@ -45,29 +45,22 @@ app.use(express.json());
 
 const token = await getSpotifyToken();
 
-app.get('/tokenTest', async (req, res) => {
-  try {
-    res.json({ token }); // Send the token in the response
-  } catch (error) {
-    console.error('Error fetching Spotify token:', error);
-    res.status(500).json({ error: 'Failed to retrieve Spotify token' });
-  }
-})
-
 app.get('/api/artists/:artistId', async (req, res) => {
-  const { artistId } = req.params; // Get the artist ID from the request parameters
+  const { artistId } = req.params;
   try {
-      const artistData = await fetchArtistData(artistId, token); // Fetch artist data
-      res.json(artistData); // Send the artist data as a JSON response
+      const artistData = await fetchArtistData(artistId, token);
+      res.json(artistData);
   } catch (error) {
       console.error('Error fetching artist data:', error);
       res.status(500).json({ error: 'Failed to fetch artist data' });
   }
 });
 
-app.get('/api/tracks/TopTracks', async (req, res) => {
+app.get('/api/tracks/playlist/:playlistId', async (req, res) => {
+  const {playlistId} = req.params;
+
   try{
-    const topSongs = await fetchTopSongs();
+    const topSongs = await fetchPlaylistData(playlistId);
     res.json(topSongs);
   } catch (error) {
     console.error('Error fetching top songs:', error);
@@ -119,8 +112,8 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-const fetchTopSongs = async () => {
-  const response = await fetch('https://api.spotify.com/v1/playlists/774kUuKDzLa8ieaSmi8IfS', {
+const fetchPlaylistData = async (playlistId) => {
+  const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },
@@ -179,7 +172,6 @@ const fetchArtistTracks = async (artistId, token) => {
   return await response.json();
 };
 
-
 const fetchMultipleTracks = async (trackId, token) => {
   const response = await fetch(`https://api.spotify.com/v1/tracks?ids=${trackId}`, {
       headers: { 
@@ -189,7 +181,7 @@ const fetchMultipleTracks = async (trackId, token) => {
 
   if (!response.ok) {
     const errorData = await response.json();
-    console.error('Error data from Spotify API:', errorData); // Log the error details
+    console.error('Error data from Spotify API:', errorData);
     throw new Error(`Error fetching track data: ${errorData.error.message}`);
   }
 

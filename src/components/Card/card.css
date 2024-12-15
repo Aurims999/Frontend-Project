@@ -18,11 +18,17 @@
   }
 
   & h2 {
+    width: 20ch;
     font-weight: bold;
     font-family: var(--mainFont);
     font-size: 1.125rem;
     padding: 0;
     margin: 10px 0px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
 
 
     @media (max-width: 475px) {
