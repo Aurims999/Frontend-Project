@@ -15,12 +15,14 @@ export const UserContext = createContext({
   currentUser: null,
   setCurrentUser: () => null,
   userData: null,
+  isUserLoading: null,
 });
 
 export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userData, setUserData] = useState(null);
-  const value = { currentUser, setCurrentUser, userData };
+  const [isUserLoading, setLoading] = useState(true);
+  const value = { currentUser, setCurrentUser, userData, isUserLoading };
 
   const navigate = useNavigate();
 
@@ -37,14 +39,17 @@ export const UserProvider = ({ children }) => {
         navigate("/guest");
         setUserData(null);
       }
+
+      setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+    }
   }, []);
 
   useEffect(() => {
     if (!currentUser) {
-      setUserData(null);
       return;
     }
 

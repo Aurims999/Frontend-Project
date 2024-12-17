@@ -18,7 +18,6 @@ import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
 import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
 
 import ProtectedRoutes from "./utils/ProtectedRoutes.tsx";
-import { spotifyPlaylists } from "./utils/spotify/playlists.js";
 
 import "./index.css";
 import "./animations/animations.css"
@@ -34,7 +33,6 @@ export type TCard = {
 function App() {
   const [artists, setArtists] = useState(artistsData);
   const [filteredArtists, setFilteredData] = useState(artists);
-  const [spotifyTracks, setTracks] = useState([]);
   const [favouriteSongs, setFavouriteSongs] = useState([]);
 
   const {userData} = useContext(UserContext);
@@ -56,24 +54,6 @@ function App() {
   }
 
   useEffect(() => {
-    const fetchTopTracks = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/api/tracks/playlist/${spotifyPlaylists.TOP_TRACKS}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const topTracks = await response.json();
-        const songs = topTracks.tracks.items;
-        setTracks(songs);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchTopTracks();
-  }, []);
-
-  useEffect(() => {
     if (userData === null) return;
 
     fetchFavouriteSongs();
@@ -89,7 +69,7 @@ function App() {
             path="/"
             element={<Header data={artists} setResults={setFilteredData} />}
           >
-            <Route index element={<HomePage songs={spotifyTracks} artists={filteredArtists} favouriteSongs={favouriteSongs}/>} />
+            <Route index element={<HomePage artists={filteredArtists} favouriteSongs={favouriteSongs}/>} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="artist/:artistID" element={<ContentPreviewPage />} />
             <Route path="settings" element={<SettingsPage/>}>
