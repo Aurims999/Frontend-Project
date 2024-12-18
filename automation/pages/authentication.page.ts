@@ -1,4 +1,5 @@
 import type { Page, Locator } from '@playwright/test';
+import { expect } from '@playwright/test';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -22,6 +23,7 @@ export class AuthenticationPage {
     readonly createAccountButton: Locator;
     readonly profilePicture: Locator;
     readonly profileDropdownMenu: Locator;
+    readonly profileDropdownLogout: Locator;
 
 constructor(page: Page) {
     this.page = page;
@@ -33,7 +35,7 @@ constructor(page: Page) {
     this.accountLoginButton = page.getByRole('button', { name: 'Login', exact: true});
     this.popupMessage = page.locator('.popupMessage');
     this.tryOutButton = page.getByRole('link', {name: 'Try out now!'});
-    this.exitButton = page.locator('.loginPage .exitButton');
+    this.exitButton = page.locator('a.exitButton');
     this.linkToRegistration = page.getByText('Register by clicking here');
     this.registerFormTitle = page.getByText('Register New Account');
     this.regUsernameField = page.getByLabel('Username');
@@ -43,6 +45,7 @@ constructor(page: Page) {
     this.createAccountButton = page.getByRole('button', {name: 'Create New Account'});
     this.profilePicture = page.getByAltText("An icon of a person's profile view");
     this.profileDropdownMenu = page.locator('.userManagementButton .dropdownMenu');
+    this.profileDropdownLogout = page.locator('.dropdownItem p:has-text("Logout")');
 }
 
 async fillLoginData (email: string, password: string){
@@ -69,12 +72,36 @@ async fillRegistrationForm (
 
 async loginToAccount(){
     await this.loginButton.click();
-    await this.fillLoginData(process.env.EMAIL!, process.env.PASSWORD!);
+    await this.fillLoginData(process.env.EMAIL, process.env.PASSWORD);
     await this.accountLoginButton.click();
-}
+};
 
+async goToLoginPageAndFillLoginData(email: string, password: string){
+    await this.loginButton.click();
+    await this.emailField.fill(email);
+    await this.passwordField.fill(password);
+};
 
+async clickLoginAndReceivePopupMessage(message){
+    await this.accountLoginButton.click();
+    await expect(this.popupMessage).toBeVisible();
+    await expect(this.popupMessage).toHaveText(message); 
+};
 
+async goToRegistrationFormAndCreateAccount(
+    username: string,
+    email: string,
+    password: string,
+    confirmPassword: string
+){
+    await this.loginButton.click();
+    await this.linkToRegistration.click();
+    await this.regUsernameField.fill(username);
+    await this.regEmailField.fill(email);
+    await this.regPasswordField.fill(password);
+    await this.regConfirmPasswordF.fill(confirmPassword);
+    await this.createAccountButton.click();
+};
 }
 
 export default AuthenticationPage;

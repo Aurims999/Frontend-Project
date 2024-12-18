@@ -11,5 +11,4 @@ export const registrationData = {
     EMAIL_WRONG_FORMAT: 'VBuser.com',
     PASSWORD_VALID: 'paswordas',
     PASSWORD_SHORT: 'vilna',
-
 }
