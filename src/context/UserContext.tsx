@@ -15,12 +15,14 @@ export const UserContext = createContext({
   currentUser: null,
   setCurrentUser: () => null,
   userData: null,
+  isUserLoading: null,
 });
 
 export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userData, setUserData] = useState(null);
-  const value = { currentUser, setCurrentUser, userData };
+  const [isUserLoading, setLoading] = useState(true);
+  const value = { currentUser, setCurrentUser, userData, isUserLoading };
 
   const navigate = useNavigate();
 
@@ -28,23 +30,31 @@ export const UserProvider = ({ children }) => {
     const unsubscribe = onAuthStateChangedListener(async (user) => {
       setCurrentUser(user);
       if (user) {
-        createUserDocument(user);
+        await createUserDocument(user);
         const data = await getOwnData();
         setUserData(data);
-
-        navigate("/");
+        sessionStorage.setItem("userRole", data.userRole);
+        const userNewlyLogged = sessionStorage.getItem("userLogged") === "false" ? true : false;
+        if(userNewlyLogged){
+          sessionStorage.setItem("userLogged", "true");
+          navigate("/");
+        }
       } else {
-        navigate("/guest");
         setUserData(null);
+        sessionStorage.setItem("userLogged", "false");
+        sessionStorage.setItem("userRole", "GUEST");
       }
+
+      setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+    }
   }, []);
 
   useEffect(() => {
     if (!currentUser) {
-      setUserData(null);
       return;
     }
 
