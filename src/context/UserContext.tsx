@@ -33,6 +33,7 @@ export const UserProvider = ({ children }) => {
         createUserDocument(user);
         const data = await getOwnData();
         setUserData(data);
+        sessionStorage.setItem("userRole", data.userRole);
         const userNewlyLogged = sessionStorage.getItem("userLogged") === "false" ? true : false;
         if(userNewlyLogged){
           sessionStorage.setItem("userLogged", "true");
@@ -62,7 +63,6 @@ export const UserProvider = ({ children }) => {
     const unsubscribe = onSnapshot(userDocRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
         setUserData(docSnapshot.data());
-        sessionStorage.setItem("userRole", docSnapshot.data().userRole);
       } else {
         setUserData(null);
       }
