@@ -17,7 +17,9 @@ import { ContentPreviewPage } from "./routes/ContentPreviewPage/ContentPreviewPa
 import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
 import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
 
-import ProtectedRoutes from "./utils/ProtectedRoutes.tsx";
+import { PageNotFound } from "./routes/pageNotFound/PageNotFound.tsx";
+
+import { ProtectedRoutes } from "./utils/ProtectedRoutes.tsx";
 
 import "./index.css";
 import "./animations/animations.css"
@@ -62,8 +64,10 @@ function App() {
   return (
     <div className="appContainer">
       <Routes>
-        <Route path="guest" element={<GuestPage />} />
-        <Route path="login" element={<LoginPage />} />
+        <Route element={<ProtectedRoutes requiredRole="GUEST"/>}>
+          <Route path="guest" element={<GuestPage />} />
+          <Route path="login" element={<LoginPage />} />
+        </Route>
         <Route element={<ProtectedRoutes/>}>
           <Route
             path="/"
@@ -75,12 +79,13 @@ function App() {
             <Route path="settings" element={<SettingsPage/>}>
               <Route path="profileInfo" element={<ProfileInfo/>}/>
               <Route path="personalization" element={<PersonalizationPage/>}/>
-              <Route element={<ProtectedRoutes requiredRole="ADMIN" navigateTo="/"/>}>
+              <Route element={<ProtectedRoutes requiredRole="ADMIN" disableLoadingSreen={true}/>}>
                 <Route path="reporting" element={<ReportingPage/>}/>
               </Route>
             </Route>
           </Route>
         </Route>
+        <Route path="/404" element={<PageNotFound />} />
       </Routes>
     </div>
   );
