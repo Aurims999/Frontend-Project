@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import artistsData from "./data/artists.json";
 import { UserContext } from "./context/UserContext.tsx";
+import { userRoles } from "./utils/userRoles.js"
 
 import Header from "./routes/header/Header.tsx";
 import HomePage from "./routes/homePage/HomePage.tsx";
@@ -11,9 +12,7 @@ import { SettingsPage } from "./routes/settingsPage/SettingsPage.tsx";
 import { ProfileInfo } from "./routes/settingsPage/ProfileInfo.tsx";
 import { PersonalizationPage } from "./routes/settingsPage/PersonalizationPage.tsx";
 import { ReportingPage } from "./routes/settingsPage/ReportingPage.tsx";
-
 import { ContentPreviewPage } from "./routes/ContentPreviewPage/ContentPreviewPage.tsx";
-
 import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
 import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
 
@@ -64,7 +63,7 @@ function App() {
   return (
     <div className="appContainer">
       <Routes>
-        <Route element={<ProtectedRoutes requiredRole="GUEST"/>}>
+        <Route element={<ProtectedRoutes requiredRole={userRoles.GUEST}/>}>
           <Route path="guest" element={<GuestPage />} />
           <Route path="login" element={<LoginPage />} />
         </Route>
@@ -79,7 +78,7 @@ function App() {
             <Route path="settings" element={<SettingsPage/>}>
               <Route path="profileInfo" element={<ProfileInfo/>}/>
               <Route path="personalization" element={<PersonalizationPage/>}/>
-              <Route element={<ProtectedRoutes requiredRole="ADMIN" disableLoadingSreen={true}/>}>
+              <Route element={<ProtectedRoutes requiredRole={userRoles.ADMIN}/>}>
                 <Route path="reporting" element={<ReportingPage/>}/>
               </Route>
             </Route>

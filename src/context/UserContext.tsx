@@ -30,7 +30,7 @@ export const UserProvider = ({ children }) => {
     const unsubscribe = onAuthStateChangedListener(async (user) => {
       setCurrentUser(user);
       if (user) {
-        createUserDocument(user);
+        await createUserDocument(user);
         const data = await getOwnData();
         setUserData(data);
         sessionStorage.setItem("userRole", data.userRole);
