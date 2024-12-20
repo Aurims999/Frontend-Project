@@ -7,6 +7,7 @@ import { loginUser } from "../../../utils/services/databaseInteractions";
 import { validateData } from "../../../utils/services/validateUserInput";
 
 import "./loginForm.css";
+import { useNavigate } from "react-router-dom";
 
 const defaultFields = {
   username: "",
@@ -16,6 +17,7 @@ const defaultFields = {
 export const LoginForm = ({ setPageType, displayValidationPopup }) => {
   const [formFields, setFormFields] = useState(defaultFields);
   const { email, password } = formFields;
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -32,7 +34,12 @@ export const LoginForm = ({ setPageType, displayValidationPopup }) => {
     }
     
     loginErrorMessage = await loginUser(email, password);
-    if(loginErrorMessage) displayValidationPopup(loginErrorMessage);
+    if(loginErrorMessage) {
+      displayValidationPopup(loginErrorMessage)
+      return;
+    };
+
+    navigate("/");
   };
 
   return (
