@@ -8,7 +8,6 @@ export class RegistrationFormPage {
     readonly regPasswordField: Locator;
     readonly regConfirmPasswordF: Locator;
     readonly createAccountButton: Locator;
-    readonly popupMessage: Locator;
     
 constructor(page:Page){
     this.page = page;
@@ -17,7 +16,6 @@ constructor(page:Page){
     this.regPasswordField = page.getByPlaceholder('Create a strong password');
     this.regConfirmPasswordF = page.getByLabel('Confirm Your Password');
     this.createAccountButton = page.getByRole('button', {name: 'Create New Account'});
-    this.popupMessage = page.locator('.popupMessage');
 }
 
 async fillRegistrationForm (
@@ -30,11 +28,5 @@ async fillRegistrationForm (
     await this.regEmailField.fill(email);
     await this.regPasswordField.fill(password);
     await this.regConfirmPasswordF.fill(confirmPassword);
-};
-
-async clickCreateNewAccountAndReceivePopup(message){
-    await this.createAccountButton.click();
-    await expect(this.popupMessage).toBeVisible();
-    await expect(this.popupMessage).toHaveText(message);
 };
 }

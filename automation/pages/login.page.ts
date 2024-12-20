@@ -7,10 +7,8 @@ export class LoginPage {
     readonly emailField: Locator;
     readonly passwordField: Locator;
     readonly accountLoginButton: Locator;
-    readonly popupMessage: Locator;
     readonly exitButton: Locator;
     readonly linkToRegistration: Locator;
-    readonly registerFormTitle: Locator;
     readonly profilePicture: Locator;
     readonly profileDropdownMenu: Locator;
     readonly profileDropdownLogout: Locator;
@@ -21,7 +19,6 @@ constructor(page: Page) {
     this.emailField = page.getByLabel('Email')
     this.passwordField = page.getByLabel('Password');
     this.accountLoginButton = page.getByRole('button', { name: 'Login', exact: true});
-    this.popupMessage = page.locator('.popupMessage');
     this.exitButton = page.locator('a.exitButton');
     this.linkToRegistration = page.getByText('Register by clicking here');
     this.profilePicture = page.getByAltText("An icon of a person's profile view");
@@ -37,12 +34,6 @@ async fillLoginData (email: string, password: string){
 async loginToAccount(){
     await this.fillLoginData(process.env.EMAIL, process.env.PASSWORD);
     await this.accountLoginButton.click();
-};
-
-async clickLoginAndReceivePopupMessage(message){
-    await this.accountLoginButton.click();
-    await expect(this.popupMessage).toBeVisible();
-    await expect(this.popupMessage).toHaveText(message); 
 };
 }
 
