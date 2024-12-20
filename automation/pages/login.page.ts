@@ -1,9 +1,8 @@
 import type { Page, Locator } from '@playwright/test';
-import { expect } from '@playwright/test';
 
 export class LoginPage {
     readonly page: Page;
-    readonly loginPageTitle: Locator;
+    
     readonly emailField: Locator;
     readonly passwordField: Locator;
     readonly accountLoginButton: Locator;
@@ -15,11 +14,9 @@ export class LoginPage {
 
 constructor(page: Page) {
     this.page = page;
-    this.loginPageTitle = page.getByText('Login To Your Account')
     this.emailField = page.getByLabel('Email')
     this.passwordField = page.getByLabel('Password');
     this.accountLoginButton = page.getByRole('button', { name: 'Login', exact: true});
-    this.exitButton = page.locator('a.exitButton');
     this.linkToRegistration = page.getByText('Register by clicking here');
     this.profilePicture = page.getByAltText("An icon of a person's profile view");
     this.profileDropdownMenu = page.locator('.userManagementButton .dropdownMenu');

@@ -1,5 +1,4 @@
 import type { Page, Locator } from '@playwright/test';
-import { expect } from '@playwright/test';
 
 export class RegistrationFormPage {
     readonly page: Page;

@@ -5,3 +5,9 @@ export async function verifyPopupMessage(page: Page, message: string) {
     await expect(popupMessage).toBeVisible();
     await expect(popupMessage).toHaveText(message);
 };
+
+export async function clickExitButton(page: Page) {
+    const exitButton = page.locator('a.exitButton');
+    await expect(exitButton).toBeVisible();
+    await exitButton.click();
+};

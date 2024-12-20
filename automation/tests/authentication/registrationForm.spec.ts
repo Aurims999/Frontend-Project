@@ -22,7 +22,7 @@ import { verifyPopupMessage } from '../../utils/genericMethods.ts';
     });
 
   test.describe('@VB-11 - Registration form. Input validation popup messages', () => {
-    test('@Smoke - User is able to create a new account successfully', async ({page})=> {
+    test('@Smoke - User is able to create a new account successfully', async ()=> {
       await registrationFormPage.fillRegistrationForm(generateRandomString(6), randomEmail, registrationData.PASSWORD_VALID, registrationData.PASSWORD_VALID);
       await registrationFormPage.createAccountButton.click();
       await expect(loginPage.profilePicture).toBeVisible();
