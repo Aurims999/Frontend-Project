@@ -10,11 +10,9 @@ const PORT = process.env.PORT || 5000;
 
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
+let token = ""
 
-const getSpotifyToken = async () => {
-  console.log("client_id:", client_id);
-  console.log("client_secret:", client_secret);
-
+const refreshSpotifyToken = async () => {
     const authOptions = {
       method: 'POST',
       headers: {
@@ -34,7 +32,7 @@ const getSpotifyToken = async () => {
         throw new Error(`Failed to fetch token: ${data.error_description || 'Unknown error'}`);
       }
   
-      return data.access_token;
+      token = data.access_token;
     } catch (error) {
       console.error("Error in getSpotifyToken:", error);
       throw error;
@@ -43,7 +41,8 @@ const getSpotifyToken = async () => {
 
 app.use(express.json());
 
-const token = await getSpotifyToken();
+refreshSpotifyToken();
+setInterval(refreshSpotifyToken, 30 * 50 * 1000);
 
 app.get('/api/artists/:artistId', async (req, res) => {
   const { artistId } = req.params;
