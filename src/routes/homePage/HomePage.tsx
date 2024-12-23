@@ -1,12 +1,31 @@
 import Card from "../../components/Card/Card";
 import { ContentGrid } from "../../components/Containers/ContentGrid/ContentGrid";
 
-const HomePage = ({ songs, artists, favouriteSongs }) => {
+import { useContext } from "react";
+import { SpotifyDataContext } from "../../context/SpotifyDataContext";
+
+const HomePage = ({ artists, favouriteSongs }) => {
+  const {topTracksPlaylist, lithuanianTracksPlaylist} = useContext(SpotifyDataContext);
 
   return (
     <main>
       <ContentGrid title="Top tracks" amountOfColumns={5}>
-      {songs.slice(0,15).map((entry) => {
+      {(topTracksPlaylist.tracks?.items ?? []).slice(0,5).map((entry) => {
+          return (
+            <Card
+              key={entry.track.id}
+              id={entry.track.id}
+              image={entry.track.album.images[0].url}
+              link={entry.track.external_urls.spotify}
+              mainText={entry.track.name}
+              subText={entry.track.artists[0].name}
+              altText={`Image of ${entry.track.artists[0].name}`}
+            />
+          );
+        })}
+      </ContentGrid>
+      <ContentGrid title="🇱🇹 Lithuanian tracks" amountOfColumns={5}>
+      {(lithuanianTracksPlaylist.tracks?.items ?? []).slice(0,5).map((entry) => {
           return (
             <Card
               key={entry.track.id}
@@ -21,7 +40,7 @@ const HomePage = ({ songs, artists, favouriteSongs }) => {
         })}
       </ContentGrid>
       <ContentGrid title="Favourite tracks" amountOfColumns={5}>
-      {favouriteSongs.slice(0,15).map((entry) => {
+      {favouriteSongs.slice(0,5).map((entry) => {
           return (
             <Card
               key={entry.id}
