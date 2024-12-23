@@ -1,4 +1,6 @@
-import { signInAuthUserWithEmailAndPassword, createNewUser } from "../../utils/firebase/firebase.utils";
+import { signInAuthUserWithEmailAndPassword, createNewUser, createUserDocument, getOwnData } from "../../utils/firebase/firebase.utils";
+
+import { userRoles } from "./../userRoles.js"
 
 export const loginUser = async (email : string, password : string) => {
     const loginResults = await signInAuthUserWithEmailAndPassword(email, password);
@@ -14,4 +16,24 @@ export const registerNewUser = async (email : string, password : string, usernam
     });
     
     return registrationResults;
+}
+
+export const handleAuthChange = async (user : object, navigate) => {
+    let userData = null;
+
+    if (user) {
+        await createUserDocument(user);
+        userData = await getOwnData();
+        sessionStorage.setItem("userRole", userData.userRole);
+        const userNewlyLogged = sessionStorage.getItem("userLogged") === "false" ? true : false;
+        if(userNewlyLogged){
+            sessionStorage.setItem("userLogged", "true");
+            navigate("/");
+        }
+    } else {
+        sessionStorage.setItem("userLogged", "false");
+        sessionStorage.setItem("userRole", userRoles.GUEST);
+    }
+
+    return userData
 }

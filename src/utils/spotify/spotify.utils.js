@@ -182,7 +182,6 @@ const fetchMultipleTracks = async (trackId, token) => {
   if (!response.ok) {
     const errorData = await response.json();
     console.error('Error data from Spotify API:', errorData);
-    throw new Error(`Error fetching track data: ${errorData.error.message}`);
   }
 
   return await response.json();

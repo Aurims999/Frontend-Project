@@ -38,6 +38,7 @@ function App() {
 
   const {userData} = useContext(UserContext);
 
+  //TODO:Move favourite songs retrieval logic to spotify data context
   const fetchFavouriteSongs = async () => {
     if (userData.favouriteArtists.length === 0) return;
 
@@ -45,11 +46,12 @@ function App() {
       const artistsIds = userData.favouriteArtists.join(",");
       const response = await fetch(`http://localhost:5000/api/tracks?ids=${artistsIds}`);
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        console.error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
       setFavouriteSongs(data.tracks);
     } catch (error) {
+      //TODO: Implement proper error handling for favourite songs retrieval
       console.error(error);
     }
   }

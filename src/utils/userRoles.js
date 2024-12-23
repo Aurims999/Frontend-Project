@@ -6,7 +6,6 @@ export const userRoles = {
 
 export const isUserRoleValid = (requiredRole, userRole) => {
     switch (userRole) {
-        case userRoles.GUEST:
         case userRoles.USER:
             return requiredRole === userRole;
         case userRoles.ADMIN:

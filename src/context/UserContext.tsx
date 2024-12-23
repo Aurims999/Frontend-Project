@@ -1,15 +1,9 @@
 import { createContext, useState, useEffect } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db, onAuthStateChangedListener } from "../utils/firebase/firebase.utils.js";
 import { useNavigate } from "react-router-dom";
 
-import { getOwnData } from "../utils/firebase/firebase.utils.js"
-import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "../utils/firebase/firebase.utils.js";
-
-
-import {
-  onAuthStateChangedListener,
-  createUserDocument,
-} from "../utils/firebase/firebase.utils.js";
+import { handleAuthChange } from "../utils/services/databaseInteractions.js";
 
 export const UserContext = createContext({
   currentUser: null,
@@ -29,22 +23,8 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener(async (user) => {
       setCurrentUser(user);
-      if (user) {
-        await createUserDocument(user);
-        const data = await getOwnData();
-        setUserData(data);
-        sessionStorage.setItem("userRole", data.userRole);
-        const userNewlyLogged = sessionStorage.getItem("userLogged") === "false" ? true : false;
-        if(userNewlyLogged){
-          sessionStorage.setItem("userLogged", "true");
-          navigate("/");
-        }
-      } else {
-        setUserData(null);
-        sessionStorage.setItem("userLogged", "false");
-        sessionStorage.setItem("userRole", "GUEST");
-      }
-
+      const userData = await handleAuthChange(user, navigate);
+      setUserData(userData);
       setLoading(false);
     });
 

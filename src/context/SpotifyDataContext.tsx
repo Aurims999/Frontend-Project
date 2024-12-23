@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { createContext } from "react";
 
-import { fetchPlaylist } from "../utils/spotify/spotifyAPI";
-import { spotifyPlaylists } from "./../utils/spotify/spotifyPlaylists.js"
+import { fetchDefaultPlaylists } from "../utils/services/spotifyDataRetrieval";
 
 
 export const SpotifyDataContext = createContext({
@@ -20,13 +19,15 @@ export const SpotifyDataProvider = ({children}) => {
   useEffect(() => {
     const fetchData = async () => {
       try{
-        const topTracks = await fetchPlaylist(spotifyPlaylists.TOP_TRACKS);
-        const lithuanianTracks = await fetchPlaylist(spotifyPlaylists.LITHUANIAN_TRACKS);
+        setLoading(true);
+        const {topTracks, lithuanianTracks} = await fetchDefaultPlaylists();
         setTopTracks(topTracks); 
         setLithuanianTracks(lithuanianTracks);
         setLoading(false);
       } catch (error){
+        //TODO: Implement proper error handling logic for Spotify API data retrieval
         console.error("Error while fetching spotify playlists: ", error)
+        setLoading(false);
       }
     }
 

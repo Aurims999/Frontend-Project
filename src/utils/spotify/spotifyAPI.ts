@@ -9,6 +9,7 @@ export const fetchPlaylist = async (playlistId : string) => {
     return playlist
 
   } catch (error) {
+    //TODO: Implement proper error handling for fetchPlaylist() method
     console.error("Error while fetching spotify playlists: ", error)
   }
 };
