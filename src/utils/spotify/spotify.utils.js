@@ -47,7 +47,7 @@ app.use(express.json());
     is called 3s earlier to give time for the Spotify API to generate new token
     and set it in the BE
 */
-REFRESH_TOKEN_INTERVAL_MS = 3597000 // 59 (minutes) * 60 (s) * 1000 (ms) + 57 (s) * 1000 (ms) = 59min 57s
+const REFRESH_TOKEN_INTERVAL_MS = 3597000 // 59 (minutes) * 60 (s) * 1000 (ms) + 57 (s) * 1000 (ms) = 59min 57s
 refreshSpotifyToken();
 setInterval(refreshSpotifyToken, REFRESH_TOKEN_INTERVAL_MS);
 
