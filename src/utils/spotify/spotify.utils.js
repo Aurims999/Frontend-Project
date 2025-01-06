@@ -10,11 +10,9 @@ const PORT = process.env.PORT || 5000;
 
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
+let token = ""
 
-const getSpotifyToken = async () => {
-  console.log("client_id:", client_id);
-  console.log("client_secret:", client_secret);
-
+const refreshSpotifyToken = async () => {
     const authOptions = {
       method: 'POST',
       headers: {
@@ -34,7 +32,7 @@ const getSpotifyToken = async () => {
         throw new Error(`Failed to fetch token: ${data.error_description || 'Unknown error'}`);
       }
   
-      return data.access_token;
+      token = data.access_token;
     } catch (error) {
       console.error("Error in getSpotifyToken:", error);
       throw error;
@@ -43,7 +41,15 @@ const getSpotifyToken = async () => {
 
 app.use(express.json());
 
-const token = await getSpotifyToken();
+/*
+    - Spotify API token expires after 1h
+    - To avoid accidental API call during the refresh process, the refresh method
+    is called 3s earlier to give time for the Spotify API to generate new token
+    and set it in the BE
+*/
+const REFRESH_TOKEN_INTERVAL_MS = 3597000 // 59 (minutes) * 60 (s) * 1000 (ms) + 57 (s) * 1000 (ms) = 59min 57s
+refreshSpotifyToken();
+setInterval(refreshSpotifyToken, REFRESH_TOKEN_INTERVAL_MS);
 
 app.get('/api/artists/:artistId', async (req, res) => {
   const { artistId } = req.params;
