@@ -41,8 +41,15 @@ const refreshSpotifyToken = async () => {
 
 app.use(express.json());
 
+/*
+    - Spotify API token expires after 1h
+    - To avoid accidental API call during the refresh process, the refresh method
+    is called 3s earlier to give time for the Spotify API to generate new token
+    and set it in the BE
+*/
+REFRESH_TOKEN_INTERVAL_MS = 3597000 // 59 (minutes) * 60 (s) * 1000 (ms) + 57 (s) * 1000 (ms) = 59min 57s
 refreshSpotifyToken();
-setInterval(refreshSpotifyToken, 30 * 50 * 1000);
+setInterval(refreshSpotifyToken, REFRESH_TOKEN_INTERVAL_MS);
 
 app.get('/api/artists/:artistId', async (req, res) => {
   const { artistId } = req.params;
