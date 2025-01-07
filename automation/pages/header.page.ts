@@ -1,7 +1,7 @@
 import type { Page, Locator } from '@playwright/test';
 import { expect } from '@playwright/test';
 
-export class HomePage {
+export class HeaderPage {
     readonly page: Page;
     readonly searchInput: Locator;
     readonly searchItemsList: Locator;
@@ -26,4 +26,4 @@ export class HomePage {
     }
 };
 
-export default HomePage;
+export default HeaderPage;
