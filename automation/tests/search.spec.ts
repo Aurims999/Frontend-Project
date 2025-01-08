@@ -4,21 +4,21 @@ import { GuestPage } from '../pages/guest.page.ts';
 import { HeaderPage} from '../pages/header.page.ts';
 import { searchSubstring } from '../test-data/header_page_data.js';
 
-    let loginPage: LoginPage;
-    let guestPage: GuestPage;
-    let headerPage: HeaderPage;
+let loginPage: LoginPage;
+let guestPage: GuestPage;
+let headerPage: HeaderPage;
 
-    test.describe('Search basic function', () => {
-        test.beforeEach(async({page})=>{
-            await page.goto('/');
-            guestPage = new GuestPage(page);
-            loginPage = new LoginPage(page);
-            await guestPage.loginButton.click();
-            await loginPage.fillLoginData(process.env.EMAIL, process.env.PASSWORD);
-            await loginPage.accountLoginButton.click();
-            await expect(loginPage.profilePicture).toBeVisible();
-            headerPage = new HeaderPage(page);
-            }); 
+test.describe('Search basic function', () => {
+    test.beforeEach( async ({page}) => {
+        await page.goto('/');
+        guestPage = new GuestPage(page);
+        loginPage = new LoginPage(page);
+        await guestPage.loginButton.click();
+        await loginPage.fillLoginData(process.env.EMAIL, process.env.PASSWORD);
+        await loginPage.accountLoginButton.click();
+        await expect(loginPage.profilePicture).toBeVisible();
+        headerPage = new HeaderPage(page);
+    }); 
 
     test('User can see matching search results', async({})=>{
         await headerPage.fillSearchBox(searchSubstring.SUBSTRING);
