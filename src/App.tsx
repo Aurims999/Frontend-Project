@@ -17,8 +17,10 @@ import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
 import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
 
 import { PageNotFound } from "./routes/pageNotFound/PageNotFound.tsx";
+import { ScreenOverlay } from "./components/ScreenOverlayMessage/ScreenOverlay.tsx";
 
 import { ProtectedRoutes } from "./utils/ProtectedRoutes.tsx";
+import { useOnlineStatus } from "./utils/services/browserAPI.ts";
 
 import "./index.css";
 import "./animations/animations.css"
@@ -35,6 +37,7 @@ function App() {
   const [artists, setArtists] = useState(artistsData);
   const [filteredArtists, setFilteredData] = useState(artists);
   const [favouriteSongs, setFavouriteSongs] = useState([]);
+  const isOnline = useOnlineStatus();
 
   const {userData} = useContext(UserContext);
 
@@ -64,6 +67,7 @@ function App() {
 
   return (
     <div className="appContainer">
+      {isOnline && <ScreenOverlay/>}
       <Routes>
         <Route element={<ProtectedRoutes requiredRole={userRoles.GUEST}/>}>
           <Route path="guest" element={<GuestPage />} />
@@ -86,7 +90,7 @@ function App() {
             </Route>
           </Route>
         </Route>
-        <Route path="/404" element={<PageNotFound />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
   );
