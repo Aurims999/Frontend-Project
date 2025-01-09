@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import artistsData from "./data/artists.json";
 import { UserContext } from "./context/UserContext.tsx";
+import { WebManagementContext } from "./context/WebManagementContext.tsx";
 import { userRoles } from "./utils/userRoles.js"
 
 import Header from "./routes/header/Header.tsx";
@@ -17,11 +18,11 @@ import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
 import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
 
 import { PageNotFound } from "./routes/pageNotFound/PageNotFound.tsx";
-import { ScreenOverlay } from "./components/ScreenOverlayMessage/ScreenOverlay.tsx";
+import { ScreenOverlay } from "./components/Containers/ScreenOverlayMessage/ScreenOverlay.tsx";
 
 import { ProtectedRoutes } from "./utils/ProtectedRoutes.tsx";
-import { useOnlineStatus } from "./utils/services/browserAPI.ts";
 
+import "./App.css";
 import "./index.css";
 import "./animations/animations.css"
 
@@ -37,9 +38,9 @@ function App() {
   const [artists, setArtists] = useState(artistsData);
   const [filteredArtists, setFilteredData] = useState(artists);
   const [favouriteSongs, setFavouriteSongs] = useState([]);
-  const isOnline = useOnlineStatus();
 
   const {userData} = useContext(UserContext);
+  const { isUserOnline } = useContext(WebManagementContext);
 
   //TODO:Move favourite songs retrieval logic to spotify data context
   const fetchFavouriteSongs = async () => {
@@ -67,7 +68,7 @@ function App() {
 
   return (
     <div className="appContainer">
-      {isOnline && <ScreenOverlay/>}
+      {!isUserOnline && <ScreenOverlay>TEST</ScreenOverlay>}
       <Routes>
         <Route element={<ProtectedRoutes requiredRole={userRoles.GUEST}/>}>
           <Route path="guest" element={<GuestPage />} />

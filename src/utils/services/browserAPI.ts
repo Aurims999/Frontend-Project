@@ -14,4 +14,4 @@ const subscribe = (callback) => {
 export const useOnlineStatus = () => {
     const isOnline = useSyncExternalStore(subscribe, getSnapshot);
     return isOnline;
-  }
+}

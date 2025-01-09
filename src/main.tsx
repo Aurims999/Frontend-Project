@@ -5,17 +5,20 @@ import { BrowserRouter } from "react-router-dom";
 
 import { UserProvider } from "./context/UserContext.tsx";
 import { SpotifyDataProvider } from "./context/SpotifyDataContext.tsx";
+import { WebManagementProvider } from "./context/WebManagementContext.tsx";
 
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <UserProvider>
-        <SpotifyDataProvider>
-          <App />
-        </SpotifyDataProvider>
-      </UserProvider>
+      <WebManagementProvider>
+        <UserProvider>
+          <SpotifyDataProvider>
+            <App />
+          </SpotifyDataProvider>
+        </UserProvider>
+      </WebManagementProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
