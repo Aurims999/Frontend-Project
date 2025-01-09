@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 
+//Contexts
 import artistsData from "./data/artists.json";
 import { UserContext } from "./context/UserContext.tsx";
 import { WebManagementContext } from "./context/WebManagementContext.tsx";
-import { userRoles } from "./utils/userRoles.js"
 
+//PAGES
 import Header from "./routes/header/Header.tsx";
 import HomePage from "./routes/homePage/HomePage.tsx";
 import ProfilePage from "./routes/profilePage/ProfilePage.tsx";
@@ -17,10 +18,16 @@ import { ContentPreviewPage } from "./routes/ContentPreviewPage/ContentPreviewPa
 import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
 import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
 
+//ERROR HANDLING
 import { PageNotFound } from "./routes/pageNotFound/PageNotFound.tsx";
-import { ScreenOverlay } from "./components/Containers/ScreenOverlayMessage/ScreenOverlay.tsx";
+import { ScreenOverlay } from "./components/Containers/ScreenOverlay/ScreenOverlay.tsx";
+import { InfoBlock } from "./components/InfoBlock/InfoBlock.tsx";
+import { NoInternet } from "./components/InfoBlock/info-types/NoInternet.tsx";
 
+//EXTRA
 import { ProtectedRoutes } from "./utils/ProtectedRoutes.tsx";
+import { userRoles } from "./utils/userRoles.js"
+import { preloadData } from "./utils/services/preLoadContent.ts";
 
 import "./App.css";
 import "./index.css";
@@ -61,6 +68,10 @@ function App() {
   }
 
   useEffect(() => {
+    preloadData();
+  }, [])
+
+  useEffect(() => {
     if (userData === null) return;
 
     fetchFavouriteSongs();
@@ -68,7 +79,7 @@ function App() {
 
   return (
     <div className="appContainer">
-      {!isUserOnline && <ScreenOverlay>TEST</ScreenOverlay>}
+      {!isUserOnline && <ScreenOverlay><InfoBlock><NoInternet/></InfoBlock></ScreenOverlay>}
       <Routes>
         <Route element={<ProtectedRoutes requiredRole={userRoles.GUEST}/>}>
           <Route path="guest" element={<GuestPage />} />

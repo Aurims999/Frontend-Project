@@ -1,0 +1,17 @@
+.infoBlock{
+    padding: 2rem 3rem;
+    border-radius: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    background-color: var(--backgroundColor);
+
+    & img {
+        width: 15vw;
+        aspect-ratio: 1/1;
+    }
+}
