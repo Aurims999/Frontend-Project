@@ -20,9 +20,9 @@ import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
 
 //ERROR HANDLING
 import { PageNotFound } from "./routes/pageNotFound/PageNotFound.tsx";
-import { ScreenOverlay } from "./components/Containers/ScreenOverlay/ScreenOverlay.tsx";
-import { InfoBlock } from "./components/InfoBlock/InfoBlock.tsx";
-import { NoInternet } from "./components/InfoBlock/info-types/NoInternet.tsx";
+import { NoInternetErrorPopup } from "./components/InfoBlock/info-types/NoInternetErrorPopup.jsx";
+import { SystemErrorPopup } from "./components/InfoBlock/info-types/SystemErrorPopup.jsx";
+import { ErrorBoundary } from "react-error-boundary";
 
 //EXTRA
 import { ProtectedRoutes } from "./utils/ProtectedRoutes.tsx";
@@ -78,33 +78,35 @@ function App() {
   }, [userData]);
 
   return (
-    <div className="appContainer">
-      {!isUserOnline && <ScreenOverlay><InfoBlock><NoInternet/></InfoBlock></ScreenOverlay>}
-      <Routes>
-        <Route element={<ProtectedRoutes requiredRole={userRoles.GUEST}/>}>
-          <Route path="guest" element={<GuestPage />} />
-          <Route path="login" element={<LoginPage />} />
-        </Route>
-        <Route element={<ProtectedRoutes/>}>
-          <Route
-            path="/"
-            element={<Header data={artists} setResults={setFilteredData} />}
-          >
-            <Route index element={<HomePage artists={filteredArtists} favouriteSongs={favouriteSongs}/>} />
-            <Route path="profile" element={<ProfilePage />} />
-            <Route path="artist/:artistID" element={<ContentPreviewPage />} />
-            <Route path="settings" element={<SettingsPage/>}>
-              <Route path="profileInfo" element={<ProfileInfo/>}/>
-              <Route path="personalization" element={<PersonalizationPage/>}/>
-              <Route element={<ProtectedRoutes requiredRole={userRoles.ADMIN}/>}>
-                <Route path="reporting" element={<ReportingPage/>}/>
+    <ErrorBoundary FallbackComponent={SystemErrorPopup} key={location.pathname}>
+      <div className="appContainer">
+      {!isUserOnline && <NoInternetErrorPopup/>}
+        <Routes>
+          <Route element={<ProtectedRoutes requiredRole={userRoles.GUEST}/>}>
+            <Route path="guest" element={<GuestPage />} />
+            <Route path="login" element={<LoginPage />} />
+          </Route>
+          <Route element={<ProtectedRoutes/>}>
+            <Route
+              path="/"
+              element={<Header data={artists} setResults={setFilteredData} />}
+            >
+              <Route index element={<HomePage artists={filteredArtists} favouriteSongs={favouriteSongs}/>} />
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="artist/:artistID" element={<ContentPreviewPage />} />
+              <Route path="settings" element={<SettingsPage/>}>
+                <Route path="profileInfo" element={<ProfileInfo/>}/>
+                <Route path="personalization" element={<PersonalizationPage/>}/>
+                <Route element={<ProtectedRoutes requiredRole={userRoles.ADMIN}/>}>
+                  <Route path="reporting" element={<ReportingPage/>}/>
+                </Route>
               </Route>
             </Route>
           </Route>
-        </Route>
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
-    </div>
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </div>
+    </ErrorBoundary>
   );
 }
 

@@ -6,7 +6,7 @@ import { SpotifyDataContext } from "../../context/SpotifyDataContext";
 
 const HomePage = ({ artists, favouriteSongs }) => {
   const {topTracksPlaylist, lithuanianTracksPlaylist} = useContext(SpotifyDataContext);
-
+  
   return (
     <main>
       <ContentGrid title="Top tracks" amountOfColumns={5}>
