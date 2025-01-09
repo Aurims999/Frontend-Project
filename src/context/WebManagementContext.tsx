@@ -9,9 +9,5 @@ export const WebManagementProvider = ({children}) => {
   const isUserOnline = useOnlineStatus();
   const value = {isUserOnline};
 
-  useEffect(() => {
-
-  }, [])
-
   return <WebManagementContext.Provider value={value}>{children}</WebManagementContext.Provider>
 }
