@@ -7,7 +7,6 @@ export const WebManagementContext = createContext({
 
 export const WebManagementProvider = ({children}) => {
   const isUserOnline = useOnlineStatus();
-  const value = {isUserOnline};
 
-  return <WebManagementContext.Provider value={value}>{children}</WebManagementContext.Provider>
+  return <WebManagementContext.Provider value={{isUserOnline}}>{children}</WebManagementContext.Provider>
 }

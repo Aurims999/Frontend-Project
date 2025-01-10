@@ -3,7 +3,7 @@ import Button from "../../components/other/Button/Button";
 import "./pageNotFound.css";
 import "./../../animations/animations.css";
 
-export const PageNotFound = ({}) => {
+export const PageNotFound = () => {
   return (
     <div className="pageNotFoundPage">
       <main className="pageContainer">
