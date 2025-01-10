@@ -1,10 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 
+//Contexts
 import artistsData from "./data/artists.json";
 import { UserContext } from "./context/UserContext.tsx";
-import { userRoles } from "./utils/userRoles.js"
+import { WebManagementContext } from "./context/WebManagementContext.tsx";
 
+//PAGES
 import Header from "./routes/header/Header.tsx";
 import HomePage from "./routes/homePage/HomePage.tsx";
 import ProfilePage from "./routes/profilePage/ProfilePage.tsx";
@@ -16,10 +18,18 @@ import { ContentPreviewPage } from "./routes/ContentPreviewPage/ContentPreviewPa
 import { GuestPage } from "./routes/guestPage/GuestPage.tsx";
 import { LoginPage } from "./routes/loginPage/LoginPage.tsx";
 
+//ERROR HANDLING
 import { PageNotFound } from "./routes/pageNotFound/PageNotFound.tsx";
+import { NoInternetErrorPopup } from "./components/InfoBlock/info-types/NoInternetErrorPopup.jsx";
+import { SystemErrorPopup } from "./components/InfoBlock/info-types/SystemErrorPopup.jsx";
+import { ErrorBoundary } from "react-error-boundary";
 
+//EXTRA
 import { ProtectedRoutes } from "./utils/ProtectedRoutes.tsx";
+import { userRoles } from "./utils/userRoles.js"
+import { preloadData } from "./utils/services/preLoadContent.ts";
 
+import "./App.css";
 import "./index.css";
 import "./animations/animations.css"
 
@@ -37,6 +47,7 @@ function App() {
   const [favouriteSongs, setFavouriteSongs] = useState([]);
 
   const {userData} = useContext(UserContext);
+  const { isUserOnline } = useContext(WebManagementContext);
 
   //TODO:Move favourite songs retrieval logic to spotify data context
   const fetchFavouriteSongs = async () => {
@@ -57,38 +68,45 @@ function App() {
   }
 
   useEffect(() => {
+    preloadData();
+  }, [])
+
+  useEffect(() => {
     if (userData === null) return;
 
     fetchFavouriteSongs();
   }, [userData]);
 
   return (
-    <div className="appContainer">
-      <Routes>
-        <Route element={<ProtectedRoutes requiredRole={userRoles.GUEST}/>}>
-          <Route path="guest" element={<GuestPage />} />
-          <Route path="login" element={<LoginPage />} />
-        </Route>
-        <Route element={<ProtectedRoutes/>}>
-          <Route
-            path="/"
-            element={<Header data={artists} setResults={setFilteredData} />}
-          >
-            <Route index element={<HomePage artists={filteredArtists} favouriteSongs={favouriteSongs}/>} />
-            <Route path="profile" element={<ProfilePage />} />
-            <Route path="artist/:artistID" element={<ContentPreviewPage />} />
-            <Route path="settings" element={<SettingsPage/>}>
-              <Route path="profileInfo" element={<ProfileInfo/>}/>
-              <Route path="personalization" element={<PersonalizationPage/>}/>
-              <Route element={<ProtectedRoutes requiredRole={userRoles.ADMIN}/>}>
-                <Route path="reporting" element={<ReportingPage/>}/>
+    <ErrorBoundary FallbackComponent={SystemErrorPopup} key={location.pathname}>
+      <div className="appContainer">
+      {!isUserOnline && <NoInternetErrorPopup/>}
+        <Routes>
+          <Route element={<ProtectedRoutes requiredRole={userRoles.GUEST}/>}>
+            <Route path="guest" element={<GuestPage />} />
+            <Route path="login" element={<LoginPage />} />
+          </Route>
+          <Route element={<ProtectedRoutes/>}>
+            <Route
+              path="/"
+              element={<Header data={artists} setResults={setFilteredData} />}
+            >
+              <Route index element={<HomePage artists={filteredArtists} favouriteSongs={favouriteSongs}/>} />
+              <Route path="profile" element={<ProfilePage />} />
+              <Route path="artist/:artistID" element={<ContentPreviewPage />} />
+              <Route path="settings" element={<SettingsPage/>}>
+                <Route path="profileInfo" element={<ProfileInfo/>}/>
+                <Route path="personalization" element={<PersonalizationPage/>}/>
+                <Route element={<ProtectedRoutes requiredRole={userRoles.ADMIN}/>}>
+                  <Route path="reporting" element={<ReportingPage/>}/>
+                </Route>
               </Route>
             </Route>
           </Route>
-        </Route>
-        <Route path="/404" element={<PageNotFound />} />
-      </Routes>
-    </div>
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </div>
+    </ErrorBoundary>
   );
 }
 
