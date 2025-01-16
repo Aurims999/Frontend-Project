@@ -11,12 +11,6 @@ let header: Header;
 test.describe('Search basic function', () => {
     test.beforeEach( async ({page}) => {
         await page.goto('/');
-        guestPage = new GuestPage(page);
-        loginPage = new LoginPage(page);
-        await guestPage.loginButton.click();
-        await loginPage.fillLoginData(process.env.EMAIL, process.env.PASSWORD);
-        await loginPage.accountLoginButton.click();
-        await expect(loginPage.profilePicture).toBeVisible();
         header = new Header(page);
     }); 
 
