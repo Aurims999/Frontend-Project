@@ -7,6 +7,7 @@ let loginPage: LoginPage;
 let guestPage: GuestPage;
 
 test.describe('Go back to Guest page by clicking Exit Button', ()=> {
+    test.use({storageState: { cookies: [], origins: [] }});
     test.beforeEach(async({page})=>{
         await page.goto('/');
         guestPage = new GuestPage(page);
