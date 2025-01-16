@@ -9,6 +9,8 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  setPersistence,
+  browserLocalPersistence,
 } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, FieldPath, FieldValue } from "firebase/firestore";
 
@@ -31,6 +33,7 @@ provider.setCustomParameters({
 });
 
 export const auth = getAuth();
+await setPersistence(auth, browserLocalPersistence);
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const db = getFirestore();
 
@@ -131,7 +134,7 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    await signInWithEmailAndPassword(auth, email, password);  
     return "";
   } catch (error){
     switch (error.code) {

@@ -10,7 +10,8 @@ export const ProtectedRoutes = ({requiredRole = userRoles.USER}) => {
     const {userData, isUserLoading} = useContext(UserContext);
     const {isDataLoading} = useContext(SpotifyDataContext)
     
-    const sessionUserRole = sessionStorage.getItem("userRole");
+    const sessionUserRole = sessionStorage.getItem("userRole") ?? userRoles.GUEST;
+
     const sessionRoleValid = isUserRoleValid(requiredRole, sessionUserRole);
 
     if (sessionRoleValid){
