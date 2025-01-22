@@ -28,19 +28,19 @@ test.describe('Go back to Guest page by clicking Exit Button', ()=> {
     });
 });
 
-test.describe('VB-36 - Authenticated user is redirected to 404 page, and is able to go back to Home page by clicking Go to Home Page Button', ()=> {
-    invalidNavigationData.forEach(({description, inaccessibleURL, homeURL}) => {
+test.describe('VB-36 - invalid navigation tests with authenticated user ', ()=> {
+    invalidNavigationData.forEach(({description, inaccessibleURL}) => {
         test(description, async ({page}) => {
             await page.goto(inaccessibleURL);
             page404 = new Page404 (page);
             await expect(page404.pageTitle).toHaveText('404');
             await page404.goToHomePageButton.click();
-            await expect(page).toHaveURL(homeURL);
+            await expect(page).toHaveURL('/');
         });
     });
 });
 
-test.describe('Guest user is redirected to 404 page when navigates to non-existent url, and is able to go back to Guest page by clicking Go to Home Page Button', ()=> {
+test.describe('Invalid navigation with Guest user ', ()=> {
     test.use({storageState: { cookies: [], origins: [] }});
     test('VB-36 - When guest user enters invalid url, and is redirected to 404 page, user is able to go back to Guest page', async({page})=> {
         await page.goto('/shopping');
