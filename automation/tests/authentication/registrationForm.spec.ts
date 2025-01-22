@@ -16,9 +16,9 @@ test.use({storageState: { cookies: [], origins: [] }});
 
 test.beforeEach(async({page})=>{
     await page.goto('/');
-  guestPage = new GuestPage(page);
-  loginPage = new LoginPage(page);
-  registrationFormPage = new RegistrationFormPage(page);
+    guestPage = new GuestPage(page);
+    loginPage = new LoginPage(page);
+    registrationFormPage = new RegistrationFormPage(page);
     await guestPage.tryOutButton.click();
     await loginPage.linkToRegistration.click();
   });

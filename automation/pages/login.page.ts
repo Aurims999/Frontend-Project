@@ -13,7 +13,7 @@ export class LoginPage {
 
 constructor(page: Page) {
     this.page = page;
-    this.emailField = page.getByLabel('Email')
+    this.emailField = page.getByLabel('Email');
     this.passwordField = page.getByLabel('Password');
     this.accountLoginButton = page.getByRole('button', { name: 'Login', exact: true});
     this.linkToRegistration = page.getByText('Register by clicking here');
