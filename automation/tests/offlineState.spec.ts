@@ -1,7 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-
-
 test.describe('When user goes offline', () => {
     test.afterEach(async({page})=>{
         await page.context().setOffline(false);
