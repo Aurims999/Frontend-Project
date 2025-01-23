@@ -93,7 +93,7 @@ function App() {
             >
               <Route index element={<HomePage artists={filteredArtists} favouriteSongs={favouriteSongs}/>} />
               <Route path="profile" element={<ProfilePage />} />
-              <Route path="artist/:artistID" element={<ContentPreviewPage />} />
+              <Route path="preview/:dataID" element={<ContentPreviewPage />} />
               <Route path="settings" element={<SettingsPage/>}>
                 <Route path="profileInfo" element={<ProfileInfo/>}/>
                 <Route path="personalization" element={<PersonalizationPage/>}/>

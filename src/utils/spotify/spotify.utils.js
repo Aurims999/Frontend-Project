@@ -62,17 +62,7 @@ app.get('/api/artists/:artistId', async (req, res) => {
   }
 });
 
-app.get('/api/tracks/playlist/:playlistId', async (req, res) => {
-  const {playlistId} = req.params;
 
-  try{
-    const topSongs = await fetchPlaylistData(playlistId);
-    res.json(topSongs);
-  } catch (error) {
-    console.error('Error fetching top songs:', error);
-    res.status(500).json({ error: 'Failed to fetch top songs' });
-  }
-});
 
 app.get('/api/tracks', async (req, res) => {
   const { ids } = req.query;
@@ -117,21 +107,6 @@ app.get('/api/artists/topTracks/:artistId', async(req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-const fetchPlaylistData = async (playlistId) => {
-  const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(`Error fetching top artists: ${errorData.error.message}`);
-  }
-
-  return await response.json();
-};
 
 const fetchArtistData = async (artistId, token) => {
     const response = await fetch(`https://api.spotify.com/v1/artists/${artistId}`, {
@@ -193,3 +168,52 @@ const fetchMultipleTracks = async (trackId, token) => {
   return await response.json();
 }
 
+//#region PLAYLISTS
+app.get('/api/tracks/playlist/:playlistId', async (req, res) => {
+  const { playlistId } = req.params;
+  const offset = parseInt(req.query.offset, 10) || 0
+
+  try{
+    const playlistInfo = await fetchPlaylistInfo(playlistId);
+    const playlistTracks = await fetchPlaylistTracks(playlistId, offset)
+    playlistInfo.tracks = playlistTracks.map(trackData => trackData.track.id);
+    res.json({playlistInfo, playlistTracks});
+  } catch (error) {
+    console.error('Error fetching top songs:', error);
+    res.status(500).json({ error: 'Failed to fetch top songs' });
+  }
+});
+
+const fetchPlaylistInfo = async (playlistId) => {
+  const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}?fields=id,type,name,description,href,public,images(url),followers(total),owner`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error(`Error fetching playlist: ${errorData.error.message}`);
+  }
+
+  return await response.json();
+};
+
+const fetchPlaylistTracks = async (playlistId, offset) => {
+  const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=5&offset=${offset}&fields=items(track)`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error(`Error fetching playlist: ${errorData.error.message}`);
+    return []
+  }
+
+  const responseData = await response.json();
+
+  return responseData.items;
+};
+//#endregion

@@ -25,10 +25,6 @@ export default function SearchBar({searchData, setResult}) {
         setFilteredData(filterContent(searchData, searchValue));
     },[searchValue, searchData]);
 
-    useEffect(() => {
-        console.log(userSelection);
-    }, [userSelection])
-
     return(
         <div className={`searchBar ${filteredData.length > 0 ? 'activeSearch' : ''}`}>
         <input className="searchBar"

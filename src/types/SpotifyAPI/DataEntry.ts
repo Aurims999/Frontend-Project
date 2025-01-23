@@ -2,6 +2,7 @@ export interface DataEntry {
     id: string,
     type: string,
     name: string,
-    href: string | undefined,
-    image: string,
+    image?: string,
+    description?: string,
+    href?: string,
 }

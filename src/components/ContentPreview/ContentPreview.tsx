@@ -2,26 +2,24 @@ import { ContentList } from "../Containers/ContentList/ContentList";
 
 import { LikeButton } from "../other/LikeButton/LikeButton";
 import { ContentBlock } from "../other/ContentBlock/ContentBlock";
+import { Track } from "../../types/SpotifyAPI/Track";
 
 import "./contentPreview.css";
 
-export const ContentPreview = ({data = {}}) => {
-  const {id, name, album, popularity, artists, type} = data;
-  const image = album.images[0].url;
-  const amountOfLikes = popularity;
-  const songArtist = artists.length > 1 ? artists.reduce((artistsList, artist) => artistsList + artist.name + ", ", "").slice(0, -2) : artists[0].name;
-  const genres = [type];
+export const ContentPreview = ({data} : {data : Track}) => {
+  const songArtist = data.artist.length > 1 ? data.artist.reduce((artistsList, artist) => artistsList + artist.name + ", ", "").slice(0, -2) : data.artist[0].name;
+  const genres = ["POP"];
 
   return (
     <section className="contentPreview">
-      <img src={image ? image : "/assets/images/defaultImages/artist__default.png"} alt="" />
+      <img src={data.image ? data.image : "/assets/images/defaultImages/artist__default.png"} alt="" />
       <div className="description">
         <div className="description__TopRow">
           <ContentList>
             <h1 style={{ fontSize: "5rem", marginRight: "2rem" }}>
-              {name}
+              {data.name}
             </h1>
-            <LikeButton songId = {id} amountOfLikes={amountOfLikes}/>
+            <LikeButton songId = {data.id} amountOfLikes={0}/>
           </ContentList>
           <p style={{ fontSize: "1.25rem" }}>{songArtist ? songArtist : ""}</p>
         </div>
