@@ -4,7 +4,7 @@ import { useOnlineStatus } from "./../utils/services/browserAPI";
 export const WebManagementContext = createContext({
     isUserOnline: null,
     isPageLoading: false,
-    setPageLoading: () => null,
+    setPageLoading: (boolean) => null,
 });
 
 export const WebManagementProvider = ({children}) => {

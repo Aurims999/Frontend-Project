@@ -5,7 +5,10 @@ import { SpotifyDataContext } from "../../context/SpotifyDataContext";
 
 import { ContentPreview } from "../../components/ContentPreview/ContentPreview";
 import { ContentGrid } from "../../components/Containers/ContentGrid/ContentGrid";
+
 import Card from "../../components/Card/Card";
+
+import { spotify_dataTypes } from "../../utils/commonConstants.js";
 import { Track } from "../../types/SpotifyAPI/Track";
 
 export const ContentPreviewPage = () => {
@@ -18,21 +21,32 @@ export const ContentPreviewPage = () => {
 
 
   useEffect(() => {
-    const fetchTrack = async () => {
+    const fetchData = async () => {
       try {
         if (dataID){
-          const track = await getTrack(dataID);
-          if (track === null) {
+          let data = null
+          switch (contentType) {
+            case spotify_dataTypes.TRACK:
+              data = await getTrack(dataID);
+              break;
+            case spotify_dataTypes.ARTIST:
+              data = await getArtist(dataID);
+              break;
+            default:
+              console.error("INVALID CONTENT TYPE");
+          }
+          
+          if (data === null) {
             console.log("Non-existing artist ID");
           }
-          setData(track);
+          setData(data);
         }
       } catch (error) {
         console.log(error);
       }
     }
 
-    fetchTrack();
+    fetchData();
   }, [dataID]);
 
   useEffect(() => {
@@ -61,12 +75,7 @@ export const ContentPreviewPage = () => {
           return (
             <Card
               key={track.id}
-              id={track.id}
-              image={track.image}
-              link={track.href}
-              mainText={track.name}
-              subText={track.description}
-              altText={`Image of song ${track.name}`}
+              data = {track}
             />
           );
         })}

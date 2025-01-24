@@ -91,7 +91,7 @@ function App() {
               path="/"
               element={<Header data={artists} setResults={setFilteredData} />}
             >
-              <Route index element={<HomePage artists={filteredArtists} favouriteSongs={favouriteSongs}/>} />
+              <Route index element={<HomePage/>} />
               <Route path="profile" element={<ProfilePage />} />
               <Route path="preview/:dataID" element={<ContentPreviewPage />} />
               <Route path="settings" element={<SettingsPage/>}>
