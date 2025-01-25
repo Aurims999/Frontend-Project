@@ -7,13 +7,15 @@ import { fetchArtistData } from "../utils/spotify/spotifyAPI";
 import { Track } from "../types/SpotifyAPI/Track";
 import { Artist } from "../types/SpotifyAPI/Artist";
 import { Playlist } from "../types/SpotifyAPI/Playlist";
+import { SpotifyDataType } from "../types/SpotifyAPI/DataType";
 
 
 export const SpotifyDataContext = createContext({
     isDataLoading: null,
-    getTrack: (id) => null,
-    getArtist: (id) => null,
-    getPlaylist: (id) => null,
+    getTrack: (id : string) => {},
+    getArtist: (id : string) => {},
+    getPlaylist: (id : string) => {},
+    getDetailedData: (id: string, dataType: string) => {}
 });
 
 export const SpotifyDataProvider = ({children}) => {
@@ -66,7 +68,32 @@ export const SpotifyDataProvider = ({children}) => {
     return playlist;
   }
 
-  const value = {isDataLoading, getTrack, getArtist, getPlaylist};
+  const getDetailedData = async (dataID : string, dataType : SpotifyDataType) => {
+    try{
+        if (!dataID) return null;
+  
+        let data = null;
+        switch (dataType) {
+            case SpotifyDataType.TRACK:
+              data = await getTrack(dataID);
+              break;
+            case SpotifyDataType.ARTIST:
+              data = await getArtist(dataID);
+              break;
+            default:
+              console.error("INVALID CONTENT TYPE");
+        }
+          
+        if (data === null) console.error("Non-existing artist ID");
+  
+        return data;
+    } catch (error) {
+        console.error("Error while fetching data: ", error);
+        return null;
+    }
+  }
+
+  const value = {isDataLoading, getTrack, getArtist, getPlaylist, getDetailedData};
 
   return <SpotifyDataContext.Provider value={value}>{children}</SpotifyDataContext.Provider>
 }
