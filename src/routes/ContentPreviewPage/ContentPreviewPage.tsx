@@ -29,38 +29,42 @@ export const ContentPreviewPage = () => {
     retrieveData();
   }, [dataID]);
 
-  // useEffect(() => {
-  //   if (data == null) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (data == null) return;
 
-  //   const fetchOtherSongs = async () => {
-  //     const artist = await getArtist(data.artist[0].id);
-  //     const tracks = await Promise.all(
-  //       artist.tracks.map(trackId => getTrack(trackId))
-  //     );
-  //     setOtherSongs(tracks);
-  //   }
+    const fetchOtherSongs = async () => {
+      let otherContent : object[] = [];
+      for(const trackArtist of data.artist){
+        const artist = await getDetailedData(trackArtist.id, SpotifyDataType.ARTIST);
+        const tracks = await Promise.all(
+          artist.tracks.map(trackId => getDetailedData(trackId, SpotifyDataType.TRACK))
+        );
+        otherContent.push({artist, tracks});
+      }
 
-  //   fetchOtherSongs();
-  // },
-  // [data]);
+      setOtherSongs(otherContent);
+      console.log("OTHER SONGS: ", otherSongs);
+    }
+
+    fetchOtherSongs();
+  },
+  [data]);
 
   return (
     <main>
       {data && <ContentPreview data={data} />}
-      {/* {otherSongs && 
-      <ContentGrid title="Other songs by the artist">
-          {otherSongs.slice(0,5).map((track : Track) => {
-          return (
-            <Card
-              key={track.id}
-              data = {track}
+      {otherSongs && 
+       otherSongs.map((entry) => (
+        <ContentGrid title={`Other songs by ${entry.artist.name}`} key={entry.artist.id}>
+          {entry.tracks.slice(0, 5).map((track: Track) => (
+            <Card 
+              key={track.id} 
+              data={track} 
             />
-          );
-        })}
-      </ContentGrid>
-        } */}
+          ))}
+        </ContentGrid>
+  ))
+}
     </main>
   );
 };

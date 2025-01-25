@@ -10,7 +10,6 @@ import { DataEntry } from "../../types/SpotifyAPI/DataEntry";
 import { SpotifyDataType } from "../../types/SpotifyAPI/DataType.js";
 
 export const ContentPreview = ({data} : {data : DataEntry}) => {
-  console.log(data);
   return (
     <section className="contentPreview">
       <img className={data.type === SpotifyDataType.ARTIST && "circular"}src={data.image ? data.image : "/assets/images/defaultImages/artist__default.png"} alt="" />
