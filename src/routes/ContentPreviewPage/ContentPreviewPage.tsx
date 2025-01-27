@@ -22,7 +22,7 @@ export const ContentPreviewPage = () => {
 
   useEffect(() => {
     const retrieveData = async () => {
-      const data = await getDetailedData(dataID!, contentType);
+      const data = await getDetailedData(dataID!, contentType!);
       setData(data);
     }
 
@@ -31,22 +31,32 @@ export const ContentPreviewPage = () => {
 
   useEffect(() => {
     if (data == null) return;
-
-    const fetchOtherSongs = async () => {
-      let otherContent : object[] = [];
-      for(const trackArtist of data.artist){
-        const artist = await getDetailedData(trackArtist.id, SpotifyDataType.ARTIST);
-        const tracks = await Promise.all(
-          artist.tracks.map(trackId => getDetailedData(trackId, SpotifyDataType.TRACK))
-        );
-        otherContent.push({artist, tracks});
-      }
-
-      setOtherSongs(otherContent);
-      console.log("OTHER SONGS: ", otherSongs);
+    const getTracks = async (trackIds) => {
+      const tracks = await Promise.all(
+        trackIds.map(trackId => getDetailedData(trackId, SpotifyDataType.TRACK))
+      );
+      return tracks;
     }
 
-    fetchOtherSongs();
+    const fetchRelatedContent = async () => {
+      let relatedContent : object[] = [];
+
+      if(contentType === SpotifyDataType.ARTIST) {
+        const tracks = await getTracks(data.tracks)
+        relatedContent.push({artist: data, tracks});
+      } else {
+        for(const trackArtist of data.artist){
+          const artist = await getDetailedData(trackArtist.id, SpotifyDataType.ARTIST);
+          const tracks = await getTracks(artist.tracks);
+          relatedContent.push({artist, tracks});
+        }
+      }
+      
+      setOtherSongs(relatedContent);
+      console.log("DATA: ", relatedContent);
+    }
+
+    fetchRelatedContent();
   },
   [data]);
 
@@ -56,7 +66,7 @@ export const ContentPreviewPage = () => {
       {otherSongs && 
        otherSongs.map((entry) => (
         <ContentGrid title={`Other songs by ${entry.artist.name}`} key={entry.artist.id}>
-          {entry.tracks.slice(0, 5).map((track: Track) => (
+          {entry.tracks.slice(0, contentType === SpotifyDataType.ARTIST ? 10 : 5).map((track: Track) => (
             <Card 
               key={track.id} 
               data={track} 
