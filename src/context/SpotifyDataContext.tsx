@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState, useContext, useRef } from "react";
 import { createContext } from "react";
+
+import { UserContext } from "./UserContext";
 
 import { fetchPlaylist, fetchTrackData } from "../utils/spotify/spotifyAPI";
 import { fetchArtistData } from "../utils/spotify/spotifyAPI";
@@ -15,54 +17,58 @@ export const SpotifyDataContext = createContext({
     getTrack: (id : string) => {},
     getArtist: (id : string) => {},
     getPlaylist: (id : string) => {},
-    getDetailedData: (id: string, dataType: string) => {}
+    getDetailedData: (id: string, dataType: string) => {},
+    getUserFavouriteTracks : () => {},
 });
 
 export const SpotifyDataProvider = ({children}) => {
   const [isDataLoading, setLoadingStatus] = useState(false);
+  const {userData} = useContext(UserContext);
 
-  const tracks = new Map<string, Track>();
-  const artists = new Map<string, Artist>();
-  const playlists = new Map<string, Playlist[]>();
+  const tracks = useRef(new Map<string, Track>());
+  const artists = useRef(new Map<string, Artist>());
+  const playlists = useRef(new Map<string, Playlist[]>());
 
   const getTrack = async (trackId: string) : Promise<Track> => {
-    if (tracks.has(trackId)) return tracks.get(trackId);
+    if (tracks.current.has(trackId)) return tracks.current.get(trackId);
 
     const track = await fetchTrackData(trackId);
     const artistData = await fetchArtistData(track.artist[0].id);
 
     if (track){
-      tracks.set(trackId, track);
+      tracks.current.set(trackId, track);
     }
 
     return track;
   }
 
   const getArtist = async (artistId: string) : Promise<Artist> => {
-    if (artists.has(artistId)) return artists.get(artistId);
+    if (artists.current.has(artistId)) return artists.current.get(artistId);
 
     const {artist, artistTracks} = await fetchArtistData(artistId);
     artistTracks.forEach(track => {
-      if(!tracks.has(track.id)) tracks.set(track.id, track);
+      if(!tracks.current.has(track.id)) tracks.current.set(track.id, track);
     });
 
     if (artist){
-      artists.set(artist.id, artist);
+      artists.current.set(artist.id, artist);
     }
 
     return artist;
   }
 
   const getPlaylist = async (playlistId : string) : Promise<Playlist> => {
-    if (playlists.has(playlistId)) return playlists.get(playlistId);
+    if (playlists.current.has(playlistId)) {
+      return playlists.current.get(playlistId)
+    };
 
     const {playlist, playlistTracks} = await fetchPlaylist(playlistId);
     playlistTracks.forEach(track => {
-      if(!tracks.has(track.id)) tracks.set(track.id, track);
+      if(!tracks.current.has(track.id)) tracks.current.set(track.id, track);
     });
 
     if (playlist){
-      playlists.set(playlist.id, playlist);
+      playlists.current.set(playlist.id, playlist);
     }
 
     return playlist;
@@ -93,7 +99,17 @@ export const SpotifyDataProvider = ({children}) => {
     }
   }
 
-  const value = {isDataLoading, getTrack, getArtist, getPlaylist, getDetailedData};
+  const getUserFavouriteTracks = async () => {
+    let favouriteTracks = []
+    for (const trackId of userData.favouriteSongs){
+      const track = await getDetailedData(trackId, SpotifyDataType.TRACK);
+      favouriteTracks.push(track);
+    }
+
+    return favouriteTracks;
+  }
+
+  const value = {isDataLoading, getTrack, getArtist, getPlaylist, getDetailedData, getUserFavouriteTracks};
 
   return <SpotifyDataContext.Provider value={value}>{children}</SpotifyDataContext.Provider>
 }

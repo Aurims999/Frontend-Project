@@ -12,14 +12,14 @@ import { SpotifyDataType } from "../../types/SpotifyAPI/DataType.js";
 export const ContentPreview = ({data} : {data : DataEntry}) => {
   return (
     <section className="contentPreview">
-      <img className={data.type === SpotifyDataType.ARTIST && "circular"}src={data.image ? data.image : "/assets/images/defaultImages/artist__default.png"} alt="" />
+      <img className={data.type === SpotifyDataType.ARTIST ? "circular" : undefined}src={data.image ? data.image : "/assets/images/defaultImages/artist__default.png"} alt="" />
       <div className="description">
         <div className="description__TopRow">
           <ContentList>
             <h1 style={{ fontSize: "5rem", marginRight: "2rem" }}>
               {data.name}
             </h1>
-            {data.type === SpotifyDataType.TRACK && <LikeButton songId = {data.id} amountOfLikes={0}/>}
+            <LikeButton entryID = {data.id} amountOfLikes={data.type === SpotifyDataType.ARTIST ? data.followers : undefined} />
           </ContentList>
           {data.type === SpotifyDataType.TRACK &&
             <ContentList>
@@ -31,7 +31,7 @@ export const ContentPreview = ({data} : {data : DataEntry}) => {
             </ContentList>
           }
         </div>
-        {data.type === SpotifyDataType.ARTIST && 
+        {data.type === SpotifyDataType.ARTIST && data.genres.length > 0 &&
         <ContentList title="Genres:">
           {data.genres.map(genre => {
             return (<ContentBlock key={genre}>

@@ -53,7 +53,6 @@ export const ContentPreviewPage = () => {
       }
       
       setOtherSongs(relatedContent);
-      console.log("DATA: ", relatedContent);
     }
 
     fetchRelatedContent();

@@ -28,6 +28,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { ProtectedRoutes } from "./utils/ProtectedRoutes.tsx";
 import { userRoles } from "./utils/userRoles.js"
 import { preloadData } from "./utils/services/preLoadContent.ts";
+import { ScrollToTop } from "./utils/ScrollToTop.tsx";
 
 import "./App.css";
 import "./index.css";
@@ -80,31 +81,30 @@ function App() {
   return (
     <ErrorBoundary FallbackComponent={SystemErrorPopup} key={location.pathname}>
       <div className="appContainer">
-      {!isUserOnline && <NoInternetErrorPopup/>}
-        <Routes>
-          <Route element={<ProtectedRoutes requiredRole={userRoles.GUEST}/>}>
-            <Route path="guest" element={<GuestPage />} />
-            <Route path="login" element={<LoginPage />} />
-          </Route>
-          <Route element={<ProtectedRoutes/>}>
-            <Route
-              path="/"
-              element={<Header data={artists} setResults={setFilteredData} />}
-            >
-              <Route index element={<HomePage/>} />
-              <Route path="profile" element={<ProfilePage />} />
-              <Route path="preview/:dataID" element={<ContentPreviewPage />} />
-              <Route path="settings" element={<SettingsPage/>}>
-                <Route path="profileInfo" element={<ProfileInfo/>}/>
-                <Route path="personalization" element={<PersonalizationPage/>}/>
-                <Route element={<ProtectedRoutes requiredRole={userRoles.ADMIN}/>}>
-                  <Route path="reporting" element={<ReportingPage/>}/>
+        {!isUserOnline && <NoInternetErrorPopup />}
+        <ScrollToTop>
+          <Routes>
+            <Route element={<ProtectedRoutes requiredRole={userRoles.GUEST} />}>
+              <Route path="guest" element={<GuestPage />} />
+              <Route path="login" element={<LoginPage />} />
+            </Route>
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/" element={<Header data={artists} setResults={setFilteredData} />}>
+                <Route index element={<HomePage />} />
+                <Route path="profile" element={<ProfilePage />} />
+                <Route path="preview/:dataID" element={<ContentPreviewPage />} />
+                <Route path="settings" element={<SettingsPage />}>
+                  <Route path="profileInfo" element={<ProfileInfo />} />
+                  <Route path="personalization" element={<PersonalizationPage />} />
+                  <Route element={<ProtectedRoutes requiredRole={userRoles.ADMIN} />}>
+                    <Route path="reporting" element={<ReportingPage />} />
+                  </Route>
                 </Route>
               </Route>
             </Route>
-          </Route>
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </ScrollToTop>
       </div>
     </ErrorBoundary>
   );

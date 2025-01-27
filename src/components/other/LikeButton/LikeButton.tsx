@@ -1,33 +1,39 @@
 import { useState, useEffect, useContext } from "react";
-import { addArtistToFavourites, removeArtistFromFavourites } from "../../../utils/firebase/firebase.utils.js";
+import { addToFavourites, removeFromFavourites } from "../../../utils/firebase/firebase.utils.js";
 import { UserContext } from "../../../context/UserContext.js";
+import { useSearchParams } from "react-router-dom";
 
 import "./likeButton.css";
 
-export const LikeButton = ({songId, amountOfLikes = 0}) => {
-  const [likes, setLikes] = useState("0");
+export const LikeButton = ({entryID, amountOfLikes = 0}) => {
+  const [likes, setLikes] = useState(amountOfLikes);
   const [isLiked, setLiked] = useState(false);
   const {userData} = useContext(UserContext);
 
-  useEffect(() => {
-    setLiked(userData.favouriteArtists.includes(songId));
-  })
+  const [searchParameters] = useSearchParams();
+  const contentType = searchParameters.get("contentType");
 
-  useEffect(() => {
-    if(amountOfLikes >= 1000){
-      setLikes(amountOfLikes >= 1000000 ? (Math.round(amountOfLikes / 1000000) + " M") : (Math.round(amountOfLikes / 1000) + " K"));
+  const formatAmountOfLikes = (numberOfLikes) => {
+    if(numberOfLikes >= 1000){
+      return numberOfLikes >= 1000000 ? (Math.round(numberOfLikes / 1000000) + " M") : (Math.round(numberOfLikes / 1000) + " K");
     } else {
-      setLikes(amountOfLikes.toString());
+      return numberOfLikes;
     }
-  }, [amountOfLikes]);
+  }
+  
+  useEffect(() => {
+    setLiked(userData.favouriteSongs.includes(entryID));
+    setLikes(formatAmountOfLikes(amountOfLikes));
+  }, [])
 
   const handlePress = async () => {
-    if (isLiked){
-      await removeArtistFromFavourites(songId);
-    } else{
-      await addArtistToFavourites(songId);
+    if (isLiked) {
+      setLiked(!isLiked);
+      await removeFromFavourites(entryID, contentType);
+    } else {
+      setLiked(!isLiked);
+      await addToFavourites(entryID, contentType);
     }
-    setLiked(!isLiked);
   } 
 
   return (
@@ -38,7 +44,7 @@ export const LikeButton = ({songId, amountOfLikes = 0}) => {
         className="icon"
         onClick={() => handlePress()}
       />
-      <p>{likes}</p>
+      {likes != 0 && <p>{likes}</p>}
     </div>
   );
 };

@@ -7,13 +7,15 @@ import { WebManagementContext } from "../../context/WebManagementContext.js";
 import { spotifyPlaylists } from "./../../utils/spotify/spotifyPlaylists.js"
 
 const HomePage = () => {
-  const {getPlaylist, getTrack} = useContext(SpotifyDataContext);
+  const {getPlaylist, getTrack, getUserFavouriteTracks} = useContext(SpotifyDataContext);
   const {setPageLoading} = useContext(WebManagementContext)
   const [defaultPlaylists, setdefaultPlaylists] = useState([]);
+  const [favouriteTracks, setFavouriteTracks] = useState([]);
 
   const defaultPlaylistsIDs = [
     spotifyPlaylists.TOP_TRACKS,
     spotifyPlaylists.LITHUANIAN_TRACKS,
+    spotifyPlaylists.ALL_TIME_HITS,
   ]
 
   useEffect(() => {
@@ -30,6 +32,8 @@ const HomePage = () => {
       }
 
       setdefaultPlaylists(playlists);
+      const userFavouriteTracks = await getUserFavouriteTracks();
+      setFavouriteTracks(userFavouriteTracks);
       setPageLoading(false);
     }
 
@@ -52,21 +56,16 @@ const HomePage = () => {
           </ContentGrid> 
         )
       })}
-      {/* <ContentGrid title="Favourite tracks" amountOfColumns={5}>
-      {favouriteSongs.slice(0,5).map((entry) => {
+      <ContentGrid title="Favourite tracks" amountOfColumns={5}>
+      {favouriteTracks.map((track) => {
           return (
             <Card
-              key={entry.id}
-              id={entry.id}
-              image={entry.album.images[0].url}
-              link={entry.external_urls.spotify}
-              mainText={entry.name}
-              subText={entry.artists[0].name}
-              altText={`Image of ${entry.artists[0].name}`}
+              key={track.id}
+              data={track}
             />
           );
         })}
-      </ContentGrid> */}
+      </ContentGrid>
     </main>
   );
 };

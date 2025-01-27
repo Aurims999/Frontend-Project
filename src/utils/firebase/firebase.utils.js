@@ -15,6 +15,7 @@ import {
 import { getFirestore, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, FieldPath, FieldValue } from "firebase/firestore";
 
 import { validationMessages } from "../messages/popupMessages.js"
+import { SpotifyDataType } from "../../types/SpotifyAPI/DataType.ts"
 
 const firebaseConfig = {
   apiKey: "AIzaSyBeoY2lyUEs6HFMUnjjDhmclJec6NqLJAY",
@@ -154,17 +155,42 @@ export const onAuthStateChangedListener = (callback) =>
 //#endregion
 
 //#region ARTISTS
-export const addArtistToFavourites = async (artistId) => {
-  const userDocRef = doc(db, "users", auth.currentUser.uid);
-  await updateDoc(userDocRef, {
-    "favouriteArtists": arrayUnion(artistId),
-  });
+const getRequiredTable = (dataType) => {
+  let table = null;
+  switch(dataType){
+    case SpotifyDataType.TRACK:
+      table = "favouriteSongs";
+      break;
+    case SpotifyDataType.ARTIST:
+      table = "favouriteArtists";
+      break;
+  }
+
+  return table;
 }
 
-export const removeArtistFromFavourites = async (artistId) => {
-  const userDocRef = doc(db, "users", auth.currentUser.uid);
-  await updateDoc(userDocRef, {
-    "favouriteArtists": arrayRemove(artistId),
-  });
-}
+
+export const addToFavourites = async (id, dataType) => {
+  try {
+    const userDocRef = doc(db, "users", auth.currentUser.uid);
+    const table = getRequiredTable(dataType);
+    await updateDoc(userDocRef, {
+      [table]: arrayUnion(id),
+    });
+  } catch (error) {
+    console.error("Error adding to favourites:", error);
+  }
+};
+
+export const removeFromFavourites = async (id, dataType) => {
+  try {
+    const userDocRef = doc(db, "users", auth.currentUser.uid);
+    const table = getRequiredTable(dataType);
+    await updateDoc(userDocRef, {
+      [table]: arrayRemove(id),
+    });
+  } catch (error) {
+    console.error("Error removing from favourites:", error);
+  }
+};
 //#endregion
