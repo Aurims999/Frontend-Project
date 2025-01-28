@@ -4,6 +4,7 @@ import { UserContext } from "../../../context/UserContext.js";
 import { useSearchParams } from "react-router-dom";
 
 import "./likeButton.css";
+import { SpotifyDataType } from "../../../types/SpotifyAPI/DataType.js";
 
 export const LikeButton = ({entryID, amountOfLikes = 0}) => {
   const [likes, setLikes] = useState(amountOfLikes);
@@ -22,9 +23,17 @@ export const LikeButton = ({entryID, amountOfLikes = 0}) => {
   }
   
   useEffect(() => {
-    setLiked(userData.favouriteSongs.includes(entryID));
+    switch(contentType){
+      case SpotifyDataType.TRACK:
+        setLiked(userData.favouriteSongs.includes(entryID));
+        break;
+      case SpotifyDataType.ARTIST:
+        setLiked(userData.favouriteArtists.includes(entryID));
+        break;
+    }
+    
     setLikes(formatAmountOfLikes(amountOfLikes));
-  }, [])
+  }, [entryID])
 
   const handlePress = async () => {
     if (isLiked) {

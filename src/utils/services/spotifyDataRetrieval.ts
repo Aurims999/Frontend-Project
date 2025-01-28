@@ -1,13 +1,21 @@
-import { useContext } from "react";
-import { SpotifyDataContext } from "../../context/SpotifyDataContext.js";
+import { SpotifyDataType } from "../../types/SpotifyAPI/DataType.js";
 
-export const fetchTrack = async (trackId) => {
-    const {getTrack} = useContext(SpotifyDataContext);
-    const track = await getTrack(trackId);
-    if (track === null) {
-        console.log("Non-existing artist ID");
-        return {};
+export const fetchDefaultPlaylists = async (ids, getDetailedData, getUserFavouriteTracks) => {
+    let playlists = [];
+    for(const id of ids){
+        const playlist = await getDetailedData(id, SpotifyDataType.PLAYLIST);
+        const playlistTracks = await getDetailedData(playlist.tracks, SpotifyDataType.TRACK);
+        
+        playlists.push({title: playlist.name, tracks: playlistTracks});
     }
-    return track;
-};
 
+    const userFavouriteTracks = await getUserFavouriteTracks();
+
+    return {playlists, userFavouriteTracks} 
+}
+
+export const fetchProfilePageData = async (getUserFavouriteTracks, getUserFavouriteArtists) => {
+    const userFavouriteTracks = await getUserFavouriteTracks();
+    const userFavouriteArtists = await getUserFavouriteArtists();
+    return {tracks: userFavouriteTracks, artists: userFavouriteArtists};
+}

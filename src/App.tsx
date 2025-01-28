@@ -45,38 +45,12 @@ export type TCard = {
 function App() {
   const [artists, setArtists] = useState(artistsData);
   const [filteredArtists, setFilteredData] = useState(artists);
-  const [favouriteSongs, setFavouriteSongs] = useState([]);
-
-  const {userData} = useContext(UserContext);
+  
   const { isUserOnline } = useContext(WebManagementContext);
-
-  //TODO:Move favourite songs retrieval logic to spotify data context
-  const fetchFavouriteSongs = async () => {
-    if (userData.favouriteArtists.length === 0) return;
-
-    try {
-      const artistsIds = userData.favouriteArtists.join(",");
-      const response = await fetch(`http://localhost:5000/api/tracks?ids=${artistsIds}`);
-      if (!response.ok) {
-        console.error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setFavouriteSongs(data.tracks);
-    } catch (error) {
-      //TODO: Implement proper error handling for favourite songs retrieval
-      console.error(error);
-    }
-  }
 
   useEffect(() => {
     preloadData();
   }, [])
-
-  useEffect(() => {
-    if (userData === null) return;
-
-    fetchFavouriteSongs();
-  }, [userData]);
 
   return (
     <ErrorBoundary FallbackComponent={SystemErrorPopup} key={location.pathname}>

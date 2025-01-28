@@ -51,19 +51,11 @@ const REFRESH_TOKEN_INTERVAL_MS = 3597000 // 59 (minutes) * 60 (s) * 1000 (ms) +
 refreshSpotifyToken();
 setInterval(refreshSpotifyToken, REFRESH_TOKEN_INTERVAL_MS);
 
-app.get('/api/artists/:artistId', async (req, res) => {
-  const { artistId } = req.params;
-  try {
-      const artistData = await fetchArtistData(artistId, token);
-      res.json(artistData);
-  } catch (error) {
-      console.error('Error fetching artist data:', error);
-      res.status(500).json({ error: 'Failed to fetch artist data' });
-  }
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
-
-
+//#region TRACKS
 app.get('/api/tracks', async (req, res) => {
   const { ids } = req.query;
 
@@ -92,37 +84,6 @@ app.get('/api/tracks/:trackId', async (req, res) => {
   }
 });
 
-app.get('/api/artists/topTracks/:artistId', async(req, res) => {
-  const { artistId } = req.params;
-
-  try {
-    const artistData = await fetchArtistTracks(artistId, token);
-    res.json(artistData);
-  } catch (error) {
-    console.error('Error fetching artist tracks:', error);
-    res.status(500).json({ error: 'Failed to fetch artist tracks' });
-  }
-})
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
-const fetchArtistData = async (artistId, token) => {
-    const response = await fetch(`https://api.spotify.com/v1/artists/${artistId}`, {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-        },
-    });
-
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(`Error fetching artist data: ${errorData.error.message}`);
-    }
-
-    return await response.json();
-};
-
 const fetchTrackData = async (trackId, token) => {
   const response = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
       headers: { 
@@ -133,21 +94,6 @@ const fetchTrackData = async (trackId, token) => {
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(`Error fetching track data: ${errorData.error.message}`);
-  }
-
-  return await response.json();
-};
-
-const fetchArtistTracks = async (artistId, token) => {
-  const response = await fetch(`https://api.spotify.com/v1/artists/${artistId}/top-tracks`, {
-      headers: { 
-        'Authorization': `Bearer ${token}`, 
-      }, 
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(`Error fetching artist track data: ${errorData.error.message}`);
   }
 
   return await response.json();
@@ -167,6 +113,93 @@ const fetchMultipleTracks = async (trackId, token) => {
 
   return await response.json();
 }
+//#endregion
+
+//#region ARTISTS
+app.get('/api/artists/:artistId', async (req, res) => {
+  const { artistId } = req.params;
+  try {
+      const artistData = await fetchArtistData(artistId, token);
+      res.json(artistData);
+  } catch (error) {
+      console.error('Error fetching artist data:', error);
+      res.status(500).json({ error: 'Failed to fetch artist data' });
+  }
+});
+
+app.get('/api/artists', async (req, res) => {
+  const { ids } = req.query;
+
+  if(!ids) {
+    return res.status(400).json({ error: 'Missing track IDs' });
+  }
+
+  try {
+      const artists = await fetchMultipleArtists(ids, token);
+      res.json(artists);
+  } catch (error) {
+      console.error('Error fetching multiple artists data:', error);
+      res.status(500).json({ error: 'Failed to fetch artist data' });
+  }
+});
+
+app.get('/api/artists/topTracks/:artistId', async(req, res) => {
+  const { artistId } = req.params;
+
+  try {
+    const artistData = await fetchArtistTracks(artistId, token);
+    res.json(artistData);
+  } catch (error) {
+    console.error('Error fetching artist tracks:', error);
+    res.status(500).json({ error: 'Failed to fetch artist tracks' });
+  }
+})
+
+const fetchArtistData = async (artistId, token) => {
+  const response = await fetch(`https://api.spotify.com/v1/artists/${artistId}`, {
+      headers: {
+          'Authorization': `Bearer ${token}`,
+      },
+  });
+
+  if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Error fetching artist data: ${errorData.error.message}`);
+  }
+
+  return await response.json();
+};
+
+const fetchMultipleArtists = async (artistIds, token) => {
+  const response = await fetch(`https://api.spotify.com/v1/artists?ids=${artistIds}`, {
+    headers: {
+        'Authorization': `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Error fetching artist data: ${errorData.error.message}`);
+  }
+
+  return await response.json();
+}
+
+const fetchArtistTracks = async (artistId, token) => {
+  const response = await fetch(`https://api.spotify.com/v1/artists/${artistId}/top-tracks`, {
+      headers: { 
+        'Authorization': `Bearer ${token}`, 
+      }, 
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(`Error fetching artist track data: ${errorData.error.message}`);
+  }
+
+  return await response.json();
+};
+//#endregion
 
 //#region PLAYLISTS
 app.get('/api/tracks/playlist/:playlistId', async (req, res) => {

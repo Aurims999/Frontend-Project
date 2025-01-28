@@ -6,10 +6,12 @@ import { SpotifyDataContext } from "../../context/SpotifyDataContext";
 import { WebManagementContext } from "../../context/WebManagementContext.js";
 import { spotifyPlaylists } from "./../../utils/spotify/spotifyPlaylists.js"
 
+import { fetchDefaultPlaylists } from "../../utils/services/spotifyDataRetrieval.ts";
+
 const HomePage = () => {
-  const {getPlaylist, getTrack, getUserFavouriteTracks} = useContext(SpotifyDataContext);
+  const {getDetailedData, getUserFavouriteTracks} = useContext(SpotifyDataContext);
   const {setPageLoading} = useContext(WebManagementContext)
-  const [defaultPlaylists, setdefaultPlaylists] = useState([]);
+  const [defaultPlaylists, setDefaultPlaylists] = useState([]);
   const [favouriteTracks, setFavouriteTracks] = useState([]);
 
   const defaultPlaylistsIDs = [
@@ -20,29 +22,16 @@ const HomePage = () => {
 
   useEffect(() => {
     setPageLoading(true);
-
-    const fetchDefaultPlaylists = async () => {
-      let playlists = [];
-      for(const id of defaultPlaylistsIDs){
-        const playlist = await getPlaylist(id);
-        const playlistTracks = await Promise.all(
-          playlist.tracks.map((trackID) => getTrack(trackID))
-        );
-        playlists.push({title: playlist.name, tracks: playlistTracks});
-      }
-
-      setdefaultPlaylists(playlists);
-      const userFavouriteTracks = await getUserFavouriteTracks();
+    fetchDefaultPlaylists(defaultPlaylistsIDs, getDetailedData, getUserFavouriteTracks)
+    .then(({playlists, userFavouriteTracks}) => {
+      setDefaultPlaylists(playlists);
       setFavouriteTracks(userFavouriteTracks);
-      setPageLoading(false);
-    }
-
-    fetchDefaultPlaylists();
+    }).finally(() => setPageLoading(false));
   }, [])
   
   return (
     <main>
-      {defaultPlaylists.map(playlist => {
+      {defaultPlaylists?.map(playlist => {
         return(
           <ContentGrid title={playlist.title} amountOfColumns={5} key={playlist.title}>
             {(playlist.tracks ?? []).slice(0,5).map((track) => {
@@ -57,7 +46,7 @@ const HomePage = () => {
         )
       })}
       <ContentGrid title="Favourite tracks" amountOfColumns={5}>
-      {favouriteTracks.map((track) => {
+      {favouriteTracks?.map((track) => {
           return (
             <Card
               key={track.id}

@@ -3,8 +3,7 @@ import { createContext } from "react";
 
 import { UserContext } from "./UserContext";
 
-import { fetchPlaylist, fetchTrackData } from "../utils/spotify/spotifyAPI";
-import { fetchArtistData } from "../utils/spotify/spotifyAPI";
+import { fetchPlaylist, fetchTrackData, fetchArtistData, fetchMultipleTracks, fetchMultipleArtists } from "../utils/spotify/spotifyAPI";
 
 import { Track } from "../types/SpotifyAPI/Track";
 import { Artist } from "../types/SpotifyAPI/Artist";
@@ -14,11 +13,9 @@ import { SpotifyDataType } from "../types/SpotifyAPI/DataType";
 
 export const SpotifyDataContext = createContext({
     isDataLoading: null,
-    getTrack: (id : string) => {},
-    getArtist: (id : string) => {},
-    getPlaylist: (id : string) => {},
     getDetailedData: (id: string, dataType: string) => {},
     getUserFavouriteTracks : () => {},
+    getUserFavouriteArtists : () => {},
 });
 
 export const SpotifyDataProvider = ({children}) => {
@@ -30,10 +27,11 @@ export const SpotifyDataProvider = ({children}) => {
   const playlists = useRef(new Map<string, Playlist[]>());
 
   const getTrack = async (trackId: string) : Promise<Track> => {
-    if (tracks.current.has(trackId)) return tracks.current.get(trackId);
+    if (tracks.current.has(trackId)) {
+      return tracks.current.get(trackId)!
+    };
 
     const track = await fetchTrackData(trackId);
-    const artistData = await fetchArtistData(track.artist[0].id);
 
     if (track){
       tracks.current.set(trackId, track);
@@ -42,8 +40,32 @@ export const SpotifyDataProvider = ({children}) => {
     return track;
   }
 
+  const getMultipleTracks = async (tracksIds : string[]) : Promise<Track[]> => {
+    let requestedTracks = [];
+    let missingTracksIds = "";
+    for(const trackID of tracksIds){
+      if(tracks.current.has(trackID)) {
+        requestedTracks.push(tracks.current.get(trackID))
+      } else {
+        missingTracksIds += trackID + ",";
+      }
+    }
+
+    if(missingTracksIds != ""){
+      const remainingTracks = await fetchMultipleTracks(missingTracksIds);
+      remainingTracks.forEach(track => {
+        tracks.current.set(track.id, track);
+        requestedTracks.push(track);
+      });
+    }
+
+    return requestedTracks;
+  }
+
   const getArtist = async (artistId: string) : Promise<Artist> => {
-    if (artists.current.has(artistId)) return artists.current.get(artistId);
+    if (artists.current.has(artistId)) {
+      return artists.current.get(artistId);
+    }
 
     const {artist, artistTracks} = await fetchArtistData(artistId);
     artistTracks.forEach(track => {
@@ -55,6 +77,28 @@ export const SpotifyDataProvider = ({children}) => {
     }
 
     return artist;
+  }
+
+  const getMultipleArtists = async (artistIds : string[]) => {
+    let requestedArtists = [];
+    let missingArtistIds = "";
+    for(const artistID of artistIds){
+      if(artists.current.has(artistID)) {
+        requestedArtists.push(artists.current.get(artistID))
+      } else {
+        missingArtistIds += artistID + ",";
+      }
+    }
+
+    if(missingArtistIds != ""){
+      const remainingArtists = await fetchMultipleArtists(missingArtistIds);
+      remainingArtists.forEach(artist => {
+        tracks.current.set(artist.id, artist);
+        requestedArtists.push(artist);
+      });
+    }
+
+    return requestedArtists;
   }
 
   const getPlaylist = async (playlistId : string) : Promise<Playlist> => {
@@ -74,24 +118,27 @@ export const SpotifyDataProvider = ({children}) => {
     return playlist;
   }
 
-  const getDetailedData = async (dataID : string, dataType : SpotifyDataType) => {
+  const getDetailedData = async (dataID : string | string[], dataType : SpotifyDataType) => {
     try{
         if (!dataID) return null;
   
         let data = null;
         switch (dataType) {
             case SpotifyDataType.TRACK:
-              data = await getTrack(dataID);
+              data = await Array.isArray(dataID) ? getMultipleTracks(dataID) : getTrack(dataID);
               break;
             case SpotifyDataType.ARTIST:
-              data = await getArtist(dataID);
+              data = await Array.isArray(dataID) ? getMultipleArtists(dataID) : getArtist(dataID);
+              break;
+            case SpotifyDataType.PLAYLIST:
+              data = await getPlaylist(dataID);
               break;
             default:
               console.error("INVALID CONTENT TYPE");
         }
           
         if (data === null) console.error("Non-existing artist ID");
-  
+
         return data;
     } catch (error) {
         console.error("Error while fetching data: ", error);
@@ -100,16 +147,18 @@ export const SpotifyDataProvider = ({children}) => {
   }
 
   const getUserFavouriteTracks = async () => {
-    let favouriteTracks = []
-    for (const trackId of userData.favouriteSongs){
-      const track = await getDetailedData(trackId, SpotifyDataType.TRACK);
-      favouriteTracks.push(track);
-    }
+    const favouriteTracks = await getDetailedData(userData.favouriteSongs, SpotifyDataType.TRACK);
 
     return favouriteTracks;
   }
 
-  const value = {isDataLoading, getTrack, getArtist, getPlaylist, getDetailedData, getUserFavouriteTracks};
+  const getUserFavouriteArtists = async () => {
+    const favouriteArtists = await getDetailedData(userData.favouriteArtists, SpotifyDataType.ARTIST);
+
+    return favouriteArtists;
+  }
+
+  const value = {isDataLoading, getDetailedData, getUserFavouriteTracks, getUserFavouriteArtists};
 
   return <SpotifyDataContext.Provider value={value}>{children}</SpotifyDataContext.Provider>
 }
