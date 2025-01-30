@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 
 //Contexts
 import artistsData from "./data/artists.json";
-import { UserContext } from "./context/UserContext.tsx";
 import { WebManagementContext } from "./context/WebManagementContext.tsx";
 
 //PAGES
@@ -28,6 +27,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { ProtectedRoutes } from "./utils/ProtectedRoutes.tsx";
 import { userRoles } from "./utils/userRoles.js"
 import { preloadData } from "./utils/services/preLoadContent.ts";
+import { ScrollToTop } from "./utils/ScrollToTop.tsx";
 
 import "./App.css";
 import "./index.css";
@@ -44,67 +44,40 @@ export type TCard = {
 function App() {
   const [artists, setArtists] = useState(artistsData);
   const [filteredArtists, setFilteredData] = useState(artists);
-  const [favouriteSongs, setFavouriteSongs] = useState([]);
-
-  const {userData} = useContext(UserContext);
+  
   const { isUserOnline } = useContext(WebManagementContext);
-
-  //TODO:Move favourite songs retrieval logic to spotify data context
-  const fetchFavouriteSongs = async () => {
-    if (userData.favouriteArtists.length === 0) return;
-
-    try {
-      const artistsIds = userData.favouriteArtists.join(",");
-      const response = await fetch(`http://localhost:5000/api/tracks?ids=${artistsIds}`);
-      if (!response.ok) {
-        console.error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setFavouriteSongs(data.tracks);
-    } catch (error) {
-      //TODO: Implement proper error handling for favourite songs retrieval
-      console.error(error);
-    }
-  }
 
   useEffect(() => {
     preloadData();
   }, [])
 
-  useEffect(() => {
-    if (userData === null) return;
-
-    fetchFavouriteSongs();
-  }, [userData]);
-
   return (
     <ErrorBoundary FallbackComponent={SystemErrorPopup} key={location.pathname}>
       <div className="appContainer">
-      {!isUserOnline && <NoInternetErrorPopup/>}
-        <Routes>
-          <Route element={<ProtectedRoutes requiredRole={userRoles.GUEST}/>}>
-            <Route path="guest" element={<GuestPage />} />
-            <Route path="login" element={<LoginPage />} />
-          </Route>
-          <Route element={<ProtectedRoutes/>}>
-            <Route
-              path="/"
-              element={<Header data={artists} setResults={setFilteredData} />}
-            >
-              <Route index element={<HomePage artists={filteredArtists} favouriteSongs={favouriteSongs}/>} />
-              <Route path="profile" element={<ProfilePage />} />
-              <Route path="artist/:artistID" element={<ContentPreviewPage />} />
-              <Route path="settings" element={<SettingsPage/>}>
-                <Route path="profileInfo" element={<ProfileInfo/>}/>
-                <Route path="personalization" element={<PersonalizationPage/>}/>
-                <Route element={<ProtectedRoutes requiredRole={userRoles.ADMIN}/>}>
-                  <Route path="reporting" element={<ReportingPage/>}/>
+        {!isUserOnline && <NoInternetErrorPopup />}
+        <ScrollToTop>
+          <Routes>
+            <Route element={<ProtectedRoutes requiredRole={userRoles.GUEST} />}>
+              <Route path="guest" element={<GuestPage />} />
+              <Route path="login" element={<LoginPage />} />
+            </Route>
+            <Route element={<ProtectedRoutes />}>
+              <Route path="/" element={<Header data={artists} setResults={setFilteredData} />}>
+                <Route index element={<HomePage />} />
+                <Route path="profile" element={<ProfilePage />} />
+                <Route path="preview/:dataID" element={<ContentPreviewPage />} />
+                <Route path="settings" element={<SettingsPage />}>
+                  <Route path="profileInfo" element={<ProfileInfo />} />
+                  <Route path="personalization" element={<PersonalizationPage />} />
+                  <Route element={<ProtectedRoutes requiredRole={userRoles.ADMIN} />}>
+                    <Route path="reporting" element={<ReportingPage />} />
+                  </Route>
                 </Route>
               </Route>
             </Route>
-          </Route>
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </ScrollToTop>
       </div>
     </ErrorBoundary>
   );

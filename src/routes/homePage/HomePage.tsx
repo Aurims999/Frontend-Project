@@ -1,55 +1,56 @@
 import Card from "../../components/Card/Card";
 import { ContentGrid } from "../../components/Containers/ContentGrid/ContentGrid";
 
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SpotifyDataContext } from "../../context/SpotifyDataContext";
+import { WebManagementContext } from "../../context/WebManagementContext.js";
+import { spotifyPlaylists } from "./../../utils/spotify/spotifyPlaylists.js"
 
-const HomePage = ({ artists, favouriteSongs }) => {
-  const {topTracksPlaylist, lithuanianTracksPlaylist} = useContext(SpotifyDataContext);
+import { fetchDefaultPlaylists } from "../../utils/services/spotifyDataRetrieval.ts";
+
+const HomePage = () => {
+  const {getDetailedData, getUserFavouriteTracks} = useContext(SpotifyDataContext);
+  const {setPageLoading} = useContext(WebManagementContext)
+  const [defaultPlaylists, setDefaultPlaylists] = useState([]);
+  const [favouriteTracks, setFavouriteTracks] = useState([]);
+
+  const defaultPlaylistsIDs = [
+    spotifyPlaylists.TOP_TRACKS,
+    spotifyPlaylists.LITHUANIAN_TRACKS,
+    spotifyPlaylists.ALL_TIME_HITS,
+  ]
+
+  useEffect(() => {
+    setPageLoading(true);
+    fetchDefaultPlaylists(defaultPlaylistsIDs, getDetailedData, getUserFavouriteTracks)
+    .then(({playlists, userFavouriteTracks}) => {
+      setDefaultPlaylists(playlists);
+      setFavouriteTracks(userFavouriteTracks);
+    }).finally(() => setPageLoading(false));
+  }, [])
   
   return (
     <main>
-      <ContentGrid title="Top tracks" amountOfColumns={5}>
-      {(topTracksPlaylist.tracks?.items ?? []).slice(0,5).map((entry) => {
-          return (
-            <Card
-              key={entry.track.id}
-              id={entry.track.id}
-              image={entry.track.album.images[0].url}
-              link={entry.track.external_urls.spotify}
-              mainText={entry.track.name}
-              subText={entry.track.artists[0].name}
-              altText={`Image of ${entry.track.artists[0].name}`}
-            />
-          );
-        })}
-      </ContentGrid>
-      <ContentGrid title="🇱🇹 Lithuanian tracks" amountOfColumns={5}>
-      {(lithuanianTracksPlaylist.tracks?.items ?? []).slice(0,5).map((entry) => {
-          return (
-            <Card
-              key={entry.track.id}
-              id={entry.track.id}
-              image={entry.track.album.images[0].url}
-              link={entry.track.external_urls.spotify}
-              mainText={entry.track.name}
-              subText={entry.track.artists[0].name}
-              altText={`Image of ${entry.track.artists[0].name}`}
-            />
-          );
-        })}
-      </ContentGrid>
+      {defaultPlaylists?.map(playlist => {
+        return(
+          <ContentGrid title={playlist.title} amountOfColumns={5} key={playlist.title}>
+            {(playlist.tracks ?? []).slice(0,5).map((track) => {
+              return (
+                <Card
+                  key={track.id}
+                  data = {track}
+                />
+              );
+            })}
+          </ContentGrid> 
+        )
+      })}
       <ContentGrid title="Favourite tracks" amountOfColumns={5}>
-      {favouriteSongs.slice(0,5).map((entry) => {
+      {favouriteTracks?.map((track) => {
           return (
             <Card
-              key={entry.id}
-              id={entry.id}
-              image={entry.album.images[0].url}
-              link={entry.external_urls.spotify}
-              mainText={entry.name}
-              subText={entry.artists[0].name}
-              altText={`Image of ${entry.artists[0].name}`}
+              key={track.id}
+              data={track}
             />
           );
         })}

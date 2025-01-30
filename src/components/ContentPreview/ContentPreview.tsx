@@ -1,32 +1,38 @@
+import { TextLink } from "../other/TextLink/TextLink.js";
 import { ContentList } from "../Containers/ContentList/ContentList";
 
 import { LikeButton } from "../other/LikeButton/LikeButton";
 import { ContentBlock } from "../other/ContentBlock/ContentBlock";
 
 import "./contentPreview.css";
+import { DataEntry } from "../../types/SpotifyAPI/DataEntry";
+import { SpotifyDataType } from "../../types/SpotifyAPI/DataType.js";
 
-export const ContentPreview = ({data = {}}) => {
-  const {id, name, album, popularity, artists, type} = data;
-  const image = album.images[0].url;
-  const amountOfLikes = popularity;
-  const songArtist = artists.length > 1 ? artists.reduce((artistsList, artist) => artistsList + artist.name + ", ", "").slice(0, -2) : artists[0].name;
-  const genres = [type];
-
+export const ContentPreview = ({data} : {data : DataEntry}) => {
   return (
     <section className="contentPreview">
-      <img src={image ? image : "/assets/images/defaultImages/artist__default.png"} alt="" />
+      <img className={data.type === SpotifyDataType.ARTIST ? "circular" : undefined}src={data.image ? data.image : "/assets/images/defaultImages/artist__default.png"} alt="" />
       <div className="description">
         <div className="description__TopRow">
           <ContentList>
             <h1 style={{ fontSize: "5rem", marginRight: "2rem" }}>
-              {name}
+              {data.name}
             </h1>
-            <LikeButton songId = {id} amountOfLikes={amountOfLikes}/>
+            <LikeButton entryID = {data.id} amountOfLikes={data.type === SpotifyDataType.ARTIST ? data.followers : undefined} />
           </ContentList>
-          <p style={{ fontSize: "1.25rem" }}>{songArtist ? songArtist : ""}</p>
+          {data.type === SpotifyDataType.TRACK &&
+            <ContentList>
+              {data.artist.map((artist) => (
+                <TextLink key={artist.id} link={`/preview/${artist.id}?contentType=${artist.type}`}>
+                  <p style={{fontSize : "1.25rem"}}>{artist.name}</p>
+                </TextLink>
+              ))}
+            </ContentList>
+          }
         </div>
+        {data.type === SpotifyDataType.ARTIST && data.genres.length > 0 &&
         <ContentList title="Genres:">
-          {genres.map(genre => {
+          {data.genres.map(genre => {
             return (<ContentBlock key={genre}>
               <img
                 src="../../assets/icons/pop.png"
@@ -36,7 +42,7 @@ export const ContentPreview = ({data = {}}) => {
               <p>{genre}</p>
             </ContentBlock>);
           })}
-        </ContentList>
+        </ContentList>}
       </div>
     </section>
   );

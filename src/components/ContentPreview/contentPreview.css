@@ -16,6 +16,10 @@ section.contentPreview {
 
     object-position: center;
     object-fit: cover;
+
+    &.circular {
+      border-radius: 50%;
+    }
   }
 
   & .description {

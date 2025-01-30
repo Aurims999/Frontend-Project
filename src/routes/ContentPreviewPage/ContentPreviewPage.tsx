@@ -1,74 +1,49 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
+
+import { SpotifyDataContext } from "../../context/SpotifyDataContext";
+
+import { SpotifyDataType } from "../../types/SpotifyAPI/DataType.js";
+import { Track } from "../../types/SpotifyAPI/Track";
 
 import { ContentPreview } from "../../components/ContentPreview/ContentPreview";
 import { ContentGrid } from "../../components/Containers/ContentGrid/ContentGrid";
 import Card from "../../components/Card/Card";
+import { fetchContentPreviewData } from "../../utils/services/spotifyDataRetrieval.js";
 
 export const ContentPreviewPage = () => {
-  const { artistID } = useParams();
+  const { dataID } = useParams();
+  const [searchParameters] = useSearchParams();
+  const contentType = searchParameters.get("contentType");
+  
+  
   const [data, setData] = useState(null);
-  const [otherSongs, setOtherSongs] = useState([]);
+  const {getDetailedData} = useContext(SpotifyDataContext);
 
   useEffect(() => {
-    const fetchTrack = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/api/tracks/${artistID}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+    fetchContentPreviewData(dataID, contentType, getDetailedData)
+    .then((pageContent) => {
+      setData(pageContent);
+    });
+  },[dataID]);
+
+  if (data){
+    return (
+      <main>
+        {data && <ContentPreview data={data.mainContent} />}
+        {data.relatedTracks && 
+         data.relatedTracks.map((entry) => (
+          <ContentGrid title={`Other songs by ${entry.artist.name}`} key={entry.artist.id}>
+            {entry.tracks.slice(0, contentType === SpotifyDataType.ARTIST ? 10 : 5).map((track: Track) => (
+              <Card 
+                key={track.id} 
+                data={track} 
+              />
+            ))}
+          </ContentGrid>
+          ))
         }
-        const track = await response.json();
-        setData(track);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    fetchTrack();
-  }, [artistID]);
-
-  useEffect(() => {
-    if (data == null) {
-      return;
-    }
-
-    const fetchOtherSongs = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/api/artists/topTracks/${data.artists[0].id}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const otherSongs = await response.json();
-        setOtherSongs(otherSongs.tracks);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    fetchOtherSongs();
-  },
-  [data]);
-
-  return (
-    <main>
-      {data && <ContentPreview data={data} />}
-      {otherSongs && 
-      <ContentGrid title="Other songs by the artist">
-          {otherSongs.slice(0,5).map((entry) => {
-          return (
-            <Card
-              key={entry.id}
-              id={entry.id}
-              image={entry.album.images[0].url}
-              link={entry.external_urls.spotify}
-              mainText={entry.name}
-              subText={entry.artists[0].name}
-              altText={`Image of ${entry.artists[0].name}`}
-            />
-          );
-        })}
-      </ContentGrid>
-        }
-    </main>
-  );
+      </main>
+    );
+  }
 };
