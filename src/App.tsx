@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 
 //Contexts
 import artistsData from "./data/artists.json";
-import { UserContext } from "./context/UserContext.tsx";
 import { WebManagementContext } from "./context/WebManagementContext.tsx";
 
 //PAGES

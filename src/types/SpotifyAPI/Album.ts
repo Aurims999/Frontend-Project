@@ -6,5 +6,5 @@ export interface Album extends DataEntry {
     artists: DataEntry[],
     tracks_items: DataEntry[],
     genres: string[],
-    label: string | null | undefined,
+    label?: string,
 }

@@ -3,8 +3,9 @@ import { addToFavourites, removeFromFavourites } from "../../../utils/firebase/f
 import { UserContext } from "../../../context/UserContext.js";
 import { useSearchParams } from "react-router-dom";
 
-import "./likeButton.css";
+import { formatAmountOfLikes } from "../../../utils/services/regularOperations.js";
 import { SpotifyDataType } from "../../../types/SpotifyAPI/DataType.js";
+import "./likeButton.css";
 
 export const LikeButton = ({entryID, amountOfLikes = 0}) => {
   const [likes, setLikes] = useState(amountOfLikes);
@@ -14,14 +15,6 @@ export const LikeButton = ({entryID, amountOfLikes = 0}) => {
   const [searchParameters] = useSearchParams();
   const contentType = searchParameters.get("contentType");
 
-  const formatAmountOfLikes = (numberOfLikes) => {
-    if(numberOfLikes >= 1000){
-      return numberOfLikes >= 1000000 ? (Math.round(numberOfLikes / 1000000) + " M") : (Math.round(numberOfLikes / 1000) + " K");
-    } else {
-      return numberOfLikes;
-    }
-  }
-  
   useEffect(() => {
     switch(contentType){
       case SpotifyDataType.TRACK:
@@ -31,9 +24,9 @@ export const LikeButton = ({entryID, amountOfLikes = 0}) => {
         setLiked(userData.favouriteArtists.includes(entryID));
         break;
     }
-    
-    setLikes(formatAmountOfLikes(amountOfLikes));
-  }, [entryID])
+
+    setLikes(amountOfLikes);
+  }, [entryID, amountOfLikes])
 
   const handlePress = async () => {
     if (isLiked) {
@@ -53,7 +46,7 @@ export const LikeButton = ({entryID, amountOfLikes = 0}) => {
         className="icon"
         onClick={() => handlePress()}
       />
-      {likes != 0 && <p>{likes}</p>}
+      {likes != 0 && <p>{formatAmountOfLikes(likes)}</p>}
     </div>
   );
 };
