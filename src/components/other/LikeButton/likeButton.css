@@ -1,7 +1,6 @@
 .likeButton {
   width: fit-content;
-  min-width: 200px;
-  height: 65px;
+  height: 50px;
 
   padding: 0.5rem 1rem;
 
@@ -18,13 +17,13 @@
     aspect-ratio: 1/1;
     border-radius: 0;
 
-    &:hover{
+    &:hover {
       cursor: pointer;
     }
   }
 
   & p {
-    font-size: 1.25rem;
+    font-size: 0.9rem;
     font-weight: bold;
     color: white;
   }
