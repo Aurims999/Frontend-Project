@@ -11,39 +11,54 @@ export default function ProfileIcon() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownMenu = useRef(null);
   const imageIcon = useRef(null);
-  const {currentUser} = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
-  }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if(dropdownMenu.current && !dropdownMenu.current.contains(event.target) && !imageIcon.current.contains(event.target) ){
+      if (
+        dropdownMenu.current &&
+        !dropdownMenu.current.contains(event.target) &&
+        !imageIcon.current.contains(event.target)
+      ) {
         toggleMenu();
         document.removeEventListener("mousedown", handleClickOutside);
       }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
     }
-
-      if(isOpen){
-        document.addEventListener("mousedown", handleClickOutside);
-      } 
-
-  }, [dropdownMenu, isOpen])
+  }, [dropdownMenu, isOpen]);
 
   return (
     <div className="userManagementButton" ref={imageIcon}>
-      <img src={currentUser.photoURL ? currentUser.photoURL : "/assets/images/defaultImages/artist__default.png"} 
-           alt="An icon of a person's profile view" 
-           className="profileIcon"
-           onClick={toggleMenu} />
-      <div className="dropdownMenu" style={{ display: isOpen ? "block" : "none" }} ref={dropdownMenu}>
+      <img
+        src="/assets/images/defaultImages/artist__default.png"
+        alt="An icon of a person's profile view"
+        className="profileIcon"
+        onClick={toggleMenu}
+      />
+      <div
+        className="dropdownMenu"
+        style={{ display: isOpen ? "block" : "none" }}
+        ref={dropdownMenu}
+      >
         <div className="userDescription">
           <p>{currentUser.email}</p>
         </div>
-       <Link to={"/profile"} className="dropdownItem" onClick={toggleMenu}><p>User Profile</p></Link>
-       <Link to={"/settings"} className="dropdownItem" onClick={toggleMenu}><p>Settings</p></Link>
-       <Link to={"/profile"} className="dropdownItem" onClick={signOutUser}><p>Logout</p></Link>
+        <Link to={"/profile"} className="dropdownItem" onClick={toggleMenu}>
+          <p>User Profile</p>
+        </Link>
+        <Link to={"/settings"} className="dropdownItem" onClick={toggleMenu}>
+          <p>Settings</p>
+        </Link>
+        <Link to={"/profile"} className="dropdownItem" onClick={signOutUser}>
+          <p>Logout</p>
+        </Link>
       </div>
     </div>
   );

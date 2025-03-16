@@ -60,7 +60,7 @@
 
 .divider {
   width: 100%;
-  margin: 1.5rem 0;
+  margin-bottom: 1.25rem;
 
   text-align: center;
   color: var(--white);

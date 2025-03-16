@@ -27,23 +27,26 @@ export const LoginPage = ({}) => {
   return (
     <div className={`loginPage ${!isLogin ? "centeredContent" : ""}`}>
       <ExitButton />
-      <h1 style={{ color: "white", fontSize: "3rem" }}>
+      <h1 style={{ color: "white", fontSize: "2.5rem" }}>
         {isLogin ? "Login To Your Account" : "Register New Account"}
       </h1>
       <div className="formsContainer">
         {isLogin ? (
           <>
-            <LoginForm setPageType={setLogin} displayValidationPopup={handlePopupDisplay}/>
+            <LoginForm
+              setPageType={setLogin}
+              displayValidationPopup={handlePopupDisplay}
+            />
             <div className="divider">Or</div>
             <GoogleAuthButton />
           </>
         ) : (
           <>
-            <RegisterForm displayValidationPopup={handlePopupDisplay}/>
+            <RegisterForm displayValidationPopup={handlePopupDisplay} />
           </>
         )}
       </div>
-      <PopupMessage message={popupMessage} display={isPopupVisible}/>
+      <PopupMessage message={popupMessage} display={isPopupVisible} />
     </div>
   );
 };
